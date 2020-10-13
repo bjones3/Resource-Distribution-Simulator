@@ -12,25 +12,25 @@ struct range
 class Resource
 {
     private:
-        double weight;
-        double volume;
-        double wearFactor;
-        double wear;
+        double weight; //pounds
+        double volume; //cubic feet
+        double wearFactor; //between 0 and 1
+        double wear; //between 0 and 1
         struct range weightRange;
         struct range volumeRange;
         struct range wearFactorRange;
 
     public:
         Resource() {
-            weightRange.min = 0.01; weightRange.max = 10000;
-            volumeRange.min = 0.01; volumeRange.max = 10000;
+            weightRange.min = 0.01; weightRange.max = 6000; //max load of a 20ft Uhaul
+            volumeRange.min = 0.01; volumeRange.max = 1000; //max volume of second largest UHaul 
             wearFactorRange.min = 0; wearFactorRange.max = 1;
             weight = genWeight(weightRange);
             volume  = genVolume(volumeRange);
             wearFactor  = genWearFactor(wearFactorRange);
             wear = 1;
         }
-
+/*
         Resource(const Resource & resource)
         {
             weight = resource.weight;
@@ -38,6 +38,7 @@ class Resource
             wearFactor = resource.wearFactor;
             wear = resource.wear;
         }
+*/
 
         double genWeight(struct range inWeight){
             double f = (double) rand()/ RAND_MAX;
@@ -67,9 +68,10 @@ class Resource
         {
             return wear;
         }
-        void use()
+        bool use()
         {
             wear = wear*wearFactor;
+            return (wear>0.001);
         }
 
 };
