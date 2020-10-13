@@ -16,9 +16,9 @@ class Resource
         double volume;
         double wearFactor;
         double wear;
-        struct range weightRange;  
-        struct range volumeRange; 
-        struct range wearFactorRange; 
+        struct range weightRange;
+        struct range volumeRange;
+        struct range wearFactorRange;
 
     public:
         Resource() {
@@ -40,14 +40,15 @@ class Resource
         }
 
         double genWeight(struct range inWeight){
-            return (rand() % (inWeight.max - inWeight.min) + inWeight.min);
+            double f = (double) rand()/ RAND_MAX;
+            return (f*(inWeight.max - inWeight.min) + inWeight.min);
         }
         double genVolume(struct range inVolume){
-            return (rand() % (inVolume.max - inVolume.min) + inVolume.min);
-        }
+          double f = (double) rand()/ RAND_MAX;
+          return (f*(inVolume.max - inVolume.min) + inVolume.min);        }
         double genWearFactor(struct range inWearFactor){
-            return (rand() % (inWearFactor.max - inWearFactor.min) + inWearFactor.min);
-        }
+          double f = (double) rand()/ RAND_MAX;
+          return (f*(inWearFactor.max - inWearFactor.min) + inWearFactor.min);        }
 
         double getWeight()
         {
