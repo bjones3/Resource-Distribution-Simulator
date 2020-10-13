@@ -2,66 +2,74 @@
 #ifndef RESOURCE_HPP
 #define RESOURCE_HPP
 
-class Resource
-{
-
 struct range
 {
-
-  double min;
-  double max;
-
+    double min;
+    double max;
 };
 
-private:
-  double weight;
-  double volume;
-  double wearFactor;
-  double wear;
-//possibly add a "minWear factor for the minimum wear before it can no longer be used"
 
+class Resource
+{
+    private:
+        double weight;
+        double volume;
+        double wearFactor;
+        double wear;
+        struct range weightRange;  
+        struct range volumeRange; 
+        struct range wearFactorRange; 
 
-public:
-  Resource(double weight, double volume, double wearFactor, double wear)
-  {
-    this.weight = weight;
-    this.volume = volume;
-    this.wearFactor = wearFactor;
-    this.wear = wear;
-    range.min = 0
-    range.max =
-  }
+    public:
+        Resource() {
+            weightRange.min = 0.01; weightRange.max = 10000;
+            volumeRange.min = 0.01; volumeRange.max = 10000;
+            wearFactorRange.min = 0; wearFactorRange.max = 1;
+            weight = genWeight(weightRange);
+            volume  = genVolume(volumeRange);
+            wearFactor  = genWearFactor(wearFactorRange);
+            wear = 1;
+        }
 
-  Resource(const Resource & resource)
-  {
-    weight = resource.weight;
-    volume = resource.volume;
-    wearFactor = resource.wearFactor;
-    wear = resource.wear;
-  }
+        Resource(const Resource & resource)
+        {
+            weight = resource.weight;
+            volume = resource.volume;
+            wearFactor = resource.wearFactor;
+            wear = resource.wear;
+        }
 
-  double getWeight()
-  {
-    return weight;
-  }
+        double genWeight(struct range inWeight){
+            return (rand() % (inWeight.max - inWeight.min) + inWeight.min);
+        }
+        double genVolume(struct range inVolume){
+            return (rand() % (inVolume.max - inVolume.min) + inVolume.min);
+        }
+        double genWearFactor(struct range inWearFactor){
+            return (rand() % (inWearFactor.max - inWearFactor.min) + inWearFactor.min);
+        }
 
-  double getVolume()
-  {
-    return volume;
-  }
-  double getWearFactor()
-  {
-    return wearFactor;
-  }
-  double getWear()
-  {
-    return wear;
-  }
-  double use()
-  {
-    wear = wear*wearFactor;
-  }
+        double getWeight()
+        {
+            return weight;
+        }
 
+        double getVolume()
+        {
+            return volume;
+        }
+        double getWearFactor()
+        {
+            return wearFactor;
+        }
+        double getWear()
+        {
+            return wear;
+        }
+        void use()
+        {
+            wear = wear*wearFactor;
+        }
 
 };
 
