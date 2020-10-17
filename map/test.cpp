@@ -8,6 +8,6 @@ int main(int argc, char* argv[])
 	inFile.open(argv[1]);
 
 	//cityMap map = cityMap(10,10);
-	cityMap map = cityMap(&inFile);
+	cityMap map = cityMap(inFile);
 	map.printMap();
 }
