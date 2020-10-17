@@ -1,28 +1,24 @@
-#ifndef FOODITEM_H
-#define FOODITEM_H
+#ifndef FOODITEM_HPP
+#define FOODITEM_HPP
 
 class FoodItem: public Resource
 {
 
 
-FoodItem(double weight, double volume)
+FoodItem()
 {
-  this.weight = weight;
-  this.volume = volume;
-  wearFactor = 0;
+  wearFactorRange.min = 0;
+  wearFactorRange.max = 0;
+  weightRange.min = .2;
+  weightRange.max = 30;
+  volumeRange.min = 0.05;
+  volumeRange.max = 1; //based on 11x3x3 5 person sofa
   wear = 1;
+  minWear = 0;
+
+  weight = genWeight(weightRange);
+  volume  = genVolume(volumeRange);
+  wearFactor  = genWearFactor(wearFactorRange);
 }
-
-FoodItem(const FoodItem & foodItem)
-{
-
-  weight = foodItem.weight;
-  volume = foodItem.volume;
-  wearFactor = 0;
-  wear = 1;
-
-}
-
 };
-
 #endif
