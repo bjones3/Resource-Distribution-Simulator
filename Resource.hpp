@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #ifndef RESOURCE_HPP
 #define RESOURCE_HPP
+#include "Building.hpp"
 
 struct range
 {
@@ -12,6 +13,8 @@ struct range
 class Resource
 {
     private:
+        Building building;
+        Building newBuilding;
         double weight; //pounds
         double volume; //cubic feet
         double wearFactor; //between 0 and 1
@@ -79,6 +82,20 @@ class Resource
         {
             wear = wear*wearFactor;
             return (wear>=minWear);
+        }
+
+        Building getNextBuilding
+        {
+
+          return nextBuilding;
+
+        }
+
+        Building getBuilding()
+        {
+
+          return building;
+
         }
 
 };
