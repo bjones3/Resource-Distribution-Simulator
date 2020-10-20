@@ -13,6 +13,8 @@ private:
   std::string name;
   std::string ID;
   std::list<Resource> possessions;
+  double totalPossessionWeight;
+  double totalPossessionVolume;
 
   std::string generateName()
   {
@@ -32,6 +34,9 @@ public:
 
   Individual(House house)
   {
+
+    possessionWeight = 0;
+    possessionVolume = 0;
 
     xPosition = house.getXPosition();
     yPosition = house.getYPosition();
@@ -58,6 +63,23 @@ public:
   {
 
     possessions.push_back(possession);
+
+    totalPossessionWeight += possession.getWeight;
+    totalPossessionVolume += possession.getVolume;
+
+  }
+
+  double getPossessionVolume()
+  {
+
+    return totalPossessionVolume;
+
+  }
+
+  double getPossessionWeight()
+  {
+
+    return totalPossessionWeight;
 
   }
 

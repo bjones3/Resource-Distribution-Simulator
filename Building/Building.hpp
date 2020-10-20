@@ -14,36 +14,107 @@ private:
   std::list<Individual> occupants;
   std::list<Resource> contents;
   int occupantCapacity;
-  int contentCapacity;
+  double contentVolumeCapacity;
+  double contentVolume;
 
-  Building()
+public:
+  Building(int x, int y)
   {
 
-
-
+    xPos = x;
+    yPos = y;
+    contentVolume = 0;
 
   }
 
+  int getOccupantAmount()
+  {
 
-  void addOccupant(Individual occupant)
+    return occupants.size();
+
+  }
+
+  int getOccupantCapacity()
+  {
+
+    return occupantCapacity;
+
+  }
+
+  void addOccupant(Individual & occupant)
   {
 
     occupants.push_front(occupant);
 
-
   }
 
-  Individual removeOccupant(Individual occupant)
+  Individual removeOccupant(Individual & occupant)
   {
-    std::list<Individual>::Iterator temp = std::find(occupants->begin(),occupants->end(),occupant));
+    std::list<Individual>::Iterator temp = std::find(occupants->begin(),occupants->end(),occupant);
     Individual removedOccupant = *temp;
     occupants->remove(temp);
     return removedOccupant;
 
   }
 
+  void addResource(Resource & resource)
+  {
 
+    contents.push_front(resource);
 
+  }
+
+  Resource removeResource(Resource & resource)
+  {
+
+    std::list<Resource>::Iterator temp = std::find(contents->begin(),contents->end(),resource);
+    Resource removedResource = *temp;
+    contents->remove(temp);
+    return removedResource;
+
+  }
+
+  bool canBringOccupant(Individual & occupant)
+  {
+
+    if(occupants.size() == occupantCapacity)
+    {
+      return false;
+    }
+
+    if(occupant.getPossessionVolume() + contentVolume > contentVolumeCapacity)
+    {
+      return false;
+    }
+
+    return true;
+
+  }
+
+  bool canBringContents(Resource & resource)
+  {
+
+    if(resource.getVolume() + contentVolume > contentVolumeCapacity)
+    {
+
+      return false;
+
+    }
+
+  }
+  int getXPos()
+  {
+
+    return xPos;
+
+  }
+
+  int getYPos()
+  {
+
+    return yPos;
+
+  }
 }
 
 #endif
