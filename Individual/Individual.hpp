@@ -11,7 +11,7 @@ private:
   int xPosition;
   int yPosition;
   std::string name;
-  std::string ID;
+  long long int id;
   std::list<Resource> possessions;
   double totalPossessionWeight;
   double totalPossessionVolume;
@@ -23,12 +23,6 @@ private:
 
   }
 
-  std::string generateID()
-  {
-
-
-
-  }
 
 public:
 
@@ -43,7 +37,7 @@ public:
 
     name = generateName();
 
-    id = generateID();
+    id = ID::generateID();
 
   }
 
@@ -52,7 +46,7 @@ public:
 
     std::list<Resource>::iterator temp = resources.begin();
 
-    for(temp; i < temp!=resources.end(); temp++)
+    for(temp; temp!=resources.end(); temp++)
     {
       temp->use();
     }
@@ -87,6 +81,13 @@ public:
   {
 
     matriarch.requestDrone(newXPosition, newYPosition);
+
+  }
+
+  std::list<Resource> getIndividualPossessions()
+  {
+
+    return possessions;
 
   }
 

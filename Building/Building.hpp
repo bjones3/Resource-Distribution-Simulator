@@ -11,6 +11,7 @@ class Building
 private:
   int xPos;
   int yPos;
+  long long int id;
   std::list<Individual> occupants;
   std::list<Resource> contents;
   int occupantCapacity;
@@ -24,6 +25,7 @@ public:
     xPos = x;
     yPos = y;
     contentVolume = 0;
+    id = ID::generateID();
 
   }
 
@@ -33,6 +35,8 @@ public:
     return occupants.size();
 
   }
+
+
 
   int getOccupantCapacity()
   {
@@ -50,7 +54,7 @@ public:
 
   Individual removeOccupant(Individual & occupant)
   {
-    std::list<Individual>::Iterator temp = std::find(occupants->begin(),occupants->end(),occupant);
+    std::list<Individual>::iterator temp = std::find(occupants->begin(),occupants->end(),occupant);
     Individual removedOccupant = *temp;
     occupants->remove(temp);
     return removedOccupant;
@@ -60,6 +64,7 @@ public:
   void addResource(Resource & resource)
   {
 
+    contentVolume += resource.getVolume();
     contents.push_front(resource);
 
   }
@@ -67,9 +72,10 @@ public:
   Resource removeResource(Resource & resource)
   {
 
-    std::list<Resource>::Iterator temp = std::find(contents->begin(),contents->end(),resource);
+    std::list<Resource>::iterator temp = std::find(contents->begin(),contents->end(),resource);
     Resource removedResource = *temp;
     contents->remove(temp);
+    contentVolume -= resource.getVolume();
     return removedResource;
 
   }
@@ -113,6 +119,13 @@ public:
   {
 
     return yPos;
+
+  }
+
+  long long int getID()
+  {
+
+    return id;
 
   }
 }

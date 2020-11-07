@@ -1,8 +1,8 @@
 #include "Building.hpp"
 
 
-#ifndef Office_HPP
-#define Office_HPP
+#ifndef OFFICE_HPP
+#define OFFICE_HPP
 
 class Office: public Building
 {
