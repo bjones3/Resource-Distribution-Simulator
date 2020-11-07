@@ -20,9 +20,11 @@ class Resource
         double wearFactor; //between 0 and 1
         double wear; //between 0 and 1
         double minWear;
+        long long int id;
         struct range weightRange;
         struct range volumeRange;
         struct range wearFactorRange;
+
 
     public:
         Resource() {
@@ -38,6 +40,8 @@ class Resource
             weight = genWeight(weightRange);
             volume  = genVolume(volumeRange);
             wearFactor  = genWearFactor(wearFactorRange);
+
+            id = ID::generateID();
         }
         /*
            Resource(const Resource & resource)
@@ -96,6 +100,11 @@ class Resource
 
           return building;
 
+        }
+
+        long long int getID()
+        {
+          return id;
         }
 
 };

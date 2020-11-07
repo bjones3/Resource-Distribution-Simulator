@@ -9,10 +9,12 @@ class Drone
 {
 
 private:
-  std::string ID;
+  long long int id;
   double maxVolume;
   double maxWeight;
   std::list<Resource> payload;
+  double contentVolume;
+  double contentWeight;
   int xPos;
   int yPos;
 
@@ -21,7 +23,7 @@ public:
   {
     xPos = x;
     yPos = y;
-    ID = generateID();
+    id = ID::generateID();
 
   }
 
@@ -37,7 +39,12 @@ int getYPosition()
 
 }
 
+long long int getID()
+{
 
+  return id;
+
+}
 
 };
 
