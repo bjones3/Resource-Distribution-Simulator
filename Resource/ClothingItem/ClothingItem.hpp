@@ -1,6 +1,8 @@
 #ifndef CLOTHINGITEM_HPP
 #define CLOTHINGITEM_HPP
 
+#include "../Resource.hpp"
+
 class ClothingItem: public Resource
 {
 

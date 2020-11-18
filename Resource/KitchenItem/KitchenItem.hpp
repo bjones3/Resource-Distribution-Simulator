@@ -1,6 +1,8 @@
 #ifndef KITCHENITEM_HPP
 #define KITCHENITEM_HPP
 
+#include "../Resource.hpp"
+
 class KitchenItem: public Resource
 {
 

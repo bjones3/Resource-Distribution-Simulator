@@ -1,6 +1,7 @@
 #ifndef CARGODRONE_HPP
 #define CARGODRONE_HPP
 
+#include "Drone.hpp"
 
 class CargoDrone : public Drone
 {
@@ -70,7 +71,7 @@ Resource unloadCargo(Resources & resource)
 }
 
 
-}
+};
 
 
 #endif

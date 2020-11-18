@@ -1,9 +1,13 @@
-#include <list>
-#include "Resource.hpp"
+
 
 #ifndef DRONE_HPP
 #define DRONE_HPP
 
+#include <list>
+#include "../Resource/Resource.hpp"
+#include "../Individual/Individual.hpp"
+#include "CargoDrone.hpp"
+#include "PassengerDrone.hpp"
 
 class Drone
 {

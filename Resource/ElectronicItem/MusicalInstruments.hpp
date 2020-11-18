@@ -1,11 +1,13 @@
-#ifndef PRINTER_HPP
-#define PRINTER_HPP
+#ifndef MUSICALINSTRUMENTS_HPP
+#define MUSICALINSTRUMENTS_HPP
 
-class Printer: public ElectronicItem
+#include "ElectronicItem.hpp"
+
+class MusicalInstruments: public ElectronicItem
 {
 
 
-Printer()
+MusicalInstruments()
 {
   wearFactorRange.min = 0.8;
   wearFactorRange.max = 0.999;

@@ -1,18 +1,20 @@
-#ifndef MUSICALINSTRUMENTS_HPP
-#define MUSICALINSTRUMENTS_HPP
+#ifndef COMPUTERS_HPP
+#define COMPUTERS_HPP
 
-class MusicalInstruments: public ElectronicItem
+#include "ElectronicItem.hpp"
+
+class Computers: public ElectronicItem: 
 {
 
 
-MusicalInstruments()
+iC()
 {
   wearFactorRange.min = 0.8;
   wearFactorRange.max = 0.999;
-  weightRange.min = 5;
-  weightRange.max = 300;
-  volumeRange.min = 1;
-  volumeRange.max = 27;
+  weightRange.min = 2;
+  weightRange.max = 10;
+  volumeRange.min = 0.5;
+  volumeRange.max = 3;
   wear = 1;
   minWear = 0.01;
 

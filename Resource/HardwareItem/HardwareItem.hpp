@@ -1,6 +1,8 @@
 #ifndef HARDWAREITEM_HPP
 #define HARDWAREITEM_HPP
 
+#include "../Resource.hpp"
+
 class HardwareItem: public Resource
 {
 

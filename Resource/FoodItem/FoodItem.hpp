@@ -1,6 +1,8 @@
 #ifndef FOODITEM_HPP
 #define FOODITEM_HPP
 
+#include "../Resource.hpp"
+
 class FoodItem: public Resource
 {
 

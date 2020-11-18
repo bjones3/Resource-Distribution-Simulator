@@ -1,7 +1,9 @@
 #ifndef FURNITURE_HPP
 #define FURNITURE_HPP
 
-class Furniture : public Resources {
+#include "../Resource.hpp"
+
+class Furniture : public Resource {
 
     Furniture(){
         wearFactorRange.min = 0.9995;

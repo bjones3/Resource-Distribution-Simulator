@@ -1,6 +1,8 @@
 #ifndef SPORTSITEM_HPP
 #define SPORTSITEM_HPP
 
+#include "../Resource.hpp"
+
 class SportsItem: public Resource
 {
 

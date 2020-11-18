@@ -1,12 +1,13 @@
+
+#ifndef MAP_HPP
+#define MAP_HPP
+
 #include <string>
 #include <iostream>
 #include <fstream>
 #include <time.h>
 #include <vector>
-//#include "../Building/Building.hpp"
-
-#ifndef MAP_HPP
-#define MAP_HPP
+#include "../Building/Building.hpp"
 
 #define FACT_SIZE 	4
 #define WORK_SIZE 	3
@@ -70,12 +71,12 @@ class cityMap
 			generateHouse();
 		}
 
-		/*
+		
 		std::list<Building> getBuildings()
 		{
 			return buildings;
 		}
-		*/
+		
 
 		void printMap()
 		{
@@ -96,7 +97,7 @@ class cityMap
 		int roadConc; 
 		int factoryConc;
 		int workConc;
-		//std::list<Building> buildings;
+		std::list<Building> buildings;
 		
 		/**
 		 * Initializes the map's grid using xSize and ySize.
@@ -247,16 +248,16 @@ class cityMap
 								switch(type)
 								{
 									case FACT:
-										//FulfillmentCenter f(buildingX,buildingY);
-										//buildings.push_back(o);
+										FulfillmentCenter f(buildingX,buildingY);
+										buildings.push_back(o);
 									break;
 									case WORK:
-										//Office o(buildingX,buildingY);
-										//buildings.push_back(o);
+										Office o(buildingX,buildingY);
+										buildings.push_back(o);
 									break;
 									case HOME:
-										//House h(buildingX,buildingY);
-										//buildings.push_back(h);
+										House h(buildingX,buildingY);
+										buildings.push_back(h);
 									break;
 								}	
 							}

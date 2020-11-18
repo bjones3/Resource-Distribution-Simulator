@@ -1,6 +1,8 @@
 #ifndef BATHROOMITEM_HPP
 #define BATHROOMITEM_HPP
 
+#include "../Resource.hpp"
+
 class BathroomItem: public Resource
 {
 

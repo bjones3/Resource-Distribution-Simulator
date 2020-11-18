@@ -1,6 +1,8 @@
 #ifndef HOUSEHOLDITEM_HPP
 #define HOUSEHOLDITEM_HPP
 
+#include "../Resource.hpp"
+
 class HouseholdItem: public Resource
 {
 

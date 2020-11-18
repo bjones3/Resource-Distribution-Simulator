@@ -1,7 +1,8 @@
 
-
 #ifndef PASSENGERDONE_HPP
 #define PASSENGERDROE_HPP
+
+#include "Drone.hpp"
 
 class PassengerDrone: public Drone
 {
@@ -74,12 +75,12 @@ void loadPassenger(Individual & passenger)
 
    std::list<Resource>::iterator temp2 = payload.begin();
    std::list<Resource> possessions = passenger.getIndividualPossessions();
-   std::list<Resource>::iterator temp3 = posessions.begin();
+   std::list<Resource>::iterator temp3 = possessions.begin();
 
    for(temp2; temp2!=payload.end(); temp2++)
    {
 
-     for(temp3; temp3!=posessions.end();temp3++)
+     for(temp3; temp3!=possessions.end();temp3++)
      {
 
        if(*temp2.getID() == *temp3.getID())

@@ -1,18 +1,20 @@
-#ifndef TV_HPP
-#define TV_HPP
+#ifndef ELECTRONICITEM_HPP
+#define ELECTRONICITEM_HPP
 
-class TV: public ElectronicItem
+#include "../Resource.hpp"
+
+class ElectronicItem: public Resource
 {
 
 
-TV()
+ElectronicItem()
 {
   wearFactorRange.min = 0.8;
   wearFactorRange.max = 0.999;
-  weightRange.min = 5;
+  weightRange.min = 0.05;
   weightRange.max = 60;
-  volumeRange.min = 1;
-  volumeRange.max = 9;
+  volumeRange.min = 0.001;
+  volumeRange.max = 17.5;
   wear = 1;
   minWear = 0.01;
 

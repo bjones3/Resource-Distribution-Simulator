@@ -1,7 +1,9 @@
 #include <stdlib.h>
 #ifndef RESOURCE_HPP
 #define RESOURCE_HPP
-#include "Building.hpp"
+#include "../ID.hpp"
+#include "../Building/Building.hpp"
+#include "../Individual/Individual.hpp"
 
 struct range
 {

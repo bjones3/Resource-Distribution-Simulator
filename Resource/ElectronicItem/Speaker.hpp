@@ -1,18 +1,20 @@
-#ifndef CELLPHONE_HPP
-#define CELLPHONE_HPP
+#ifndef SPEAKER_HPP
+#define SPEAKER_HPP
 
-class Cellphone: public ElectronicItem
+#include "ElectronicItem.hpp"
+
+class Speaker: public ElectronicItem
 {
 
 
-Cellphone()
+Speaker()
 {
   wearFactorRange.min = 0.8;
   wearFactorRange.max = 0.999;
   weightRange.min = 0.015;
-  weightRange.max = 2;
+  weightRange.max = 40;
   volumeRange.min = 0.01;
-  volumeRange.max = 0.1;
+  volumeRange.max = 10;
   wear = 1;
   minWear = 0.01;
 

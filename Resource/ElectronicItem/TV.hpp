@@ -1,18 +1,20 @@
-#ifndef COMPUTERS_HPP
-#define COMPUTERS_HPP
+#ifndef TV_HPP
+#define TV_HPP
 
-class Computers: public ElectronicItem: 
+#include "ElectronicItem.hpp"
+
+class TV: public ElectronicItem
 {
 
 
-iC()
+TV()
 {
   wearFactorRange.min = 0.8;
   wearFactorRange.max = 0.999;
-  weightRange.min = 2;
-  weightRange.max = 10;
-  volumeRange.min = 0.5;
-  volumeRange.max = 3;
+  weightRange.min = 5;
+  weightRange.max = 60;
+  volumeRange.min = 1;
+  volumeRange.max = 9;
   wear = 1;
   minWear = 0.01;
 

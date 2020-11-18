@@ -1,14 +1,17 @@
-#include <list>
-#include "Individual.hpp"
-#include "Resource.hpp"
 
 #ifndef BUILDING_HPP
 #define BUILDING_HPP
 
+#include <list>
+#include <algorithm>
+#include "../Individual/Individual.hpp"
+#include "../Resource/Resource.hpp"
+#include "../Drone/Drone.hpp"
+
 class Building
 {
 
-private:
+protected:
   int xPos;
   int yPos;
   long long int id;
@@ -54,9 +57,9 @@ public:
 
   Individual removeOccupant(Individual & occupant)
   {
-    std::list<Individual>::iterator temp = std::find(occupants->begin(),occupants->end(),occupant);
+    std::list<Individual>::iterator temp = std::find(occupants.begin(),occupants.end(),occupant);
     Individual removedOccupant = *temp;
-    occupants->remove(temp);
+    occupants.remove(*temp);
     return removedOccupant;
 
   }
@@ -72,9 +75,9 @@ public:
   Resource removeResource(Resource & resource)
   {
 
-    std::list<Resource>::iterator temp = std::find(contents->begin(),contents->end(),resource);
+    std::list<Resource>::iterator temp = std::find(contents.begin(),contents.end(),resource);
     Resource removedResource = *temp;
-    contents->remove(temp);
+    contents.remove(*temp);
     contentVolume -= resource.getVolume();
     return removedResource;
 
@@ -128,6 +131,6 @@ public:
     return id;
 
   }
-}
+};
 
 #endif

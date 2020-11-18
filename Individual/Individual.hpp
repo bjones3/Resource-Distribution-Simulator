@@ -1,9 +1,11 @@
-#include "map.hpp"
-#include "Resource.hpp"
-#include <list>
 
 #ifndef INDIVIDUAL_HPP
 #define INDIVIDUAL_HPP
+
+
+#include "../Resource/Resource.hpp"
+#include <list>
+#include <string>
 
 class Individual
 {
@@ -41,7 +43,7 @@ public:
 
   }
 
-  void doTask(List<Resource> & resources)
+  void doTask(std::list<Resource> & resources)
   {
 
     std::list<Resource>::iterator temp = resources.begin();
@@ -58,8 +60,8 @@ public:
 
     possessions.push_back(possession);
 
-    totalPossessionWeight += possession.getWeight;
-    totalPossessionVolume += possession.getVolume;
+    totalPossessionWeight += possession.getWeight();
+    totalPossessionVolume += possession.getVolume();
 
   }
 
@@ -80,7 +82,7 @@ public:
   void movePosition(int newXPosition, int newYPosition)
   {
 
-    matriarch.requestDrone(newXPosition, newYPosition);
+    //matriarch.requestDrone(newXPosition, newYPosition);
 
   }
 
@@ -89,6 +91,11 @@ public:
 
     return possessions;
 
+  }
+  
+  long long int getID()
+  {
+  	return id;
   }
 
 };

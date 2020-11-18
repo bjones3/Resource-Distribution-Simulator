@@ -1,18 +1,20 @@
-#ifndef ELECTRONICITEM_HPP
-#define ELECTRONICITEM_HPP
+#ifndef CELLPHONE_HPP
+#define CELLPHONE_HPP
 
-class ElectronicItem: public Resource
+#include "ElectronicItem.hpp"
+
+class Cellphone: public ElectronicItem
 {
 
 
-ElectronicItem()
+Cellphone()
 {
   wearFactorRange.min = 0.8;
   wearFactorRange.max = 0.999;
-  weightRange.min = 0.05;
-  weightRange.max = 60;
-  volumeRange.min = 0.001;
-  volumeRange.max = 17.5;
+  weightRange.min = 0.015;
+  weightRange.max = 2;
+  volumeRange.min = 0.01;
+  volumeRange.max = 0.1;
   wear = 1;
   minWear = 0.01;
 

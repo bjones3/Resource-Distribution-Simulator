@@ -1,18 +1,20 @@
-#ifndef CAMERA_HPP
-#define CAMERA_HPP
+#ifndef PRINTER_HPP
+#define PRINTER_HPP
 
-class Camera: public ElectronicItem
+#include "ElectronicItem.hpp"
+
+class Printer: public ElectronicItem
 {
 
 
-Camera()
+Printer()
 {
   wearFactorRange.min = 0.8;
   wearFactorRange.max = 0.999;
-  weightRange.min = 0.015;
-  weightRange.max = 2;
-  volumeRange.min = 0.01;
-  volumeRange.max = 0.1;
+  weightRange.min = 5;
+  weightRange.max = 300;
+  volumeRange.min = 1;
+  volumeRange.max = 27;
   wear = 1;
   minWear = 0.01;
 
