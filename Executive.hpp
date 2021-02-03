@@ -10,7 +10,7 @@ class Executive
 	public:
 		void run()
 		{
-		
+			ID id;
 		}
 };
 
