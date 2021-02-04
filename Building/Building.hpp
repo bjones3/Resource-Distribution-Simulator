@@ -47,29 +47,56 @@ public:
     return occupantCapacity;
 
   }
+  
+  bool canAddOccupant(Individual & occupant)
+	{
+	  if(occupants.size() == occupantCapacity)
+	  {
+		return false;
+	  }
+	  if(occupant.getPossessionVolume() + contentVolume > contentVolumeCapacity)
+	  {
+		return false;
+	  }
+	  return true;
+	}
 
   void addOccupant(Individual & occupant)
   {
-
-    occupants.push_front(occupant);
-
+	if(canAddOccupant(occupant))
+   	 occupants.push_front(occupant);
   }
 
+	//TODO: Change occupants list to a hash
   Individual removeOccupant(Individual & occupant)
   {
     std::list<Individual>::iterator temp = std::find(occupants.begin(),occupants.end(),occupant);
     Individual removedOccupant = *temp;
-    occupants.remove(*temp);
+    for()
+    	if(*temp.getID() == occupant.getID())
+    		occupants.remove(*temp);
+
     return removedOccupant;
 
   }
 
+	bool canAddResource(Resource & resource)
+	{
+		if(resource.getVolume() + contentVolume > contentVolumeCapacity)
+	  {
+		return false;
+	  }
+	
+		return true;
+	}
+
   void addResource(Resource & resource)
   {
-
-    contentVolume += resource.getVolume();
-    contents.push_front(resource);
-
+	if(canAddResource(resource))
+	{
+		contentVolume += resource.getVolume();
+		contents.push_front(resource);
+    }
   }
 
   Resource removeResource(Resource & resource)

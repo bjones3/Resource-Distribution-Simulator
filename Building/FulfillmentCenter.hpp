@@ -9,10 +9,13 @@ class FulfillmentCenter: public Building
 
 FulfillmentCenter(int x, int y)
 {
-
   xPos = x;
   yPos = y;
-
+  volumeCapacity = 500000;
+  occupantCapacity = 0;
+  contentVolume = 0;
+  std::list<Drone> drones;
+  droneCapacity = 100;
 }
 
 CargoDrone createResourceDrone()
@@ -38,7 +41,8 @@ Resource createResource(Resource & resource)
 
 };
 
-
+private:
+	int droneCapacity;
 
 
 #endif

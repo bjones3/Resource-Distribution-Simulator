@@ -21,34 +21,54 @@ private:
   double contentWeight;
   int xPos;
   int yPos;
+  int xDest, yDest;
 
 public:
   Drone(int x, int y)
   {
     xPos = x;
     yPos = y;
+    xDest = x;
+    yDest = y;
     id = ID::generateID();
-
   }
 
-int getXPosition()
-{
-  return xPos;
-}
+	void setDest(int xpos, int ypos)
+	{
+		xDest = xpos;
+		yDest = ypos;
+		//drive();
+	}
+	
+	void drive()
+	{
+		
+	}
 
-int getYPosition()
-{
+	int getXPosition()
+	{
+	  return xPos;
+	}
 
-  return yPos;
+	int getYPosition()
+	{
+	  return yPos;
+	}
 
-}
+	int getXDest()
+	{
+	  return xDest;
+	}
 
-long long int getID()
-{
+	int getYDest()
+	{
+	  return yDest;
+	}
 
-  return id;
-
-}
+	long long int getID()
+	{
+	  return id;
+	}
 
 };
 

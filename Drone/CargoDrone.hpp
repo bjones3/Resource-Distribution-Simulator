@@ -8,12 +8,12 @@ class CargoDrone : public Drone
 
 public:
 
-  CargoDrone(int x, int y)
+  CargoDrone(int x, int y, long long int newId)
   {
 
     xPos = x;
     yPos = y;
-    id = ID::generateID();
+    id = newID;//ID::generateID();
 
     maxVolume = 1000;
     maxWeight = 6000;
@@ -45,8 +45,8 @@ public:
 
 void loadCargo(Resource & resource)
 {
-
-  payload.push_back(resource);
+	if(canLoadCargo(resource))
+  		payload.push_back(resource);
 
 }
 

@@ -6,6 +6,7 @@
 #include "../Resource/Resource.hpp"
 #include <list>
 #include <string>
+//#include "Agenda.hpp"
 
 class Individual
 {
@@ -17,12 +18,12 @@ private:
   std::list<Resource> possessions;
   double totalPossessionWeight;
   double totalPossessionVolume;
+  //Agenda schedule;
 
   std::string generateName()
   {
 
     return "";
-
   }
 
 
