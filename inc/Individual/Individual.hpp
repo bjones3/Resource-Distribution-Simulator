@@ -3,7 +3,7 @@
 #define INDIVIDUAL_HPP
 
 
-#include "../Resource/Resource.hpp"
+#include "../Resource.hpp"
 #include <list>
 #include <string>
 //#include "Agenda.hpp"

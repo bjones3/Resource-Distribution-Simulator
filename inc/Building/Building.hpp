@@ -5,7 +5,7 @@
 #include <list>
 #include <algorithm>
 #include "../Individual/Individual.hpp"
-#include "../Resource/Resource.hpp"
+#include "../Resource.hpp"
 #include "../Drone/Drone.hpp"
 
 class Building
