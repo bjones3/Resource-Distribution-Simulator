@@ -2,10 +2,7 @@
 # define DRONE_HPP
 
 # include <list>
-//# include "../Resource.hpp"
-//# include "../Individual/Individual.hpp"
-//# include "CargoDrone.hpp"
-//# include "PassengerDrone.hpp"
+# include "../Resource/Resource.hpp"
 
 class Drone
 {

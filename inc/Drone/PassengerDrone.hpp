@@ -2,6 +2,7 @@
 # define PASSENGERDRONE_HPP
 
 # include "Drone.hpp"
+# include "../Individual/Individual.hpp"
 
 class PassengerDrone : public Drone
 {

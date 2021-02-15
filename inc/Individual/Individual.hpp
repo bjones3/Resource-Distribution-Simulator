@@ -1,9 +1,10 @@
 #ifndef INDIVIDUAL_HPP
 # define INDIVIDUAL_HPP
 
-//# include "../Resource.hpp"
 # include <list>
 # include <string>
+# include "../Resource/Resource.hpp"
+# include "../Building/House.hpp"
 //# include "Agenda.hpp"
 
 class Individual

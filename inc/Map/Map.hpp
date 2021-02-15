@@ -8,6 +8,9 @@
 #include <time.h>
 #include <vector>
 #include "../Building/Building.hpp"
+#include "../Building/FulfillmentCenter.hpp"
+#include "../Building/House.hpp"
+#include "../Building/Office.hpp"
 
 #define FACT_SIZE 	4
 #define WORK_SIZE 	3
@@ -244,12 +247,12 @@ class cityMap
 
 								buildingX = p.x;
 								buildingY = p.y;								
-								
-								switch(type)
+
+								/*switch(type)
 								{
 									case FACT:
 										FulfillmentCenter f(buildingX,buildingY);
-										buildings.push_back(o);
+										buildings.push_back(f);
 									break;
 									case WORK:
 										Office o(buildingX,buildingY);
@@ -259,7 +262,7 @@ class cityMap
 										House h(buildingX,buildingY);
 										buildings.push_back(h);
 									break;
-								}	
+								}*/
 							}
 							i += width-1;
 							buildAttempts++;

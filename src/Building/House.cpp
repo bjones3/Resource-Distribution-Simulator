@@ -1,12 +1,8 @@
-#include "../../inc/Building/House.hpp"
+//#include "../../inc/Building/House.hpp"
+#include "../../inc/rds.hpp"
 
-class House: 
-
-House::House(int x, int y)
+House::House(int x, int y) : Building::Building(x, y)
 {
-  xPos = x;
-  yPos = y;
-  volumeCapacity = 5000;
-  occupantCapacity = 6;
-  contentVolume = 0;
+	contentVolumeCapacity = 5000;
+	occupantCapacity = 6;
 }

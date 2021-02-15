@@ -1,24 +1,19 @@
-#include "Building.hpp"
-
-
 #ifndef FULFILLMENTCENTER_HPP
-#define FULFILLMENTCENTER_HPP
+# define FULFILLMENTCENTER_HPP
 
-class FulfillmentCenter: 
+# include "Building.hpp"
 
-public Building
+class FulfillmentCenter : public Building
 {
+	private:
+		int droneCapacity;
+		std::list<Drone> drones;
 
-FulfillmentCenter(int x, int y);
-
-CargoDrone createResourceDrone();
-
-PassengerDrone createPassengerDrone();
-
-Resource createResource(Resource & resource);
-
-private:
-	int droneCapacity;
-
+	public:
+		FulfillmentCenter(int x, int y);
+		CargoDrone createResourceDrone();
+		PassengerDrone createPassengerDrone();
+		Resource createResource(Resource & resource);
+};
 
 #endif

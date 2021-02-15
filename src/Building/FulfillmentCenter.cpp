@@ -1,33 +1,23 @@
-#include "../../inc/Building/FulfillmentCenter.hpp"
+//#include "../../inc/Building/FulfillmentCenter.hpp"
+#include "../../inc/rds.hpp"
 
-FulfillmentCenter::FulfillmentCenter(int x, int y)
+FulfillmentCenter::FulfillmentCenter(int x, int y) : Building::Building(x, y)
 {
-  xPos = x;
-  yPos = y;
-  volumeCapacity = 500000;
-  occupantCapacity = 0;
-  contentVolume = 0;
-  std::list<Drone> drones;
-  droneCapacity = 100;
+	contentVolumeCapacity = 500000;
+	droneCapacity = 100;
 }
 
 CargoDrone FulfillmentCenter::createResourceDrone()
 {
-
- return new CargoDrone(xPos,yPos);
-
+	//return new CargoDrone(xPos, yPos, 0);
 }
 
 PassengerDrone FulfillmentCenter::createPassengerDrone()
 {
-
-  return new PassengerDrone(xPos,yPos);
-
+	//return new PassengerDrone(xPos, yPos);
 }
 
 Resource FulfillmentCenter::createResource(Resource & resource)
 {
-
-  return resource;
-
+	return resource;
 }

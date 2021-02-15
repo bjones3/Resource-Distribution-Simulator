@@ -28,7 +28,7 @@ void CargoDrone::loadCargo(Resource & resource)
 }
 
 //NEEDS WORK
-Resource CargoDrone::unloadCargo(Resources & resource)
+Resource CargoDrone::unloadCargo(Resource & resource)
 {
 	/*std::list<Resource>::iterator temp = payload.begin();
 	for (temp; temp != payload.end(); temp++)
