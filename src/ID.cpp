@@ -1,10 +1,16 @@
-#include "ID.hpp"
+//#include "../inc/ID.hpp"
+#include "../inc/rds.hpp"
 
-ID::ID(){
-    id = 0;
+//#include <iostream>
+
+ID::ID()
+{
+    id = -1;
 }
 
-long long int ID::generateID(){
-    id++;
-    return id;
+long long int ID::generateID()
+{
+	id++;
+	//std::cout << id << std::endl;
+	return id;
 }

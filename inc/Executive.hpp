@@ -1,17 +1,10 @@
-
 #ifndef EXECUTIVE_HPP
-#define EXECUTIVE_HPP
-
-#include "MainAI.hpp"
-#include "Map/Map.hpp"
+# define EXECUTIVE_HPP
 
 class Executive
 {
 	public:
-		void run()
-		{
-			ID id;
-		}
+		void run();
 };
 
 #endif
