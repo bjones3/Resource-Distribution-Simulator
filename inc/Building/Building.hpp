@@ -1,4 +1,3 @@
-
 #ifndef BUILDING_HPP
 #define BUILDING_HPP
 
@@ -22,142 +21,34 @@ protected:
   double contentVolume;
 
 public:
-  Building(int x, int y)
-  {
+  Building(int x, int y);
 
-    xPos = x;
-    yPos = y;
-    contentVolume = 0;
-    id = ID::generateID();
+  int getOccupantAmount();
 
-  }
-
-  int getOccupantAmount()
-  {
-
-    return occupants.size();
-
-  }
-
-
-
-  int getOccupantCapacity()
-  {
-
-    return occupantCapacity;
-
-  }
+  int getOccupantCapacity();
   
-  bool canAddOccupant(Individual & occupant)
-	{
-	  if(occupants.size() == occupantCapacity)
-	  {
-		return false;
-	  }
-	  if(occupant.getPossessionVolume() + contentVolume > contentVolumeCapacity)
-	  {
-		return false;
-	  }
-	  return true;
-	}
+  bool canAddOccupant(Individual & occupant);
 
-  void addOccupant(Individual & occupant)
-  {
-	if(canAddOccupant(occupant))
-   	 occupants.push_front(occupant);
-  }
+  void addOccupant(Individual & occupant);
 
 	//TODO: Change occupants list to a hash
-  Individual removeOccupant(Individual & occupant)
-  {
-    std::list<Individual>::iterator temp = std::find(occupants.begin(),occupants.end(),occupant);
-    Individual removedOccupant = *temp;
-    for()
-    	if(*temp.getID() == occupant.getID())
-    		occupants.remove(*temp);
+  Individual removeOccupant(Individual & occupant);
 
-    return removedOccupant;
+  bool canAddResource(Resource & resource);
 
-  }
+  void addResource(Resource & resource);
 
-	bool canAddResource(Resource & resource)
-	{
-		if(resource.getVolume() + contentVolume > contentVolumeCapacity)
-	  {
-		return false;
-	  }
-	
-		return true;
-	}
+  Resource removeResource(Resource & resource);
 
-  void addResource(Resource & resource)
-  {
-	if(canAddResource(resource))
-	{
-		contentVolume += resource.getVolume();
-		contents.push_front(resource);
-    }
-  }
+  bool canBringOccupant(Individual & occupant);
 
-  Resource removeResource(Resource & resource)
-  {
+  bool canBringContents(Resource & resource);
+  
+  int getXPos();
 
-    std::list<Resource>::iterator temp = std::find(contents.begin(),contents.end(),resource);
-    Resource removedResource = *temp;
-    contents.remove(*temp);
-    contentVolume -= resource.getVolume();
-    return removedResource;
+  int getYPos();
 
-  }
-
-  bool canBringOccupant(Individual & occupant)
-  {
-
-    if(occupants.size() == occupantCapacity)
-    {
-      return false;
-    }
-
-    if(occupant.getPossessionVolume() + contentVolume > contentVolumeCapacity)
-    {
-      return false;
-    }
-
-    return true;
-
-  }
-
-  bool canBringContents(Resource & resource)
-  {
-
-    if(resource.getVolume() + contentVolume > contentVolumeCapacity)
-    {
-
-      return false;
-
-    }
-
-  }
-  int getXPos()
-  {
-
-    return xPos;
-
-  }
-
-  int getYPos()
-  {
-
-    return yPos;
-
-  }
-
-  long long int getID()
-  {
-
-    return id;
-
-  }
+  long long int getID();
 };
 
 #endif
