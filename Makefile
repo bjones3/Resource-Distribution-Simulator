@@ -7,6 +7,7 @@ OBJS = objs/Building/Building.o objs/Building/FulfillmentCenter.o objs/Building/
 HEADERS = inc/rds.hpp
 CFLAGS = -Wall -Wextra #-Werror
 STD = -std=c++11
+DIRECTORIES = objs objs/Building objs/Drone objs/Individual objs/Resource
 
 all: $(NAME)
 
@@ -17,12 +18,10 @@ $(OBJS): objs/%.o: src/%.cpp $(HEADERS)
 	g++ $(CFLAGS) $(STD) -c $< -o $@
 
 clean:
-	rm -f objs/*.o
-	make clean -C RDS
+	rm -f objs/*.o objs/Building/*.o objs/Drone/*.o objs/Individual/*.o objs/Resource/*.o
 
 fclean: clean
 	rm -f $(NAME)
-	make fclean -C RDS
 
 re: fclean all
 
