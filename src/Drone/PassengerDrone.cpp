@@ -1,7 +1,7 @@
 //# include "../../inc/Drone/Drone.hpp"
 #include "../../inc/rds.hpp"
 
-PassengerDrone::PassengerDrone(int x, int y)
+PassengerDrone::PassengerDrone(int x, int y) : Drone::Drone(x, y)
 {
 	xPos = x;
 	yPos = y;
@@ -27,10 +27,10 @@ void PassengerDrone::loadPassenger(Individual & passenger)
 	passengers.push_back(passenger);
 	std::list<Resource> temp = passenger.getIndividualPossessions();
 	std::list<Resource>::iterator iter = temp.begin();
-	for (iter; iter!= temp.end(); iter++)
+	/*for (iter; iter!= temp.end(); iter++)
 	{
 		payload.push_back(iter*);
-	}
+	}*/
 }
 
 //NEEDS WORK

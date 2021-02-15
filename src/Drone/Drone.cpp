@@ -13,7 +13,12 @@ Drone::Drone(int x, int y)
 	yPos = y;
 	xDest = x;
 	yDest = y;
-	//id = ID::generateID();
+	id = -1; //id = ID::generateID();
+	contentVolume = 0;
+	contentWeight = 0;
+	maxVolume = 0;
+	maxWeight = 0;
+	
 }
 
 void Drone::setDest(int xpos, int ypos)

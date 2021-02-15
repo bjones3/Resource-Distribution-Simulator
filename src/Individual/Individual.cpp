@@ -11,8 +11,8 @@ Individual::Individual(House house)
 	totalPossessionWeight = 0;
 	totalPossessionVolume = 0;
 
-	xPosition = house.getXPosition();
-	yPosition = house.getYPosition();
+	xPosition = house.getXPos();
+	yPosition = house.getYPos();
 
 	name = generateName();
 	//id = ID::generateID();

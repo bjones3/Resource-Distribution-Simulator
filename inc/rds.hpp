@@ -5,6 +5,13 @@
 # include <string>
 # include <algorithm>
 
+class Individual;
+class Resource;
+class Drone;
+class CargoDrone;
+class PassengerDrone;
+
+
 class Executive
 {
 	public:

@@ -1,15 +1,13 @@
 //# include "../../inc/Drone/Drone.hpp"
 #include "../../inc/rds.hpp"
 
-CargoDrone::CargoDrone(int x, int y, long long int newId)
+CargoDrone::CargoDrone(int x, int y, long long int newId) : Drone::Drone(x, y)
 {
 	xPos = x;
 	yPos = y;
 	id = newId;//ID::generateID();
 	maxVolume = 1000;
 	maxWeight = 6000;
-	contentVolume = 0;
-	contentWeight = 0;
 }
 
 bool CargoDrone::canLoadCargo(Resource & resource)

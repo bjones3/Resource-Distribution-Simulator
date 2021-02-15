@@ -87,11 +87,11 @@ void Building::addResource(Resource & resource)
 
 Resource Building::removeResource(Resource & resource)
 {
-	std::list<Resource>::iterator temp = std::find(contents.begin(),contents.end(),resource);
+	/*std::list<Resource>::iterator temp = std::find(contents.begin(),contents.end(),resource);
 	Resource removedResource = *temp;
 	contents.remove(*temp);
 	contentVolume -= resource.getVolume();
-	return removedResource;
+	return removedResource;*/
 }
 
 bool Building::canBringOccupant(Individual & occupant)
