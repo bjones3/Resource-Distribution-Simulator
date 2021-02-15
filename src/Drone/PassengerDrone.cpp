@@ -1,4 +1,3 @@
-//# include "../../inc/Drone/Drone.hpp"
 #include "../../inc/rds.hpp"
 
 PassengerDrone::PassengerDrone(int x, int y) : Drone::Drone(x, y)

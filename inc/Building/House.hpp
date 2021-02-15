@@ -1,7 +1,7 @@
 #ifndef HOUSE_HPP
 # define HOUSE_HPP
 
-# include "Building.hpp"
+# include "../rds.hpp"
 
 class House : public Building
 {

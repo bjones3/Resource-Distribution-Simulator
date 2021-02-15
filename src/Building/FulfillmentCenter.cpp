@@ -1,4 +1,3 @@
-//#include "../../inc/Building/FulfillmentCenter.hpp"
 #include "../../inc/rds.hpp"
 
 FulfillmentCenter::FulfillmentCenter(int x, int y) : Building::Building(x, y)

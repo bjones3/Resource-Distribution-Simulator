@@ -1,4 +1,3 @@
-//# include "../../inc/Individual/Individual.hpp"
 #include "../../inc/rds.hpp"
 
 std::string Individual::generateName()

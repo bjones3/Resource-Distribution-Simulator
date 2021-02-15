@@ -1,4 +1,3 @@
-//#include "../../inc/Building/Building.hpp"
 #include "../../inc/rds.hpp"
 
 /*

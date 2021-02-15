@@ -1,10 +1,7 @@
 #ifndef RESOURCE_HPP
 # define RESOURCE_HPP
 
-//# include "../ID.hpp"
-//# include "../Building/Building.hpp"
-//# include "../Individual/Individual.hpp"
-//# include <stdlib.h>
+# include "../rds.hpp"
 
 struct range
 {

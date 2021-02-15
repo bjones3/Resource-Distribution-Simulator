@@ -1,8 +1,7 @@
 #ifndef PASSENGERDRONE_HPP
 # define PASSENGERDRONE_HPP
 
-# include "Drone.hpp"
-# include "../Individual/Individual.hpp"
+# include "../rds.hpp"
 
 class PassengerDrone : public Drone
 {

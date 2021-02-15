@@ -1,14 +1,13 @@
 #ifndef DRONE_HPP
 # define DRONE_HPP
 
-# include <list>
-# include "../Resource/Resource.hpp"
+# include "../rds.hpp"
 
 class Drone
 {
-	private:
+	protected:
 		long long int		id;
-		int					xPos, xPos;
+		int					xPos, yPos;
 		int					xDest, yDest;
 		double				contentVolume;
 		double				contentWeight;

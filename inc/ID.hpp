@@ -1,6 +1,8 @@
 #ifndef ID_HPP
 # define ID_HPP
 
+# include "rds.hpp"
+
 class ID
 {
 	private:

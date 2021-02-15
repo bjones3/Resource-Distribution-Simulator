@@ -7,10 +7,7 @@
 #include <fstream>
 #include <time.h>
 #include <vector>
-#include "../Building/Building.hpp"
-#include "../Building/FulfillmentCenter.hpp"
-#include "../Building/House.hpp"
-#include "../Building/Office.hpp"
+#include "../rds.hpp"
 
 #define FACT_SIZE 	4
 #define WORK_SIZE 	3

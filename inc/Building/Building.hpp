@@ -1,11 +1,7 @@
 #ifndef BUILDING_HPP
 # define BUILDING_HPP
 
-# include <list>
-# include "../Individual/Individual.hpp"
-# include "../Resource/Resource.hpp"
-//# include <algorithm>
-//# include "../Drone/Drone.hpp"
+# include "../rds.hpp"
 
 class Building
 {
@@ -20,6 +16,7 @@ class Building
 		double					contentVolume;
 
 	public:
+		Building();
 		Building(int x, int y);
 		int				getOccupantAmount();
 		int				getOccupantCapacity();

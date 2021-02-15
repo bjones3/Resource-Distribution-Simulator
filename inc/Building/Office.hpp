@@ -1,7 +1,7 @@
 #ifndef OFFICE_HPP
 # define OFFICE_HPP
 
-# include "Building.hpp"
+# include "../rds.hpp"
 
 class Office : public Building
 {

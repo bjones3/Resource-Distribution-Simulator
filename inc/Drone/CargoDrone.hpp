@@ -1,8 +1,7 @@
 #ifndef CARGODRONE_HPP
 # define CARGODRONE_HPP
 
-# include "Drone.hpp"
-# include "../Resource/Resource.hpp"
+# include "../rds.hpp"
 
 class CargoDrone : public Drone
 {

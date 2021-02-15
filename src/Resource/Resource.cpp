@@ -1,8 +1,3 @@
-//# include <stdlib.h>
-//# include "../ID.hpp"
-//# include "../Building/Building.hpp"
-//# include "../Individual/Individual.hpp"
-//# include "../../inc/Resource/Resource.hpp"
 #include "../../inc/rds.hpp"
 
 Resource::Resource()
