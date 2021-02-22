@@ -79,7 +79,7 @@ bool Resource::use()
 
 Building Resource::getBuilding()
 {
-	return building;
+	return *building;
 }
 
 long long int Resource::getID()

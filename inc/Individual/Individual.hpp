@@ -3,7 +3,9 @@
 
 # include "../rds.hpp"
 #include "../Resource/Resource.hpp"
-#include "../Building/House.hpp"
+//#include "../Building/House.hpp"
+
+class House;
 
 class Individual
 {
