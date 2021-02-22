@@ -15,34 +15,35 @@
 
 
 
+
 Building::Building()
 {
-    xPos = -1;
-    yPos = -1;
-    id = -1;
-    occupantCapacity = 0;
-    contentVolumeCapacity = 0;
-    contentVolume = 0;
+	xPos = -1;
+	yPos = -1;
+	id = -1;
+	occupantCapacity = 0;
+	contentVolumeCapacity = 0;
+	contentVolume = 0;
 }
 
 Building::Building(int x, int y)
 {
-    xPos = x;
-    yPos = y;
-    id = -1;//id = ID::generateID();
-    occupantCapacity = 0;
-    contentVolumeCapacity = 0;
-    contentVolume = 0;
+	xPos = x;
+	yPos = y;
+	id = -1;//id = ID::generateID();
+	occupantCapacity = 0;
+	contentVolumeCapacity = 0;
+	contentVolume = 0;
 }
 
 int Building::getOccupantAmount()
 {
-    return occupants.size();
+	return occupants.size();
 }
 
 int Building::getOccupantCapacity()
 {
-    return occupantCapacity;
+	return occupantCapacity;
 }
 
 bool Building::canAddOccupant(Individual & occupant)
@@ -55,12 +56,14 @@ bool Building::canAddOccupant(Individual & occupant)
     if(occupant.getPossessionVolume() + contentVolume > contentVolumeCapacity)
         return false;
     return true;
+
 }
 
 void Building::addOccupant(Individual & occupant)
 {
     if(canAddOccupant(occupant))
         occupants.insert({occupant.getID(), occupant});
+
 }
 
 Individual Building::removeOccupant(Individual & occupant)
@@ -69,22 +72,22 @@ Individual Building::removeOccupant(Individual & occupant)
         occupants.erase(occupant.getID());
 
     return occupant;
+
 }
 
 bool Building::canAddResource(Resource & resource)
 {
-
     if(contents.find(resource.getID()) != contents.end())
         return false;
     if (resource.getVolume() + contentVolume > contentVolumeCapacity)
         return false;
     return true;
+
 }
 
 void Building::addResource(Resource & resource)
 {
-    if (canAddResource(resource))
-    {
+    if (canAddResource(resource)){
         contentVolume += resource.getVolume();
         contents.insert({resource.getID(), resource});
     }
@@ -92,8 +95,7 @@ void Building::addResource(Resource & resource)
 
 Resource Building::removeResource(Resource & resource)
 {
-    if(contents.find(resource.getID()) != contents.end())
-    {
+    if(contents.find(resource.getID()) != contents.end()){
         contents.erase(resource.getID());
     }
 
@@ -103,11 +105,11 @@ Resource Building::removeResource(Resource & resource)
 
 bool Building::canBringOccupant(Individual & occupant)
 {
-    if(occupants.size() == occupantCapacity)
-        return false;
-    if(occupant.getPossessionVolume() + contentVolume > contentVolumeCapacity)
-        return false;
-    return true;
+	if(occupants.size() == occupantCapacity)
+		return false;
+	if(occupant.getPossessionVolume() + contentVolume > contentVolumeCapacity)
+		return false;
+	return true;
 }
 
 bool Building::canBringContents(Resource & resource)
@@ -117,15 +119,15 @@ bool Building::canBringContents(Resource & resource)
 
 int Building::getXPos()
 {
-    return xPos;
+	return xPos;
 }
 
 int Building::getYPos()
 {
-    return yPos;
+	return yPos;
 }
 
 long long int Building::getID()
 {
-    return id;
+	return id;
 }

@@ -6,17 +6,18 @@
 #include "../Individual/Individual.hpp"
 #include "../Resource/Resource.hpp"
 
+
 class Building
 {
-    protected:
-        int						xPos;
-        int						yPos;
-        long long int			id;
-        std::unordered_map<long long int, Individual> occupants;
-        std::unordered_map<long long int, Resource> contents;
-        int						occupantCapacity;
-        double					contentVolumeCapacity;
-        double					contentVolume;
+	protected:
+		int						xPos;
+		int						yPos;
+		long long int			id;
+		std::list<Individual>	occupants;
+		std::list<Resource>		contents;
+		int						occupantCapacity;
+		double					contentVolumeCapacity;
+		double					contentVolume;
 
     public:
         Building();
@@ -34,6 +35,7 @@ class Building
         int				getXPos();
         int				getYPos();
         long long int	getID();
+
 };
 
 #endif
