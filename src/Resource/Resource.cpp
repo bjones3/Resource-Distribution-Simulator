@@ -1,4 +1,5 @@
 #include "../../inc/rds.hpp"
+#include "../../inc/Resource/Resource.hpp"
 
 Resource::Resource()
 {

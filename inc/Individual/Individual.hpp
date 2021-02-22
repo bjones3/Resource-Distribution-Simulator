@@ -2,6 +2,7 @@
 # define INDIVIDUAL_HPP
 
 # include "../rds.hpp"
+#include "../Resource/Resource.hpp"
 
 class Individual
 {

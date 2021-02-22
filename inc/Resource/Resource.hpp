@@ -1,7 +1,7 @@
 #ifndef RESOURCE_HPP
 # define RESOURCE_HPP
 
-# include "../rds.hpp"
+#include "../rds.hpp"
 
 struct range
 {
@@ -9,11 +9,13 @@ struct range
 	double max;
 };
 
+class Building;
+
 class Resource
 {
 	private:
-		Building		building;
-		Building		newBuilding;
+		Building		*building;
+		Building		*newBuilding;
 		double			weight; //pounds
 		double			volume; //cubic feet
 		double			wearFactor; //between 0 and 1

@@ -21,5 +21,6 @@ BathroomItem{
   volume  = genVolume(volumeRange);
   wearFactor  = genWearFactor(wearFactorRange);
 }
+
 };
 #endif
