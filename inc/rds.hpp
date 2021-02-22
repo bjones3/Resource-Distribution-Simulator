@@ -5,6 +5,24 @@
 # include <string>
 # include <algorithm>
 
+class Executive;
+class ID;
+class Location;
+class MainAI;
+
+class Building;
+class FulfillmentCenter;
+class House;
+class Office;
+
+class Resource;
+
+class Drone;
+class CargoDrone;
+class PassengerDrone;
+
+class Individual;
+
 
 # include "Building/Building.hpp"
 # include "Building/FulfillmentCenter.hpp"
@@ -25,23 +43,5 @@
 # include "ID.hpp"
 # include "Location.hpp"
 # include "MainAI.hpp"
-
-class Executive;
-class ID;
-class Location;
-class MainAI;
-
-class Building;
-class FulfillmentCenter;
-class House;
-class Office;
-
-class Resource;
-
-class Drone;
-class CargoDrone;
-class PassengerDrone;
-
-class Individual;
 
 #endif
