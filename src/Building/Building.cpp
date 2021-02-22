@@ -6,12 +6,14 @@
    int xPos;
    int yPos;
    long long int id;
-   std::list<Individual> occupants;
-   std::list<Resource> contents;
+   std::unordered_map<long long int, Individual> occupants;
+   std::unordered_map<long long int, Resource> contents;
    int occupantCapacity;
    double contentVolumeCapacity;
    double contentVolume;
  */
+
+
 
 Building::Building()
 {
@@ -45,6 +47,7 @@ int Building::getOccupantCapacity()
 
 bool Building::canAddOccupant(Individual & occupant)
 {
+
     if(occupants.find(occupant.getID()) != occupants.end()) 
         return false;
     if(occupants.size() == occupantCapacity)
@@ -60,15 +63,8 @@ void Building::addOccupant(Individual & occupant)
         occupants.insert({occupant.getID(), occupant});
 }
 
-//TODO: Change occupants list to a hash
 Individual Building::removeOccupant(Individual & occupant)
 {
-    /*std::list<Individual>::iterator temp = std::find(occupants.begin(),occupants.end(),occupant);
-      Individual removedOccupant = *temp;
-      for()
-      if(*temp.getID() == occupant.getID())
-      occupants.remove(*temp);
-      return removedOccupant;*/
     if(occupants.find(occupant.getID()) != occupants.end())
         occupants.erase(occupant.getID());
 
@@ -96,11 +92,6 @@ void Building::addResource(Resource & resource)
 
 Resource Building::removeResource(Resource & resource)
 {
-    /*std::list<Resource>::iterator temp = std::find(contents.begin(),contents.end(),resource);
-      Resource removedResource = *temp;
-      contents.remove(*temp);
-      contentVolume -= resource.getVolume();
-      return removedResource;*/
     if(contents.find(resource.getID()) != contents.end())
     {
         contents.erase(resource.getID());
