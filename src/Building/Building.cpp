@@ -45,7 +45,7 @@ int Building::getOccupantCapacity()
 
 bool Building::canAddOccupant(Individual & occupant)
 {
-    if(occupants.contains(occupant.getID())) //requires c++20
+    if(occupants.find(occupant.getID()) != occupants.end()) 
         return false;
     if(occupants.size() == occupantCapacity)
         return false;
@@ -57,7 +57,7 @@ bool Building::canAddOccupant(Individual & occupant)
 void Building::addOccupant(Individual & occupant)
 {
     if(canAddOccupant(occupant))
-        occupants.add(occupant.getID(), occupant);
+        occupants.insert({occupant.getID(), occupant});
 }
 
 //TODO: Change occupants list to a hash
@@ -69,16 +69,16 @@ Individual Building::removeOccupant(Individual & occupant)
       if(*temp.getID() == occupant.getID())
       occupants.remove(*temp);
       return removedOccupant;*/
-    if(occupants.contains(occupant.getID())) //requires c++20
-    {
+    if(occupants.find(occupant.getID()) != occupants.end())
         occupants.erase(occupant.getID());
-    }
-        return occupant;
+
+    return occupant;
 }
 
 bool Building::canAddResource(Resource & resource)
 {
-    if(contents.contains(resource.getID()))
+
+    if(contents.find(resource.getID()) != contents.end())
         return false;
     if (resource.getVolume() + contentVolume > contentVolumeCapacity)
         return false;
@@ -90,7 +90,7 @@ void Building::addResource(Resource & resource)
     if (canAddResource(resource))
     {
         contentVolume += resource.getVolume();
-        contents.add(resource.getID(), resource);
+        contents.insert({resource.getID(), resource});
     }
 }
 
@@ -101,12 +101,12 @@ Resource Building::removeResource(Resource & resource)
       contents.remove(*temp);
       contentVolume -= resource.getVolume();
       return removedResource;*/
-      if(contents.contains(resource.getID())) //requires c++20
-	  {
+    if(contents.find(resource.getID()) != contents.end())
+    {
         contents.erase(resource.getID());
-	  }
+    }
 
-		return resource;
+    return resource;
 
 }
 
@@ -121,9 +121,7 @@ bool Building::canBringOccupant(Individual & occupant)
 
 bool Building::canBringContents(Resource & resource)
 {
-    if(resource.getVolume() + contentVolume > contentVolumeCapacity)
-        return false;
-    else return true;
+    return (resource.getVolume() + contentVolume > contentVolumeCapacity);
 }
 
 int Building::getXPos()
