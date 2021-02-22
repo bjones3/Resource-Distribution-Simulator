@@ -2,7 +2,9 @@
 # define BUILDING_HPP
 
 #include <unordered_map>
-# include "../rds.hpp"
+#include "../Individual/Individual.hpp"
+# include "../Resource/Resource.hpp"
+#include "../rds.hpp"
 
 class Building
 {
