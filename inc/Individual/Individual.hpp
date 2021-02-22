@@ -3,6 +3,7 @@
 
 # include "../rds.hpp"
 #include "../Resource/Resource.hpp"
+#include "../Building/House.hpp"
 
 class Individual
 {
@@ -19,7 +20,7 @@ class Individual
 		std::string generateName();
 
 	public:
-		Individual(House house);
+		Individual (House house);
 		void				doTask(std::list<Resource> & resources);
 		void				addPossession(Resource & possession);
 		double				getPossessionVolume();

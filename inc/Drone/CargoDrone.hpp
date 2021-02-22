@@ -2,6 +2,7 @@
 # define CARGODRONE_HPP
 
 # include "../rds.hpp"
+#include "Drone.hpp"
 
 class CargoDrone : public Drone
 {
