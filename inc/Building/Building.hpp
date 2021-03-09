@@ -1,11 +1,7 @@
 #ifndef BUILDING_HPP
 # define BUILDING_HPP
 
-#include <unordered_map>
-#include "../rds.hpp"
-#include "../Individual/Individual.hpp"
-#include "../Resource/Resource.hpp"
-
+# include "../rds.hpp"
 
 class Building
 {
@@ -19,7 +15,6 @@ class Building
 		double					contentVolumeCapacity;
 		double					contentVolume;
 
-
 	public:
 		Building();
 		Building(int x, int y);
@@ -27,6 +22,7 @@ class Building
 		int				getOccupantCapacity();
 		bool			canAddOccupant(Individual & occupant);
 		void			addOccupant(Individual & occupant);
+		//TODO: Change occupants list to a hash
 		Individual		removeOccupant(Individual & occupant);
 		bool			canAddResource(Resource & resource);
 		void			addResource(Resource & resource);

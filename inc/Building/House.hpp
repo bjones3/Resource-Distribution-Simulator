@@ -2,8 +2,6 @@
 # define HOUSE_HPP
 
 # include "../rds.hpp"
-#include "Building.hpp"
-
 
 class House : public Building
 {
