@@ -1,49 +1,42 @@
 #include "../../inc/rds.hpp"
-#include "../../inc/Resource/Resource.hpp"
 
-Resource::Resource()
+Resource::Resource( int theType, ResourceTable & table )
 {
-	weightRange.min = 0.01;
-	weightRange.max = 6000; //max load of a 20ft Uhaul
-	volumeRange.min = 0.01;
-	volumeRange.max = 1000; //max volume of second largest UHaul
-	wearFactorRange.min = 0;
-	wearFactorRange.max = 1;
-	wear = 1;
-	minWear = 0.001;
-
-	weight = genWeight(weightRange);
-	volume  = genVolume(volumeRange);
-	wearFactor  = genWearFactor(wearFactorRange);
-
-	//id = ID::generateID();
+	type = theType;
+	name = table.getName( theType );
+	
+	wearFactorRange.min = table.getValue(theType,WEAR_FACTOR_MIN);
+	wearFactorRange.max = table.getValue(theType,WEAR_FACTOR_MAX);
+	weightRange.min = table.getValue(theType,WEIGHT_MIN);
+	weightRange.max = table.getValue(theType,WEIGHT_MAX);
+	volumeRange.min = table.getValue(theType,VOLUME_MIN);
+	volumeRange.max = table.getValue(theType,VOLUME_MAX);
+	wear = table.getValue(theType,WEAR);
+	minWear = table.getValue(theType,WEAR_MIN);
+	
+  	weight = genWeight(weightRange);
+  	volume  = genVolume(volumeRange);
+  	wearFactor  = genWearFactor(wearFactorRange);
+  	
+  	//id = ID::generateID();
 }
-/*
-Resource::Resource(const Resource & resource)
-{
-	weight = resource.weight;
-	volume = resource.volume;
-	wearFactor = resource.wearFactor;
-	wear = resource.wear;
-}
-*/
 
 double Resource::genWeight(struct range inWeight)
 {
-	double f = (double)rand() / RAND_MAX;
-	return (f * (inWeight.max - inWeight.min) + inWeight.min);
+    double f = (double) rand()/ RAND_MAX;
+    return (f*(inWeight.max - inWeight.min) + inWeight.min);
 }
 
 double Resource::genVolume(struct range inVolume)
 {
-	double f = (double)rand() / RAND_MAX;
-	return (f * (inVolume.max - inVolume.min) + inVolume.min);
+    double f = (double) rand()/ RAND_MAX;
+    return (f*(inVolume.max - inVolume.min) + inVolume.min);        
 }
 
 double Resource::genWearFactor(struct range inWearFactor)
 {
-	double f = (double)rand() / RAND_MAX;
-	return (f * (inWearFactor.max - inWearFactor.min) + inWearFactor.min);
+    double f = (double) rand()/ RAND_MAX;
+    return (f*(inWearFactor.max - inWearFactor.min) + inWearFactor.min);
 }
 
 double Resource::getWeight()
@@ -66,23 +59,29 @@ double Resource::getWear()
 	return wear;
 }
 
+int Resource::getType()
+{
+	return type;
+}
+	
+std::string Resource::getName()
+{
+	return name;
+}
+
 bool Resource::use()
 {
 	wear = wear*wearFactor;
-	return (wear>=minWear);
+    return (wear>=minWear);
 }
-
-/*Building Resource::getNextBuilding()
-{
+/*
+Building Resource::getNextBuilding()
 	return nextBuilding;
-}*/
 
 Building Resource::getBuilding()
-{
-	return *building;
-}
+	return building;
 
 long long int Resource::getID()
-{
 	return id;
-}
+*/	
+

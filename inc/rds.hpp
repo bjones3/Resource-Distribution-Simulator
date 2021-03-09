@@ -2,6 +2,7 @@
 # define RDS_HPP
 
 # include <list>
+# include <queue>
 # include <string>
 # include <algorithm>
 

@@ -19,23 +19,24 @@ class Building
 		double					contentVolumeCapacity;
 		double					contentVolume;
 
-    public:
-        Building();
-        Building(int x, int y);
-        int				getOccupantAmount();
-        int				getOccupantCapacity();
-        bool			canAddOccupant(Individual & occupant);
-        void			addOccupant(Individual & occupant);
-        Individual		removeOccupant(Individual & occupant);
-        bool			canAddResource(Resource & resource);
-        void			addResource(Resource & resource);
-        Resource		removeResource(Resource & resource);
-        bool			canBringOccupant(Individual & occupant);
-        bool			canBringContents(Resource & resource);
-        int				getXPos();
-        int				getYPos();
-        long long int	getID();
 
+	public:
+		Building();
+		Building(int x, int y);
+		int				getOccupantAmount();
+		int				getOccupantCapacity();
+		bool			canAddOccupant(Individual & occupant);
+		void			addOccupant(Individual & occupant);
+		Individual		removeOccupant(Individual & occupant);
+		bool			canAddResource(Resource & resource);
+		void			addResource(Resource & resource);
+		Resource		removeResource(Resource & resource);
+		bool			canBringOccupant(Individual & occupant);
+		bool			canBringContents(Resource & resource);
+		std::list<Resource> getContents();
+		int				getXPos();
+		int				getYPos();
+		long long int	getID();
 };
 
 #endif
