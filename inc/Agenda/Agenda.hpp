@@ -1,7 +1,7 @@
-#include <list>
-
 #ifndef AGENDA_HPP
 #define AGENDA_HPP
+
+# include "../rds.hpp"
 
 class Agenda
 {

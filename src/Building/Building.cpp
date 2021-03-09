@@ -108,6 +108,16 @@ bool Building::canBringContents(Resource & resource)
 		return false;
 }
 
+std::list<Resource> Building::getContents()
+{
+	return contents;
+}
+
+std::list<Individual> Building::getOccupants()
+{
+	return occupants;
+}
+
 int Building::getXPos()
 {
 	return xPos;

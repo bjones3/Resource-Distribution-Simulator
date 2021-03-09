@@ -18,6 +18,7 @@ class Individual
 		std::string generateName();
 
 	public:
+		Individual();
 		Individual(House house);
 		void				doTask(std::list<Resource> & resources);
 		void				addPossession(Resource & possession);

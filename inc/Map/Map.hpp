@@ -270,13 +270,13 @@ class cityMap
 								{
 									Office* o = new Office(buildingX,buildingY);
 									buildings.push_back(o);
-									offices.pushback(o);
+									offices.push_back(o);
 								}
 								else if(type == HOME)
 								{
 									House* h = new House(buildingX,buildingY);
 									buildings.push_back(h);
-									houses.pushback(o);
+									houses.push_back(h);
 								}
 							}
 							i += width-1;

@@ -18,39 +18,36 @@ void Executive::run()
 	cityMap theMap( mapWidth, mapHeight );
 
 	//AI creation
-	std::list<FulfillmentCenter*> mapFFC = theMap.getFFC();
 	std::list<Drone*> droneList;
-	std::unordered_map populace;
+	//std::unordered_map<long long int,Individual*> populace;
 	std::list<Agenda*> agendas;
 
+	//Store into lists the building pointers created by the map
+	std::list<FulfillmentCenter*> mapFFC = theMap.getFFC();
 	std::list<Office*> offices = theMap.getOffices();
 	std::list<House*> houses = theMap.getHouses();
-	std::list<Building*> officesAndHouses = theMap.getOffices();
+	
+	//Store the buildings that can be used for events
+	std::vector<Building*> eventBuildings;
+	
+	for(std::list<Office*>::iterator iter = offices.begin(); iter != offices.end(); iter++)
+		eventBuildings.push_back(*iter);
 
-	std::list<House*>::iterator houseIter0 = houses.begin();
+	for(std::list<House*>::iterator iter = houses.begin(); iter != houses.end(); iter++)
+		eventBuildings.push_back(*iter);
 
-	for(houseIter0; houseIter0 != houses.end(); houseIter0++)
-	{
-		officesAndHouses.push_back(houseIter0*);
-	}
-
-	std::list<House*>::iterator houseIter1 = houses.begin();
-
-	for(houseIter1; houseIter1 != houses.end(); houseIter1++)
+	//Spawn individuals in the houses
+	for(std::list<House*>::iterator houseIter = houses.begin(); houseIter != houses.end(); houseIter++)
 	{
 		for(int i = 0; i < 4; i++)
 		{
-			Individual * janeDoe = new Individual(houseIter**);
-			houseIter.addOccupant(janeDoe);
-			Agenda * agenda = new Agenda(janeDoe);
-			for(int j = 0; j < 6 * 30 * months; j++)
+			Individual * janeDoe = new Individual(*(*houseIter));
+			(*houseIter)->addOccupant(*janeDoe);
+			Agenda * agenda = new Agenda(*janeDoe);
+			for(int j = 0; j < months; j++)//6 * 30 * months; j++)
 			{
-				int buildingNumber = rand()%officesAndHouses.size();
-				std::list<Building*>::iterator eventIter = officesAndHouses.begin();
-				for(int k = 0; k < buildingNumber; k++)
-				{
-					eventIter++;
-				}
+				int buildingNumber = rand() % eventBuildings.size();
+				Building* building = eventBuildings[buildingNumber]; 
 
 				int resourceAmount = rand() % 6 + 1;
 				std::list<int> resourceTypes;
@@ -58,10 +55,9 @@ void Executive::run()
 				{
 					int resourceType = rand() % TOTAL_RESOURCE_TYPES;
 					resourceTypes.push_back(resourceType);
-
 				}
-				Event* event = new Event(eventIter*,janeDoe,resourceTypes);
-				agenda.addEvent(event);
+				Event* event = new Event(*building,*janeDoe,resourceTypes);
+				agenda->addEvent(*event);
 			}
 
 			agendas.push_back(agenda);

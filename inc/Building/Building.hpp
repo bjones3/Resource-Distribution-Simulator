@@ -30,6 +30,7 @@ class Building
 		bool			canBringOccupant(Individual & occupant);
 		bool			canBringContents(Resource & resource);
 		std::list<Resource> getContents();
+		std::list<Individual> getOccupants();
 		int				getXPos();
 		int				getYPos();
 		long long int	getID();
