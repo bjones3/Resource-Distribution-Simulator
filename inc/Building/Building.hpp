@@ -2,6 +2,9 @@
 # define BUILDING_HPP
 
 # include "../rds.hpp"
+#include <unordered_map>
+#include "../Individual/Individual.hpp"
+#include "../Resource/Resource.hpp"
 
 class Building
 {
@@ -9,8 +12,8 @@ class Building
 		int						xPos;
 		int						yPos;
 		long long int			id;
-		std::list<Individual>	occupants;
-		std::list<Resource>		contents;
+        std::unordered_map<long long int, Individual> occupants;
+        std::unordered_map<long long int, Resource> contents;
 		int						occupantCapacity;
 		double					contentVolumeCapacity;
 		double					contentVolume;
@@ -29,7 +32,7 @@ class Building
 		Resource		removeResource(Resource & resource);
 		bool			canBringOccupant(Individual & occupant);
 		bool			canBringContents(Resource & resource);
-		std::list<Resource> getContents();
+		std::unordered_map<Resource> getContents();
 		int				getXPos();
 		int				getYPos();
 		long long int	getID();
