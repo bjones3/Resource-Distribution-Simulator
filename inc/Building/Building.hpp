@@ -3,8 +3,6 @@
 
 # include "../rds.hpp"
 #include <unordered_map>
-#include "../Individual/Individual.hpp"
-#include "../Resource/Resource.hpp"
 
 class Building
 {

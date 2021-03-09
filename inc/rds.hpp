@@ -13,21 +13,19 @@ class ID;
 class Location;
 class MainAI;
 
-class Resource;
-class Individual;
 class Building;
 class FulfillmentCenter;
 class House;
 class Office;
 
+class Resource;
 
 class Drone;
 class CargoDrone;
 class PassengerDrone;
 
+class Individual;
 
-# include "Resource/Resource.hpp"
-# include "Individual/Individual.hpp"
 # include "Building/Building.hpp"
 # include "Building/FulfillmentCenter.hpp"
 # include "Building/House.hpp"
@@ -37,9 +35,11 @@ class PassengerDrone;
 # include "Drone/CargoDrone.hpp"
 # include "Drone/PassengerDrone.hpp"
 
+# include "Individual/Individual.hpp"
 
 # include "Map/Map.hpp"
 
+# include "Resource/Resource.hpp"
 
 # include "Executive.hpp"
 # include "ID.hpp"

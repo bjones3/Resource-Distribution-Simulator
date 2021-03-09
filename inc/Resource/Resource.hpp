@@ -1,5 +1,6 @@
 #ifndef RESOURCE_HPP
-#define RESOURCE_HPP
+# define RESOURCE_HPP
+
 # include "../rds.hpp"
 
 struct range
