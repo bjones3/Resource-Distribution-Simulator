@@ -1,4 +1,3 @@
-#include <stdlib.h>
 #ifndef RESOURCE_HPP
 #define RESOURCE_HPP
 # include "../rds.hpp"

@@ -25,7 +25,6 @@ class Individual
 		double				getPossessionVolume();
 		double				getPossessionWeight();
 		void				movePosition(int newXPosition, int newYPosition);
-		std::list<Resource>	getIndividualPossessions();
 		std::unordered_map<long long int, Resource>	getIndividualPossessions();
 		long long int		getID();
 };

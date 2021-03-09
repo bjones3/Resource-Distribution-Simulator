@@ -32,7 +32,7 @@ class Building
 		Resource		removeResource(Resource & resource);
 		bool			canBringOccupant(Individual & occupant);
 		bool			canBringContents(Resource & resource);
-		std::unordered_map<Resource> getContents();
+		std::unordered_map<long long int, Resource> getContents();
 		int				getXPos();
 		int				getYPos();
 		long long int	getID();

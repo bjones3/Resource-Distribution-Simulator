@@ -53,8 +53,8 @@ bool Building::canAddOccupant(Individual & occupant)
 
 void Building::addOccupant(Individual & occupant)
 {
-	if(canAddOccupant(occupant))
-		occupants.push_front(occupant);
+    if(canAddOccupant(occupant))
+        occupants.insert({occupant.getID(), occupant});
 }
 
 //TODO: Change occupants list to a hash
@@ -75,15 +75,14 @@ void Building::addResource(Resource & resource)
 {
 	if (canAddResource(resource))
 	{
-		contentVolume += resource.getVolume();
-		contents.push_front(resource);
+        contentVolume += resource.getVolume();
+        contents.insert({resource.getID(), resource});
 	}
 }
 
 Resource Building::removeResource(Resource & resource)
 {
     if(contents.find(resource.getID()) != contents.end())
-    {
         contents.erase(resource.getID());
 }
 
