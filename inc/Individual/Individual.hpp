@@ -2,6 +2,10 @@
 # define INDIVIDUAL_HPP
 
 # include "../rds.hpp"
+#include "../Resource/Resource.hpp"
+//#include "../Building/House.hpp"
+
+class House;
 
 class Individual
 {
@@ -10,21 +14,22 @@ class Individual
 		int					yPosition;
 		std::string			name;
 		long long int		id;
-		std::list<Resource>	possessions;
+		std::unordered_map<long long int, Resource>	possessions;
 		double				totalPossessionWeight;
 		double				totalPossessionVolume;
+		std::string         generateName();
 		//Agenda			schedule;
 
-		std::string generateName();
 
 	public:
-		Individual(House house);
-		void				doTask(std::list<Resource> & resources);
+		Individual (House house);
+		void				doTask(std::unordered_map<long long int, Resource>	& resources);
+        bool                canAddPossession(Resource & possession);
 		void				addPossession(Resource & possession);
 		double				getPossessionVolume();
 		double				getPossessionWeight();
 		void				movePosition(int newXPosition, int newYPosition);
-		std::list<Resource>	getIndividualPossessions();
+		std::unordered_map<long long int, Resource>	getIndividualPossessions();
 		long long int		getID();
 };
 

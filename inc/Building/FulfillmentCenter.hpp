@@ -2,6 +2,8 @@
 # define FULFILLMENTCENTER_HPP
 
 # include "../rds.hpp"
+#include "../Drone/CargoDrone.hpp"
+#include "../Drone/PassengerDrone.hpp"
 
 class FulfillmentCenter : public Building
 {

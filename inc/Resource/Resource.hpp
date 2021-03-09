@@ -253,6 +253,8 @@ class ResourceTable
 		}
 };
 
+class Building;
+
 class Resource
 {
     private:
@@ -288,3 +290,4 @@ class Resource
 };
 
 #endif
+

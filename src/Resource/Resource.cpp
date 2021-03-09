@@ -1,4 +1,3 @@
-
 #include "../../inc/rds.hpp"
 
 Resource::Resource( int theType, ResourceTable & table )
