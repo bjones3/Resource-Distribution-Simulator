@@ -29,7 +29,7 @@ class Building
 		Resource		removeResource(Resource & resource);
 		bool			canBringOccupant(Individual & occupant);
 		bool			canBringContents(Resource & resource);
-		std::list<Resources> getContents();
+		std::list<Resource> getContents();
 		int				getXPos();
 		int				getYPos();
 		long long int	getID();

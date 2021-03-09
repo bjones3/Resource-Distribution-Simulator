@@ -72,11 +72,15 @@ class cityMap
 		}
 
 		
-		std::list<Building> getBuildings()
+		std::list<Building*> getBuildings()
 		{
 			return buildings;
 		}
 		
+		std::list<FulfillmentCenter*> getFFC()
+		{
+			return ffc;
+		}
 
 		void printMap()
 		{
@@ -97,7 +101,8 @@ class cityMap
 		int roadConc; 
 		int factoryConc;
 		int workConc;
-		std::list<Building> buildings;
+		std::list<Building*> buildings;
+		std::list<FulfillmentCenter*> ffc;
 		
 		/**
 		 * Initializes the map's grid using xSize and ySize.
@@ -245,21 +250,22 @@ class cityMap
 								buildingX = p.x;
 								buildingY = p.y;								
 
-								/*switch(type)
+								if(type == FACT)
 								{
-									case FACT:
-										FulfillmentCenter f(buildingX,buildingY);
-										buildings.push_back(f);
-									break;
-									case WORK:
-										Office o(buildingX,buildingY);
-										buildings.push_back(o);
-									break;
-									case HOME:
-										House h(buildingX,buildingY);
-										buildings.push_back(h);
-									break;
-								}*/
+									FulfillmentCenter* f = new FulfillmentCenter(buildingX,buildingY);
+									buildings.push_back(f);
+									ffc.push_back(f);
+								}
+								else if(type == WORK)
+								{
+									Office* o = new Office(buildingX,buildingY);
+									buildings.push_back(o);
+								}
+								else if(type == HOME)
+								{
+									House* h = new House(buildingX,buildingY);
+									buildings.push_back(h);
+								}
 							}
 							i += width-1;
 							buildAttempts++;
