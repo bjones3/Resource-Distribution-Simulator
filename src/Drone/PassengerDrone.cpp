@@ -12,24 +12,25 @@ PassengerDrone::PassengerDrone(int x, int y) : Drone::Drone(x, y)
 
 bool PassengerDrone::canLoadPassenger(Individual & passenger)
 {
-	if (passengers.size() == passengerCapacity)
-		return false;
-	if (passenger.getPossessionVolume() + contentVolume > maxVolume)
-		return false;
-		if (passenger.getPossessionWeight() + contentWeight > maxWeight)
-		return false;
-	return true;
+    if (passengers.size() == passengerCapacity)
+        return false;
+    if (passenger.getPossessionVolume() + contentVolume > maxVolume)
+        return false;
+    if (passenger.getPossessionWeight() + contentWeight > maxWeight)
+        return false;
+    return true;
 }
 
 void PassengerDrone::loadPassenger(Individual & passenger)
 {
-	passengers.push_back(passenger);
-	std::list<Resource> temp = passenger.getIndividualPossessions();
-	std::list<Resource>::iterator iter = temp.begin();
-	/*for (iter; iter!= temp.end(); iter++)
-	{
-		payload.push_back(iter*);
-	}*/
+
+    passengers.insert({passenger.getID(), passenger});
+    std::unordered_map<long long int, Resource> temp = passenger.getIndividualPossessions();
+    std::unordered_map<long long int, Resource>::iterator iter = temp.begin();
+    /*for (iter; iter!= temp.end(); iter++)
+      {
+      payload.push_back(iter*);
+      }*/
 }
 
 //NEEDS WORK
