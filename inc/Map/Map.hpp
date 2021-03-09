@@ -25,7 +25,7 @@ class cityMap
 	{
 		int x;
 		int y;
-		
+
 		void setPos(int xpos,int ypos)
 		{
 			x = xpos;
@@ -51,7 +51,7 @@ class cityMap
 			}
 		}
 
-		cityMap(int newXSize, int newYSize) 
+		cityMap(int newXSize, int newYSize)
 			: xSize( newXSize ), ySize( newYSize )
 		{
 			init();
@@ -60,8 +60,8 @@ class cityMap
 			generateWorkplace( 3 );
 			generateHouse();
 		}
-		
-		cityMap(int newXSize, int newYSize, int roadCount, int factoryCount, int workCount) 
+
+		cityMap(int newXSize, int newYSize, int roadCount, int factoryCount, int workCount)
 			: xSize( newXSize ), ySize( newYSize ), roadConc( roadCount ), factoryConc( factoryCount), workConc( workCount )
 		{
 			init();
@@ -71,12 +71,20 @@ class cityMap
 			generateHouse();
 		}
 
-		
+
 		std::list<Building*> getBuildings()
 		{
 			return buildings;
 		}
-		
+		std::list<House*> getHouses()
+		{
+			return houses;
+		}
+		std::list<Office*> getOffices()
+		{
+			return offices;
+		}
+
 		std::list<FulfillmentCenter*> getFFC()
 		{
 			return ffc;
@@ -93,17 +101,19 @@ class cityMap
 				std::cout << std::endl;
 			}
 		}
-		
+
 	private:
 		int** map;
 		int xSize;
 		int ySize;
-		int roadConc; 
+		int roadConc;
 		int factoryConc;
 		int workConc;
 		std::list<Building*> buildings;
+		std::list<Office*> offices;
+		std::list<House*> houses;
 		std::list<FulfillmentCenter*> ffc;
-		
+
 		/**
 		 * Initializes the map's grid using xSize and ySize.
 		 */
@@ -116,7 +126,7 @@ class cityMap
 				map[i] = new int[ySize];
 			}
 		}
-		
+
 		/**
 		 * Returns whether the provided position in the grid matches the given type.
 		 */
@@ -124,14 +134,14 @@ class cityMap
 		{
 			if(!validPos(xpos, ypos))
 				return false;
-				
-			return map[xpos][ypos] == type;	
+
+			return map[xpos][ypos] == type;
 		}
 		bool checkType(struct Pos p, int type)
 		{
 			return checkType(p.x,p.y,type);
 		}
-		
+
 		/**
 		 * Checks if the position is within the bounds of the grid.
 		 */
@@ -139,7 +149,7 @@ class cityMap
 		{
 			return xpos < xSize && xpos >= 0 && ypos < ySize && ypos >= 0;
 		}
-		
+
 		/**
 		 * Populates the grid with ROAD, forming a window-pane pattern of "conc" width.
 		 */
@@ -155,22 +165,22 @@ class cityMap
 				}
 			}
 		}
-		
+
 		void generateFactory(int conc)
 		{
 			generateBuilding(conc, FACT_SIZE, FACT_SIZE, FACT);
 		}
-		
+
 		void generateWorkplace(int conc)
 		{
 			generateBuilding(conc, WORK_SIZE, WORK_SIZE, WORK);
 		}
-			
+
 		void generateHouse()
 		{
 			generateBuilding(1, HOME_SIZE, HOME_SIZE, HOME);
 		}
-			
+
 		void generateBuilding(int conc, int width, int height, int type)
 		{
 			int buildAttempts = 0;
@@ -188,24 +198,24 @@ class cityMap
 					corner[1].setPos(i+width-1,j);
 					corner[2].setPos(i,j+height-1);
 					corner[3].setPos(i+width-1,j+height-1);
-					
+
 					//Check to see if any of the corners are adjacent to a road
 					std::vector<struct Pos> adjacents;
 					for(int p = 0; p < 4; p++)
 					{
 						int xPos = corner[p].x;
 						int yPos = corner[p].y;
-						
+
 						if(checkType(xPos+1,yPos,ROAD)
 						|| checkType(xPos-1,yPos,ROAD)
-						|| checkType(xPos,yPos+1,ROAD) 
+						|| checkType(xPos,yPos+1,ROAD)
 						|| checkType(xPos,yPos-1,ROAD))
 						{
 							adjacents.push_back(corner[p]);
 						}
 					}
-					
-					//If at least one edge is near a road 
+
+					//If at least one edge is near a road
 					if(adjacents.size() > 1)
 					{
 						//Ensure there is an empty region here
@@ -214,7 +224,7 @@ class cityMap
 							for(int l = j; l < j+height; l++)
 								if(!checkType(k,l,NONE))
 									empty = false;
-						
+
 						//And there is space available for this building
 						if(empty)
 						{
@@ -225,19 +235,19 @@ class cityMap
 								for(int k = i; k < i+width; k++)
 									for(int l = j; l < j+height; l++)
 										map[k][l] = type;
-								
+
 								//Using the road-adjacent corners, determine a location for the building object
 								struct Pos p;
 								int p1 = 0;
 								int p2 = 0;
 								while(p1 == p2 ||
-								(adjacents[p1].x != adjacents[p2].x 
+								(adjacents[p1].x != adjacents[p2].x
 								&& adjacents[p1].y != adjacents[p2].y) )
 								{
 									p1 = rand() % adjacents.size();
 									p2 = rand() % adjacents.size();
 								}
-								
+
 								int p1_x = adjacents[p1].x;
 								int p1_y = adjacents[p1].y;
 								int p2_x = adjacents[p2].x;
@@ -248,7 +258,7 @@ class cityMap
 									p.setPos(std::min(p1_x,p2_x)+rand() % width,p1_y);
 
 								buildingX = p.x;
-								buildingY = p.y;								
+								buildingY = p.y;
 
 								if(type == FACT)
 								{
@@ -260,11 +270,13 @@ class cityMap
 								{
 									Office* o = new Office(buildingX,buildingY);
 									buildings.push_back(o);
+									offices.pushback(o);
 								}
 								else if(type == HOME)
 								{
 									House* h = new House(buildingX,buildingY);
 									buildings.push_back(h);
+									houses.pushback(o);
 								}
 							}
 							i += width-1;

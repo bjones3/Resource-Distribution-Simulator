@@ -4,7 +4,7 @@ Event::Event(Building building, Individual individual)
 {
   m_building = building;
 }
-Event::Event(Building building, Individual individual, std::list<Resources> resources)
+Event::Event(Building building, Individual individual, std::list<int> resources)
 {
   m_building = building;
   m_individual = individual;
@@ -24,7 +24,7 @@ bool canExecuteEvent()
     return false;
   }
 
-  std::list<Resource>::iterator iter = m_resouces.begin();
+  std::list<int>::iterator iter = m_resouces.begin();
 
   while(iter!=m_resources.end())
   {
