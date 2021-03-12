@@ -26,10 +26,10 @@ void Executive::run()
 	std::list<FulfillmentCenter*> mapFFC = theMap.getFFC();
 	std::list<Office*> offices = theMap.getOffices();
 	std::list<House*> houses = theMap.getHouses();
-	
+
 	//Store the buildings that can be used for events
 	std::vector<Building*> eventBuildings;
-	
+
 	for(std::list<Office*>::iterator iter = offices.begin(); iter != offices.end(); iter++)
 		eventBuildings.push_back(*iter);
 
@@ -39,15 +39,15 @@ void Executive::run()
 	//Spawn individuals in the houses
 	for(std::list<House*>::iterator houseIter = houses.begin(); houseIter != houses.end(); houseIter++)
 	{
-		for(int i = 0; i < 4; i++)
+		for(int i = 0; i < INDIVIDUALS_SPAWNED_PER_HOUSE; i++)
 		{
 			Individual * janeDoe = new Individual(*(*houseIter));
 			(*houseIter)->addOccupant(*janeDoe);
 			Agenda * agenda = new Agenda(*janeDoe);
-			for(int j = 0; j < months; j++)//6 * 30 * months; j++)
+			for(int j = 0; j < 6 * 30 * months; j++)
 			{
 				int buildingNumber = rand() % eventBuildings.size();
-				Building* building = eventBuildings[buildingNumber]; 
+				Building* building = eventBuildings[buildingNumber];
 
 				int resourceAmount = rand() % 6 + 1;
 				std::list<int> resourceTypes;
