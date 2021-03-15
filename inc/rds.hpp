@@ -19,6 +19,9 @@ class House;
 class Office;
 
 class Resource;
+class ResourceTable;
+
+class cityMap;
 
 class Drone;
 class CargoDrone;

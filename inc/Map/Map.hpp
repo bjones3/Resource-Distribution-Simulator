@@ -18,22 +18,24 @@
 #define FACT		2
 #define WORK		3
 #define HOME		4
+#define INTER		5
+
 
 class cityMap
 {
-	struct Pos
-	{
-		int x;
-		int y;
-
-		void setPos(int xpos,int ypos)
-		{
-			x = xpos;
-			y = ypos;
-		}
-	};
-
 	public:
+		struct Pos
+		{
+			int x;
+			int y;
+
+			void setPos(int xpos,int ypos)
+			{
+				x = xpos;
+				y = ypos;
+			}
+		};
+	
 		cityMap(std::ifstream & inFile)
 		{
 			if (!inFile.is_open())
@@ -55,7 +57,8 @@ class cityMap
 			: xSize( newXSize ), ySize( newYSize )
 		{
 			init();
-			generateRoad( 10 );
+			roadConc = 10;
+			generateRoad( roadConc );
 			generateFactory( 5 );
 			generateWorkplace( 3 );
 			generateHouse();
@@ -101,6 +104,103 @@ class cityMap
 				std::cout << std::endl;
 			}
 		}
+		
+		Pos findIntersection(int xPos, int yPos)
+		{
+			int roadX = xPos;
+			int roadY = yPos;
+			int horizontal = false;
+			//Check adjacent positions for a road
+			if(checkType(xPos+1,yPos,ROAD))
+			{
+				roadX = xPos+1;
+				roadY = yPos;
+			}
+			else if(checkType(xPos-1,yPos,ROAD))
+			{
+				roadX = xPos-1;
+				roadY = yPos;
+			}
+			else if(checkType(xPos,yPos+1,ROAD))
+			{
+				roadX = xPos;
+				roadY = yPos+1;
+				horizontal = true;
+			}
+			else if(checkType(xPos,yPos-1,ROAD))
+			{
+				roadX = xPos;
+				roadY = yPos-1;
+				horizontal = true;
+			}			
+			
+			//Determine nearest intersection
+			Pos loc;
+			loc.setPos(-1,-1);
+			int dist = roadConc;
+			if(horizontal)
+			{
+				//Check right
+				for(int i = 1; i < roadConc; i++)
+				{
+					if(roadX+i >= xSize)
+						break;
+					
+					if(checkType(roadX+i,roadY,INTER))
+					{
+						loc.setPos(roadX+i,roadY);
+						dist = i;
+						break;
+					}
+				}
+				//Check left
+				for(int i = 1; i < roadConc; i++)
+				{
+					if(roadX-i < 0)
+						break;
+					
+					if(checkType(roadX-i,roadY,INTER) && i < dist)
+					{
+						loc.setPos(roadX-i,roadY);
+						dist = i;
+						break;
+					}
+				}
+			}
+			else
+			{
+				//Check down
+				for(int i = 1; i < roadConc; i++)
+				{
+					if(roadY+i >= ySize)
+						break;
+					
+					if(checkType(roadX,roadY+i,INTER))
+					{
+						loc.setPos(roadX,roadY+i);
+						dist = i;
+						break;
+					}
+				}
+				//Check up
+				for(int i = 1; i < roadConc; i++)
+				{
+					if(roadY-i < 0)
+						break;
+					
+					if(checkType(roadX,roadY-i,INTER) && i < dist)
+					{
+						loc.setPos(roadX,roadY-i);
+						break;
+					}
+				}
+			}
+			
+			if(loc.x == -1 || loc.y == -1)
+				std::cout << "Could not find intersection.\n";
+			
+			return loc;
+		}
 
 	private:
 		int** map;
@@ -113,6 +213,7 @@ class cityMap
 		std::list<Office*> offices;
 		std::list<House*> houses;
 		std::list<FulfillmentCenter*> ffc;
+		//std::list<Intersection*> intersections;
 
 		/**
 		 * Initializes the map's grid using xSize and ySize.
@@ -161,7 +262,16 @@ class cityMap
 				for (int j = 0; j < ySize; j++)
 				{
 					if(i % conc == 0 || j % conc == 0)
-						map[i][j] = type;
+					{
+						if(i % conc == 0 && j % conc == 0)
+						{
+							//Intersection* inter = new Intersection(i,j);
+							//intersections.push_back(inter); 
+							map[i][j] = INTER;
+						}
+						else
+							map[i][j] = type;
+					}
 				}
 			}
 		}
@@ -259,6 +369,9 @@ class cityMap
 
 								buildingX = p.x;
 								buildingY = p.y;
+								
+								//DEBUG: See where buildings are located
+								map[p.x][p.y] = 8;
 
 								if(type == FACT)
 								{

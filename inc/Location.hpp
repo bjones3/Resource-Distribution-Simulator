@@ -5,6 +5,11 @@
 
 class Location
 {
+	public:
+		Location(int xpos, int ypos);
+		int getXPos();
+		int getYPos();
+	
 	private:
 		int xPos, yPos;
 };
