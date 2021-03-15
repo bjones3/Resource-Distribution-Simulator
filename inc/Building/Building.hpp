@@ -2,7 +2,7 @@
 # define BUILDING_HPP
 
 # include "../rds.hpp"
-#include <unordered_map>
+# include <unordered_map>
 
 class Building
 {
@@ -10,8 +10,8 @@ class Building
 		int						xPos;
 		int						yPos;
 		long long int			id;
-        std::unordered_map<long long int, Individual> occupants;
-        std::unordered_map<long long int, Resource> contents;
+        std::unordered_map<long long int, Individual&> occupants;
+        std::unordered_map<long long int, Resource&> contents;
 		int						occupantCapacity;
 		double					contentVolumeCapacity;
 		double					contentVolume;

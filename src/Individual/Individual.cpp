@@ -54,7 +54,7 @@ void Individual::movePosition(int newXPosition, int newYPosition)
 	//matriarch.requestDrone(newXPosition, newYPosition);
 }
 
-std::unordered_map<long long int, Resource> Individual::getIndividualPossessions()
+std::unordered_map<long long int, Resource&> Individual::getIndividualPossessions()
 {
 	return possessions;
 }

@@ -10,7 +10,7 @@ class Individual
 		int					yPosition;
 		std::string			name;
 		long long int		id;
-		std::unordered_map<long long int, Resource>	possessions;
+		std::unordered_map<long long int, Resource&>	possessions;
 		double				totalPossessionWeight;
 		double				totalPossessionVolume;
 		//Agenda			schedule;
@@ -25,7 +25,7 @@ class Individual
 		double				getPossessionVolume();
 		double				getPossessionWeight();
 		void				movePosition(int newXPosition, int newYPosition);
-		std::unordered_map<long long int, Resource>	getIndividualPossessions();
+		std::unordered_map<long long int, Resource&>	getIndividualPossessions();
 		long long int		getID();
 };
 
