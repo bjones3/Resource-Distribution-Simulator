@@ -3,11 +3,12 @@ NAME = RDS
 OBJS = objs/Building/Building.o objs/Building/FulfillmentCenter.o objs/Building/House.o objs/Building/Office.o \
  objs/Drone/CargoDrone.o objs/Drone/Drone.o objs/Drone/PassengerDrone.o objs/Individual/Individual.o \
  objs/Resource/Resource.o objs/Executive.o objs/ID.o objs/Location.o objs/main.o \
+ objs/Agenda/Agenda.o objs/Agenda/Event.o \
  objs/MainAI.o
 HEADERS = inc/rds.hpp
 CFLAGS = -Wall -Wextra #-Werror
 STD = -std=c++11
-DIRECTORIES = objs objs/Building objs/Drone objs/Individual objs/Resource
+DIRECTORIES = objs objs/Building objs/Drone objs/Individual objs/Resource objs/Agenda
 
 all: $(NAME)
 
@@ -18,7 +19,7 @@ $(OBJS): objs/%.o: src/%.cpp $(HEADERS)
 	g++ $(CFLAGS) $(STD) -c $< -o $@
 
 clean:
-	rm -f objs/*.o objs/Building/*.o objs/Drone/*.o objs/Individual/*.o objs/Resource/*.o
+	rm -f objs/*.o objs/Building/*.o objs/Drone/*.o objs/Individual/*.o objs/Resource/*.o objs/Agenda/*.o
 
 fclean: clean
 	rm -f $(NAME)

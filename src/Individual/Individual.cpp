@@ -5,6 +5,18 @@ std::string Individual::generateName()
 	return "";
 }
 
+Individual::Individual()
+{
+	totalPossessionWeight = 0;
+	totalPossessionVolume = 0;
+
+	xPosition = 0;
+	yPosition = 0;
+
+	name = generateName();
+	//id = ID::generateID();
+}
+
 Individual::Individual(House house)
 {
 	totalPossessionWeight = 0;

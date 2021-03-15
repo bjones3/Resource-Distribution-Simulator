@@ -47,7 +47,7 @@ void Agenda::addEvents(std::list<Event> events)
 void Agenda::removeEvent(Event event)
 {
 
-  std::list<Event>::iterator findEvent = std::find(list.begin(), list.end(), event);
-  m_events.remove(findEvent);
+  //std::list<Event>::iterator findEvent = std::find(list.begin(), list.end(), event);
+  //m_events.remove(findEvent);
 
 }
