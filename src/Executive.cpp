@@ -1,7 +1,5 @@
 #include "../inc/rds.hpp"
 
-#define INDIVIDUALS_SPAWNED_PER_HOUSE 2
-
 void Executive::run()
 {
 	ID id;
@@ -28,7 +26,7 @@ void Executive::run()
 	std::list<FulfillmentCenter*> mapFFC = theMap.getFFC();
 	std::list<Office*> offices = theMap.getOffices();
 	std::list<House*> houses = theMap.getHouses();
-	
+
 	//Store the buildings that can be used for events
 	std::vector<Building*> eventBuildings;
 
@@ -70,7 +68,7 @@ void Executive::run()
 	//Create initial drones
 	/*for(std::list<Drone*>::iterator droneIter = droneList.begin(); droneIter != droneList.end(); droneIter++)
 	{
-		
+
 	}
 	*/
 
@@ -98,11 +96,11 @@ void Executive::run()
 		//Update drone positions
 		for(std::list<Drone*>::iterator droneIter = droneList.begin(); droneIter != droneList.end(); droneIter++)
 		{
-			
-			
-			
+
+
+
 		}
-		
+
 
 		//if()
 			//break;
