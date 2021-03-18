@@ -3,37 +3,40 @@
 Event::Event(Building building, Individual individual)
 {
   m_building = building;
+  m_individual = individual;
 }
-Event::Event(Building building, Individual individual, std::list<Resources> resources)
+Event::Event(Building building, Individual individual, std::list<int> resources)
 {
   m_building = building;
   m_individual = individual;
   m_resources = resources;
 }
-void execute()
+void Event::execute()
 {
 
-  m_individual.doTask(m_resources);
+  //m_individual.doTask(m_resources);
 
 }
-bool canExecuteEvent()
+bool Event::canExecuteEvent()
 {
 
-  if(!building.occupants().contains(individual))
+	//Make sure the individual is in the building
+  /*if(!m_building.getOccupants().contains(m_individual))
   {
     return false;
-  }
+  }*/
 
-  std::list<Resource>::iterator iter = m_resouces.begin();
+  std::list<int>::iterator iter = m_resources.begin();
 
   while(iter!=m_resources.end())
   {
-    std::list<Resource>:: iterator iter2;
+    std::list<int>:: iterator iter2;
+	/*
     iter2 = std::find(m_building.getContents().begin(), m_building.getContents().end(), *iter);
     if(iter2 == m_building.getContents().end())
     {
       return false;
-    }
+    }*/
     iter++;
   }
   return true;

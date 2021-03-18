@@ -1,21 +1,20 @@
-
-
-
-
 #ifndef EVENT_HPP
 #define EVENT_HPP
 
-class Event()
+# include "../rds.hpp"
+
+class Event
 {
 public:
-  Event(Building building);
-  Event(Building building, std::list<Resources> resources);
+  Event(Building building, Individual individual);
+  Event(Building building, Individual individual, std::list<int> resources);
 
   void execute();
   bool canExecuteEvent();
 private:
-  std::list<Resources> m_resources;
+  std::list<int> m_resources;
   Building m_building;
+  Individual m_individual;
 };
 
 #endif

@@ -80,9 +80,10 @@ Building Resource::getNextBuilding()
 	return nextBuilding;
 
 Building Resource::getBuilding()
-	return building;*/
+	return building;
 
 long long int Resource::getID()
 {
 	return id;
 }
+*/

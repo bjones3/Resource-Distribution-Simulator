@@ -3,6 +3,8 @@
 
 # include <list>
 # include <queue>
+# include <unordered_map>
+# include <vector>
 # include <string>
 # include <algorithm>
 # include <unordered_map>
@@ -19,12 +21,18 @@ class House;
 class Office;
 
 class Resource;
+class ResourceTable;
+
+class cityMap;
 
 class Drone;
 class CargoDrone;
 class PassengerDrone;
 
 class Individual;
+
+class Agenda;
+class Event;
 
 # include "Building/Building.hpp"
 # include "Building/FulfillmentCenter.hpp"
@@ -40,6 +48,9 @@ class Individual;
 # include "Map/Map.hpp"
 
 # include "Resource/Resource.hpp"
+
+# include "Agenda/Agenda.hpp"
+# include "Agenda/Event.hpp"
 
 # include "Executive.hpp"
 # include "ID.hpp"
