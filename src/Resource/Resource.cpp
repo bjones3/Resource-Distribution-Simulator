@@ -82,8 +82,9 @@ Building Resource::getNextBuilding()
 Building Resource::getBuilding()
 	return building;
 
+*/
 long long int Resource::getID()
 {
+
 	return id;
 }
-*/
