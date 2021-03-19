@@ -102,6 +102,7 @@ bool Building::canBringContents(Resource & resource)
 }
 
 /*
+=======
 std::list<Resource> Building::getContents()
 {
 	return contents;
