@@ -8,6 +8,8 @@ class Building
 	protected:
 		int						xPos;
 		int						yPos;
+		int						roadX;
+		int						roadY;
 		long long int			id;
 		std::list<Individual>	occupants;
 		std::list<Resource>		contents;

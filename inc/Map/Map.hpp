@@ -201,6 +201,11 @@ class cityMap
 			
 			return loc;
 		}
+		
+		int getRoadConc()
+		{
+			return roadConc;
+		}
 
 	private:
 		int** map;
@@ -220,7 +225,7 @@ class cityMap
 		 */
 		void init()
 		{
-			srand(time(NULL));
+			srand(0);//time(NULL));
 			map = new int*[xSize];
 			for (int i = 0; i < xSize; i++)
 			{

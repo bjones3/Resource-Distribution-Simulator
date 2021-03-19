@@ -14,11 +14,20 @@ void Executive::run()
 
 
 	//Map size
-	int mapWidth, mapHeight;
-	std::cout << "Enter the width of the world followed by the height (ex: 4 5).\n";
+	int mapWidth, mapHeight, blockSize;
+	std::cout << "Enter the width (in blocks) of the world followed by the height (ex: 4 5).\n";
 	std::cin >> mapWidth >> mapHeight;
-	cityMap theMap( mapWidth, mapHeight );
-
+	
+	std::cout << "How wide should each block be?\n";
+	std::cin >> blockSize;
+	
+	cityMap theMap( mapWidth*blockSize+1, mapHeight*blockSize+1, blockSize, 5, 3 );
+	
+	/*std::ifstream inFile;
+	inFile.open("map.txt");
+	cityMap theMap = cityMap(inFile);
+	inFile.close();*/
+	
 	//AI creation
 	std::list<Drone*> droneList;
 	//std::unordered_map<long long int,Individual*> populace;
@@ -68,11 +77,13 @@ void Executive::run()
 	}
 
 	//Create initial drones
-	/*for(std::list<Drone*>::iterator droneIter = droneList.begin(); droneIter != droneList.end(); droneIter++)
+	int droneCount = 1;
+	for(int i = 0; i < droneCount; i++)
 	{
-		
+		Drone* myDrone = new Drone(1,30);
+		droneList.push_back(myDrone);
 	}
-	*/
+	
 
 	MainAI theAI( droneList, mapFFC );
 
@@ -86,8 +97,14 @@ void Executive::run()
 	cityMap::Pos pos = theMap.findIntersection(myFFC.getXPos(),myFFC.getYPos());
 	std::cout << pos.x << ", " << pos.y << std::endl;
 	std::cout << myFFC.getXPos() << ", " << myFFC.getYPos() << std::endl;
-	theMap.printMap();
 	*/
+	
+	theMap.printMap();
+	
+	//Initialize drone path
+	std::list<Drone*>::iterator droneIter = droneList.begin();
+	(*droneIter)->createMoveList(2,0,theMap.getRoadConc());
+
 
 	//Begin simulation loop
 	int currentTime = 0;
@@ -95,12 +112,12 @@ void Executive::run()
 	{
 		//std::cout << "One second has passed.\n";
 
+		
+
 		//Update drone positions
 		for(std::list<Drone*>::iterator droneIter = droneList.begin(); droneIter != droneList.end(); droneIter++)
 		{
-			
-			
-			
+			(*droneIter)->move();
 		}
 		
 
@@ -108,7 +125,7 @@ void Executive::run()
 			//break;
 
 		//Pause the simulation
-		std::this_thread::sleep_for( std::chrono::seconds(1) );
+		std::this_thread::sleep_for( std::chrono::milliseconds(250) );
 	}
 
 
