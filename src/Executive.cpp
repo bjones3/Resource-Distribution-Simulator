@@ -12,33 +12,29 @@ void Executive::run()
 	std::cout << "How many months should the simulation run for?\n";
 	std::cin >> months;
 
-
-	//Map size
+	//Map dimensions
 	int mapWidth, mapHeight, blockSize;
 	std::cout << "Enter the width (in blocks) of the world followed by the height (ex: 4 5).\n";
 	std::cin >> mapWidth >> mapHeight;
 	
+	//Size of each block
 	std::cout << "How wide should each block be?\n";
 	std::cin >> blockSize;
 	
+	//Create the map itself
 	cityMap theMap( mapWidth*blockSize+1, mapHeight*blockSize+1, blockSize, 5, 3 );
+	theMap.printMap();	//Show the map for debug purposes
 	
-	/*std::ifstream inFile;
-	inFile.open("map.txt");
-	cityMap theMap = cityMap(inFile);
-	inFile.close();*/
 	
-	//AI creation
+	//Create pointer lists for just about everything
 	std::list<Drone*> droneList;
 	//std::unordered_map<long long int,Individual*> populace;
 	std::list<Agenda*> agendas;
-
-	//Store into lists the building pointers created by the map
-	std::list<FulfillmentCenter*> mapFFC = theMap.getFFC();
-	std::list<Office*> offices = theMap.getOffices();
-	std::list<House*> houses = theMap.getHouses();
+	std::list<FulfillmentCenter*> mapFFC 		= theMap.getFFC();
+	std::list<Office*> offices 					= theMap.getOffices();
+	std::list<House*> houses 					= theMap.getHouses();
 	
-	//Store the buildings that can be used for events
+	//Separate storage for buildings that are used for events (only offices and houses)
 	std::vector<Building*> eventBuildings;
 
 	for(std::list<Office*>::iterator iter = offices.begin(); iter != offices.end(); iter++)
@@ -47,14 +43,16 @@ void Executive::run()
 	for(std::list<House*>::iterator iter = houses.begin(); iter != houses.end(); iter++)
 		eventBuildings.push_back(*iter);
 
-	//Spawn individuals in the houses
+	//Spawn individuals in the houses and generate their agendas
 	for(std::list<House*>::iterator houseIter = houses.begin(); houseIter != houses.end(); houseIter++)
 	{
 		for(int i = 0; i < INDIVIDUALS_SPAWNED_PER_HOUSE; i++)
 		{
 			Individual * janeDoe = new Individual(*(*houseIter));
 			(*houseIter)->addOccupant(*janeDoe);
+			
 			Agenda * agenda = new Agenda(*janeDoe);
+			
 			//Create a random list of events for this individual's agenda
 			for(int j = 0; j < 6 * 30 * months; j++)
 			{
@@ -80,40 +78,34 @@ void Executive::run()
 	int droneCount = 1;
 	for(int i = 0; i < droneCount; i++)
 	{
-		Drone* myDrone = new Drone(1,30);
+		Drone* myDrone = new Drone(3,0);
 		droneList.push_back(myDrone);
 	}
 	
-
+	//Create the AI itself
 	MainAI theAI( droneList, mapFFC );
+
 
 	//Activate graphics
 	//
 
-	/*std::list<FulfillmentCenter*>::iterator ffcIter = mapFFC.begin();
-	ffcIter++;
-	FulfillmentCenter myFFC = *(*ffcIter);
-
-	cityMap::Pos pos = theMap.findIntersection(myFFC.getXPos(),myFFC.getYPos());
-	std::cout << pos.x << ", " << pos.y << std::endl;
-	std::cout << myFFC.getXPos() << ", " << myFFC.getYPos() << std::endl;
-	*/
 	
-	theMap.printMap();
 	
-	//Initialize drone path
+	//Initialize drone path (this will eventually be handled in the main loop when drones are given new paths)
 	std::list<Drone*>::iterator droneIter = droneList.begin();
-	(*droneIter)->createMoveList(2,0,theMap.getRoadConc());
+	(*droneIter)->createMoveList(17,10,theMap.getRoadConc());
 
 
 	//Begin simulation loop
 	int currentTime = 0;
+	int timePerStep = 250;	//milliseconds
+	int timeCount = 0;
+	std::chrono::high_resolution_clock::time_point time1, time2;
 	while( currentTime < months*30*24*60 )
 	{
-		//std::cout << "One second has passed.\n";
-
-		
-
+		//Get the time at the start of the loop
+		time1 = std::chrono::high_resolution_clock::now();
+	
 		//Update drone positions
 		for(std::list<Drone*>::iterator droneIter = droneList.begin(); droneIter != droneList.end(); droneIter++)
 		{
@@ -121,11 +113,10 @@ void Executive::run()
 		}
 		
 
-		//if()
-			//break;
-
-		//Pause the simulation
-		std::this_thread::sleep_for( std::chrono::milliseconds(250) );
+		//Pause the simulation until the next time step
+		time2 = std::chrono::high_resolution_clock::now();
+		timeCount = std::chrono::duration_cast<std::chrono::milliseconds>(time2 - time1).count();
+		std::this_thread::sleep_for( std::chrono::milliseconds( std::max(timePerStep-timeCount, 0) ) );
 	}
 
 

@@ -1,5 +1,7 @@
 #include "../../inc/rds.hpp"
 
+#define DEBUG false		//Controls whether or not to output drone positions
+
 Drone::Drone(int x, int y)
 {
 	xPos = x;
@@ -55,12 +57,15 @@ void Drone::createMoveList(int destX, int destY, int roadConc)
 	else
 		moveList.push_back(yDest);
 	
-	std::cout << "List: \n";
-	
-	for(std::list<int>::iterator temp = moveList.begin(); temp != moveList.end(); temp++)
-		std::cout << *temp << std::endl;
-	
-	std::cout << "Movement: \n";
+	if(DEBUG)
+	{
+		std::cout << "List: \n";
+		
+		for(std::list<int>::iterator temp = moveList.begin(); temp != moveList.end(); temp++)
+			std::cout << *temp << std::endl;
+		
+		std::cout << "Movement: \n";
+	}
 }
 
 void Drone::getFirstIntersection(int & interX, int & interY, int roadConc)
@@ -73,14 +78,16 @@ void Drone::getFirstIntersection(int & interX, int & interY, int roadConc)
 		if(diff > 0)
 		{
 			 interX = xPos + roadConc - (xPos % roadConc);
-			 std::cout << "Intersection X: " << interX << std::endl;
 			 moveList.push_back(RIGHT);
+			 if(DEBUG)
+			 	std::cout << "Intersection X: " << interX << std::endl;
 		}
 		else
 		{
 		 	interX = xPos - (xPos % roadConc);
-			std::cout << "Intersection X: " << interX << std::endl;
-			moveList.push_back(LEFT);
+		 	moveList.push_back(LEFT);
+		 	if(DEBUG)
+				std::cout << "Intersection X: " << interX << std::endl;
 		}
 		moveList.push_back(interX);
 	}
@@ -91,14 +98,16 @@ void Drone::getFirstIntersection(int & interX, int & interY, int roadConc)
 		if(diff > 0)
 		{
 			 interY = yPos + roadConc - (yPos % roadConc);
-			 std::cout << "Intersection Y: " << interY << std::endl;
 			 moveList.push_back(DOWN);
+			 if(DEBUG)
+			 	std::cout << "Intersection Y: " << interY << std::endl;
 		}
 		else
 		{
 		 	interY = yPos - (yPos % roadConc);
-			std::cout << "Intersection Y: " << interY << std::endl;
-			moveList.push_back(UP);
+		 	moveList.push_back(UP);
+		 	if(DEBUG)
+				std::cout << "Intersection Y: " << interY << std::endl;
 		}
 		moveList.push_back(interY);
 	}
@@ -114,14 +123,16 @@ void Drone::getSecondIntersection(int & interX, int & interY, int & direction, i
 		if(diff < 0)
 		{
 			 interX = xDest + roadConc - (xDest % roadConc);
-			 std::cout << "Intersection2 X: " << interX << std::endl;
 			 direction = RIGHT;
+			 if(DEBUG)
+			 	std::cout << "Intersection2 X: " << interX << std::endl;
 		}
 		else
 		{
 		 	interX = xDest - (xDest % roadConc);
-			std::cout << "Intersection2 X: " << interX << std::endl;
-			direction = LEFT;
+		 	direction = LEFT;
+		 	if(DEBUG)
+				std::cout << "Intersection2 X: " << interX << std::endl;
 		}
 	}
 	else	//Vertical road
@@ -131,14 +142,16 @@ void Drone::getSecondIntersection(int & interX, int & interY, int & direction, i
 		if(diff < 0)
 		{
 			 interY = yDest + roadConc - (yDest % roadConc);
-			 std::cout << "Intersection2 Y: " << interY << std::endl;
 			 direction = DOWN;
+			 if(DEBUG)
+			 	std::cout << "Intersection2 Y: " << interY << std::endl;
 		}
 		else
 		{
 		 	interY = yDest - (yDest % roadConc);
-			std::cout << "Intersection2 Y: " << interY << std::endl;
-			direction = UP;
+		 	direction = UP;
+			if(DEBUG)
+				std::cout << "Intersection2 Y: " << interY << std::endl;
 		}
 	}
 }
@@ -146,8 +159,19 @@ void Drone::getSecondIntersection(int & interX, int & interY, int & direction, i
 
 void Drone::move()
 {
-	if(!moveList.empty())
+	//Stop moving if the destination has been reached
+	if(xPos == xDest && yPos == yDest)
 	{
+		if(!moveList.empty() && DEBUG)
+			std::cout << "Destination reached\n";
+		
+		while(!moveList.empty())
+			moveList.pop_front();
+	}
+	
+	//Otherwise, attempt to move in a direction according to the movement list
+	if(moveList.size() >= 2)
+	{	
 		switch(moveList.front())
 		{
 			case -1://UP
@@ -163,7 +187,8 @@ void Drone::move()
 				moveRight(*(++moveList.begin()));
 			break;
 		}
-		std::cout << xPos << ", " << yPos << std::endl;
+		if(DEBUG)
+			std::cout << xPos << ", " << yPos << std::endl;
 	}
 }
 
@@ -172,14 +197,15 @@ void Drone::moveUp(int destY)
 	if(yPos > destY)
 	{
 		yPos--;
-		//std::cout << yPos << std::endl;
 	}
 	else
 	{
 		for(int i = 0; i < 2; i++)
 			moveList.pop_front();
 	
-		std::cout << "Done moving up\n";
+		if(DEBUG)
+			std::cout << "Done moving up\n";
+			
 		move();
 	}
 }
@@ -189,14 +215,15 @@ void Drone::moveDown(int destY)
 	if(yPos < destY)
 	{
 		yPos++;
-		//std::cout << yPos << std::endl;
 	}
 	else
 	{
 		for(int i = 0; i < 2; i++)
 			moveList.pop_front();
 	
-		std::cout << "Done moving down\n";
+		if(DEBUG)
+			std::cout << "Done moving down\n";
+			
 		move();
 	}
 }
@@ -206,14 +233,15 @@ void Drone::moveLeft(int destX)
 	if(xPos > destX)
 	{
 		xPos--;
-		//std::cout << xPos << std::endl;
 	}
 	else
 	{
 		for(int i = 0; i < 2; i++)
 			moveList.pop_front();
-	
-		std::cout << "Done moving left\n";
+			
+		if(DEBUG)
+			std::cout << "Done moving left\n";
+			
 		move();
 	}
 }
@@ -223,14 +251,15 @@ void Drone::moveRight(int destX)
 	if(xPos < destX)
 	{
 		xPos++;
-		//std::cout << xPos << std::endl;
 	}
 	else
 	{
 		for(int i = 0; i < 2; i++)
 			moveList.pop_front();
 	
-		std::cout << "Done moving right\n";
+		if(DEBUG)
+			std::cout << "Done moving right\n";
+		
 		move();
 	}
 }
@@ -259,3 +288,5 @@ long long int Drone::getID()
 {
 	return id;
 }
+
+#undef DEBUG
