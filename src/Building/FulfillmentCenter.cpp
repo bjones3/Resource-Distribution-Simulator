@@ -1,6 +1,6 @@
 #include "../../inc/rds.hpp"
 
-FulfillmentCenter::FulfillmentCenter(int x, int y) : Building::Building(x, y)
+FulfillmentCenter::FulfillmentCenter(int x, int y, int roadx, int roady) : Building::Building(x, y, roadx, roady)
 {
 	contentVolumeCapacity = 500000;
 	droneCapacity = 100;

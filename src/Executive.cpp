@@ -1,6 +1,8 @@
 #include "../inc/rds.hpp"
 
-#define INDIVIDUALS_SPAWNED_PER_HOUSE 2
+#define INDIVIDUALS_SPAWNED_PER_HOUSE 	2
+#define EVENTS_PER_DAY					6
+#define EVENTS_TO_LOOKAHEAD				6
 
 void Executive::run()
 {
@@ -54,7 +56,7 @@ void Executive::run()
 			Agenda * agenda = new Agenda(*janeDoe);
 			
 			//Create a random list of events for this individual's agenda
-			for(int j = 0; j < 6 * 30 * months; j++)
+			for(int j = 0; j < EVENTS_PER_DAY * 30 * months; j++)
 			{
 				int buildingNumber = rand() % eventBuildings.size();
 				Building* building = eventBuildings[buildingNumber];
@@ -69,22 +71,34 @@ void Executive::run()
 				Event* event = new Event(*building,*janeDoe,resourceTypes);
 				agenda->addEvent(*event);
 			}
+			
+			std::cout << "Individual: " << (*(*houseIter)).getXPos() << ", " << (*(*houseIter)).getYPos() << std::endl;
+
+			std::cout << "Start: " << (*(*houseIter)).getXRoad() << ", " << (*(*houseIter)).getYRoad() << std::endl;
+
+			houseIter = houses.end();
+			houseIter--;
+			std::cout << "Destination: " << (*(*houseIter)).getXRoad() << ", " << (*(*houseIter)).getYRoad() << std::endl;
 
 			agendas.push_back(agenda);
+			break;
 		}
+		break;
 	}
 
 	//Create initial drones
-	int droneCount = 1;
-	for(int i = 0; i < droneCount; i++)
-	{
-		Drone* myDrone = new Drone(16,10);
-		droneList.push_back(myDrone);
-	}
+	Drone* myDrone = new Drone(3,10);
+	droneList.push_back(myDrone);
+
 	
 	//Create the AI itself
 	MainAI theAI( droneList, mapFFC );
 
+	//Determine plan for the first week
+	for(int i = 0; i < EVENTS_TO_LOOKAHEAD; i++)
+	{
+	
+	}
 
 	//Activate graphics
 	//
@@ -94,7 +108,6 @@ void Executive::run()
 	//Initialize drone path (this will eventually be handled in the main loop when drones are given new paths)
 	std::list<Drone*>::iterator droneIter = droneList.begin();
 	(*droneIter)->createMoveList(3,0,theMap.getRoadConc());
-
 
 	//Begin simulation loop
 	int currentTime = 0;
@@ -110,6 +123,8 @@ void Executive::run()
 		for(std::list<Drone*>::iterator droneIter = droneList.begin(); droneIter != droneList.end(); droneIter++)
 		{
 			(*droneIter)->move();
+			
+			
 		}
 		
 

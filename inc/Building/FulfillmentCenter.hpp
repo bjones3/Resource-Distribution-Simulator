@@ -10,7 +10,7 @@ class FulfillmentCenter : public Building
 		std::list<Drone> drones;
 
 	public:
-		FulfillmentCenter(int x, int y);
+		FulfillmentCenter(int x, int y, int roadx, int roady);
 		CargoDrone createResourceDrone();
 		PassengerDrone createPassengerDrone();
 		Resource createResource(Resource & resource);

@@ -22,10 +22,8 @@ Building::Building()
 	contentVolume = 0;
 }
 
-Building::Building(int x, int y)
+Building::Building(int x, int y, int roadx, int roady): xPos(x), yPos(y), xRoad(roadx), yRoad(roady)
 {
-	xPos = x;
-	yPos = y;
 	id = -1;//id = ID::generateID();
 	occupantCapacity = 0;
 	contentVolumeCapacity = 0;
@@ -126,6 +124,16 @@ int Building::getXPos()
 int Building::getYPos()
 {
 	return yPos;
+}
+
+int Building::getXRoad()
+{
+	return xRoad;
+}
+
+int Building::getYRoad()
+{
+	return yRoad;
 }
 
 long long int Building::getID()

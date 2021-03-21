@@ -8,8 +8,8 @@ class Building
 	protected:
 		int						xPos;
 		int						yPos;
-		int						roadX;
-		int						roadY;
+		int						xRoad;
+		int						yRoad;
 		long long int			id;
 		std::list<Individual>	occupants;
 		std::list<Resource>		contents;
@@ -19,7 +19,7 @@ class Building
 
 	public:
 		Building();
-		Building(int x, int y);
+		Building(int x, int y, int roadx, int roady);
 		int				getOccupantAmount();
 		int				getOccupantCapacity();
 		bool			canAddOccupant(Individual & occupant);
@@ -35,6 +35,8 @@ class Building
 		std::list<Individual> getOccupants();
 		int				getXPos();
 		int				getYPos();
+		int				getXRoad();
+		int				getYRoad();
 		long long int	getID();
 };
 
