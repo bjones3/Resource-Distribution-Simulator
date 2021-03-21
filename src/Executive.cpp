@@ -78,7 +78,7 @@ void Executive::run()
 	int droneCount = 1;
 	for(int i = 0; i < droneCount; i++)
 	{
-		Drone* myDrone = new Drone(3,0);
+		Drone* myDrone = new Drone(16,10);
 		droneList.push_back(myDrone);
 	}
 	
@@ -93,7 +93,7 @@ void Executive::run()
 	
 	//Initialize drone path (this will eventually be handled in the main loop when drones are given new paths)
 	std::list<Drone*>::iterator droneIter = droneList.begin();
-	(*droneIter)->createMoveList(17,10,theMap.getRoadConc());
+	(*droneIter)->createMoveList(3,0,theMap.getRoadConc());
 
 
 	//Begin simulation loop
@@ -117,7 +117,9 @@ void Executive::run()
 		time2 = std::chrono::high_resolution_clock::now();
 		timeCount = std::chrono::duration_cast<std::chrono::milliseconds>(time2 - time1).count();
 		std::this_thread::sleep_for( std::chrono::milliseconds( std::max(timePerStep-timeCount, 0) ) );
+	
+		currentTime++;
 	}
 
-
+	std::cout << "Simulation ended\n";
 };
