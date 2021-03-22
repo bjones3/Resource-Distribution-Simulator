@@ -13,17 +13,23 @@ Individual::Individual()
 	xPosition = 0;
 	yPosition = 0;
 
+	home = nullptr;
+	currentBuilding = nullptr;
+
 	name = generateName();
 	//id = ID::generateID();
 }
 
-Individual::Individual(House house)
+Individual::Individual(House* house)
 {
 	totalPossessionWeight = 0;
 	totalPossessionVolume = 0;
 
-	xPosition = house.getXPos();
-	yPosition = house.getYPos();
+	xPosition = house->getXPos();
+	yPosition = house->getYPos();
+
+	home = house;
+	currentBuilding = home;
 
 	name = generateName();
 	//id = ID::generateID();
@@ -69,3 +75,14 @@ long long int Individual::getID()
 {
 	return id;
 }
+
+Building* Individual::getBuilding()
+{
+	return currentBuilding;
+}
+
+void Individual::setBuilding(Building* newBuilding)
+{
+	currentBuilding = newBuilding;
+}
+

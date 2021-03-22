@@ -29,12 +29,15 @@ void Executive::run()
 	
 	
 	//Create pointer lists for just about everything
-	std::list<Drone*> droneList;
+	std::list<Drone*> 				droneList;
+	std::list<PassengerDrone*> 		pDroneList;
+	std::list<CargoDrone*> 			cDroneList;
+	std::list<Individual*> 			peopleList;
 	//std::unordered_map<long long int,Individual*> populace;
 	std::list<Agenda*> agendas;
-	std::list<FulfillmentCenter*> mapFFC 		= theMap.getFFC();
-	std::list<Office*> offices 					= theMap.getOffices();
-	std::list<House*> houses 					= theMap.getHouses();
+	std::list<FulfillmentCenter*> 	mapFFC 		= theMap.getFFC();
+	std::list<Office*> 				offices 	= theMap.getOffices();
+	std::list<House*> 				houses 		= theMap.getHouses();
 	
 	//Separate storage for buildings that are used for events (only offices and houses)
 	std::vector<Building*> eventBuildings;
@@ -50,7 +53,8 @@ void Executive::run()
 	{
 		for(int i = 0; i < INDIVIDUALS_SPAWNED_PER_HOUSE; i++)
 		{
-			Individual * janeDoe = new Individual(*(*houseIter));
+			Individual * janeDoe = new Individual(*houseIter);
+			peopleList.push_back(janeDoe);
 			(*houseIter)->addOccupant(*janeDoe);
 			
 			Agenda * agenda = new Agenda(*janeDoe);
@@ -72,22 +76,23 @@ void Executive::run()
 				agenda->addEvent(*event);
 			}
 			
-			std::cout << "Individual: " << (*(*houseIter)).getXPos() << ", " << (*(*houseIter)).getYPos() << std::endl;
+			std::cout << "Individual: " << (*houseIter)->getXPos() << ", " << (*houseIter)->getYPos() << std::endl;
 
-			std::cout << "Start: " << (*(*houseIter)).getXRoad() << ", " << (*(*houseIter)).getYRoad() << std::endl;
+			std::cout << "Start: " << (*houseIter)->getXRoad() << ", " << (*houseIter)->getYRoad() << std::endl;
 
 			houseIter = houses.end();
 			houseIter--;
-			std::cout << "Destination: " << (*(*houseIter)).getXRoad() << ", " << (*(*houseIter)).getYRoad() << std::endl;
+			std::cout << "Destination: " << (*houseIter)->getXRoad() << ", " << (*houseIter)->getYRoad() << std::endl;
 
 			agendas.push_back(agenda);
-			break;
+			break;	//Remove this to spawn more individuals
 		}
-		break;
+		break;	//Remove this to spawn individuals in multiple houses
 	}
 
 	//Create initial drones
-	Drone* myDrone = new Drone(3,10);
+	PassengerDrone* myDrone = new PassengerDrone(3,10);
+	pDroneList.push_back(myDrone);
 	droneList.push_back(myDrone);
 
 	
@@ -107,7 +112,9 @@ void Executive::run()
 	
 	//Initialize drone path (this will eventually be handled in the main loop when drones are given new paths)
 	std::list<Drone*>::iterator droneIter = droneList.begin();
-	(*droneIter)->createMoveList(3,0,theMap.getRoadConc());
+	Building* start = peopleList.front()->getBuilding();
+	(*droneIter)->createMoveList(start->getXRoad(),start->getYRoad(),theMap.getRoadConc());
+	bool movedDrone = false;
 
 	//Begin simulation loop
 	int currentTime = 0;
@@ -123,10 +130,32 @@ void Executive::run()
 		for(std::list<Drone*>::iterator droneIter = droneList.begin(); droneIter != droneList.end(); droneIter++)
 		{
 			(*droneIter)->move();
-			
-			
 		}
-		
+
+		//Load/unload a passenger when the drone stops
+		for(std::list<PassengerDrone*>::iterator droneIter = pDroneList.begin(); droneIter != pDroneList.end(); droneIter++)
+		{
+			if(!(*droneIter)->isMoving())
+			{
+				//Pick up the passenger and move to the passenger's destination
+				if(!movedDrone)
+				{
+					movedDrone = true;
+					Individual* who = peopleList.front();
+					Building* where = houses.back();	//For testing, the destination is the last house
+					(*droneIter)->loadPassenger(*who);
+					(*droneIter)->createMoveList(where->getXRoad(),where->getYRoad(),theMap.getRoadConc());
+					
+					std::cout << "Picked up passenger\n";
+				}
+				else
+				{
+					//(*droneIter->)unloadPassenger();
+					std::cout << "Dropped off passenger\n";
+					return;
+				}
+			}
+		}
 
 		//Pause the simulation until the next time step
 		time2 = std::chrono::high_resolution_clock::now();

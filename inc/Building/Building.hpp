@@ -25,7 +25,7 @@ class Building
 		bool			canAddOccupant(Individual & occupant);
 		void			addOccupant(Individual & occupant);
 		//TODO: Change occupants list to a hash
-		Individual		removeOccupant(Individual & occupant);
+		Individual*		removeOccupant(Individual & occupant);
 		bool			canAddResource(Resource & resource);
 		void			addResource(Resource & resource);
 		Resource		removeResource(Resource & resource);

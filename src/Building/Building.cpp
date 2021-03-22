@@ -56,7 +56,7 @@ void Building::addOccupant(Individual & occupant)
 }
 
 //TODO: Change occupants list to a hash
-Individual Building::removeOccupant(Individual & occupant)
+Individual* Building::removeOccupant(Individual & occupant)
 {
 	/*std::list<Individual>::iterator temp = std::find(occupants.begin(),occupants.end(),occupant);
 	Individual removedOccupant = *temp;

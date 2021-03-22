@@ -1,6 +1,6 @@
 #include "../../inc/rds.hpp"
 
-#define DEBUG false		//Controls whether or not to output drone positions
+#define DEBUG true		//Controls whether or not to output drone positions
 
 Drone::Drone(int x, int y)
 {
@@ -226,7 +226,7 @@ void Drone::move()
 	}
 	
 	//Otherwise, attempt to move in a direction according to the movement list
-	if(moveList.size() >= 1)
+	if(!moveList.empty())
 	{	
 		switch(moveList.front().dir)
 		{
