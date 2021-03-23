@@ -201,6 +201,11 @@ class cityMap
 			
 			return loc;
 		}
+		
+		int getRoadConc()
+		{
+			return roadConc;
+		}
 
 	private:
 		int** map;
@@ -220,7 +225,7 @@ class cityMap
 		 */
 		void init()
 		{
-			srand(time(NULL));
+			srand(0);//time(NULL));
 			map = new int*[xSize];
 			for (int i = 0; i < xSize; i++)
 			{
@@ -370,24 +375,47 @@ class cityMap
 								buildingX = p.x;
 								buildingY = p.y;
 								
+								//Determine nearest road position
+								int roadX, roadY;
+								if(checkType(p.x+1,p.y,ROAD))
+								{
+									roadX = p.x+1;
+									roadY = p.y;
+								}
+								else if(checkType(p.x-1,p.y,ROAD))
+								{
+									roadX = p.x-1;
+									roadY = p.y;
+								}
+								else if(checkType(p.x,p.y+1,ROAD))
+								{
+									roadX = p.x;
+									roadY = p.y+1;
+								}
+								else
+								{
+									roadX = p.x;
+									roadY = p.y-1;
+								}
+								
 								//DEBUG: See where buildings are located
 								map[p.x][p.y] = 8;
 
 								if(type == FACT)
 								{
-									FulfillmentCenter* f = new FulfillmentCenter(buildingX,buildingY);
+									FulfillmentCenter* f = new FulfillmentCenter(buildingX,buildingY,roadX,roadY);
 									buildings.push_back(f);
 									ffc.push_back(f);
 								}
 								else if(type == WORK)
 								{
-									Office* o = new Office(buildingX,buildingY);
+									Office* o = new Office(buildingX,buildingY,roadX,roadY);
 									buildings.push_back(o);
 									offices.push_back(o);
 								}
 								else if(type == HOME)
 								{
-									House* h = new House(buildingX,buildingY);
+									House* h = new House(buildingX,buildingY,roadX,roadY);
 									buildings.push_back(h);
 									houses.push_back(h);
 								}

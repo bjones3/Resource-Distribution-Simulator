@@ -10,20 +10,22 @@ Individual::Individual()
 	totalPossessionWeight = 0;
 	totalPossessionVolume = 0;
 
-	xPosition = 0;
-	yPosition = 0;
+	home = nullptr;
+	currentBuilding = nullptr;
+	currentDrone = nullptr;
 
 	name = generateName();
 	//id = ID::generateID();
 }
 
-Individual::Individual(House house)
+Individual::Individual(House* house)
 {
 	totalPossessionWeight = 0;
 	totalPossessionVolume = 0;
 
-	xPosition = house.getXPos();
-	yPosition = house.getYPos();
+	home = house;
+	currentBuilding = home;
+	currentDrone = nullptr;
 
 	name = generateName();
 	//id = ID::generateID();
@@ -61,11 +63,6 @@ double Individual::getPossessionWeight()
 	return totalPossessionWeight;
 }
 
-void Individual::movePosition(int newXPosition, int newYPosition)
-{
-	//matriarch.requestDrone(newXPosition, newYPosition);
-}
-
 std::unordered_map<long long int, Resource&> Individual::getIndividualPossessions()
 {
 	return possessions;
@@ -74,4 +71,44 @@ std::unordered_map<long long int, Resource&> Individual::getIndividualPossession
 long long int Individual::getID()
 {
 	return id;
+}
+
+int Individual::getXPos()
+{
+	if(currentBuilding != nullptr)
+		return currentBuilding->getXPos();
+	else if(currentDrone != nullptr)
+		return currentDrone->getXPos();
+	else	//This should never occur, unless we allow free-roaming citizens
+		return 0;
+}
+
+int Individual::getYPos()
+{
+	if(currentBuilding != nullptr)
+		return currentBuilding->getYPos();
+	else if(currentDrone != nullptr)
+		return currentDrone->getYPos();
+	else	//This should never occur, unless we allow free-roaming citizens
+		return 0;
+}
+
+Building* Individual::getBuilding()
+{
+	return currentBuilding;
+}
+
+void Individual::setBuilding(Building* newBuilding)
+{
+	currentBuilding = newBuilding;
+}
+
+Drone* Individual::getDrone()
+{
+	return currentDrone;
+}
+
+void Individual::setDrone(Drone* newDrone)
+{
+	currentDrone = newDrone;
 }

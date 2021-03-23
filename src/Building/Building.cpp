@@ -22,10 +22,8 @@ Building::Building()
 	contentVolume = 0;
 }
 
-Building::Building(int x, int y)
+Building::Building(int x, int y, int roadx, int roady): xPos(x), yPos(y), xRoad(roadx), yRoad(roady)
 {
-	xPos = x;
-	yPos = y;
 	id = -1;//id = ID::generateID();
 	occupantCapacity = 0;
 	contentVolumeCapacity = 0;
@@ -58,7 +56,7 @@ void Building::addOccupant(Individual & occupant)
 }
 
 //TODO: Change occupants list to a hash
-Individual Building::removeOccupant(Individual & occupant)
+Individual* Building::removeOccupant(Individual & occupant)
 {
     if(occupants.find(occupant.getID()) != occupants.end())
         occupants.erase(occupant.getID());
@@ -122,6 +120,16 @@ int Building::getXPos()
 int Building::getYPos()
 {
 	return yPos;
+}
+
+int Building::getXRoad()
+{
+	return xRoad;
+}
+
+int Building::getYRoad()
+{
+	return yRoad;
 }
 
 long long int Building::getID()

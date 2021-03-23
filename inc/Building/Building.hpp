@@ -9,6 +9,8 @@ class Building
 	protected:
 		int						xPos;
 		int						yPos;
+		int						xRoad;
+		int						yRoad;
 		long long int			id;
     std::unordered_map<long long int, Individual&> occupants;
     std::unordered_map<long long int, Resource&> contents;
@@ -18,13 +20,13 @@ class Building
 
 	public:
 		Building();
-		Building(int x, int y);
+		Building(int x, int y, int roadx, int roady);
 		int				getOccupantAmount();
 		int				getOccupantCapacity();
 		bool			canAddOccupant(Individual & occupant);
 		void			addOccupant(Individual & occupant);
 		//TODO: Change occupants list to a hash
-		Individual		removeOccupant(Individual & occupant);
+		Individual*		removeOccupant(Individual & occupant);
 		bool			canAddResource(Resource & resource);
 		void			addResource(Resource & resource);
 		Resource		removeResource(Resource & resource);
@@ -33,6 +35,8 @@ class Building
 		std::unordered_map<long long int, Resource> getContents();
 		int				getXPos();
 		int				getYPos();
+		int				getXRoad();
+		int				getYRoad();
 		long long int	getID();
 };
 
