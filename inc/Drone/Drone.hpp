@@ -43,8 +43,8 @@ class Drone
 		Drone(int x, int y);
 		long long int		getID();
 		void				setDest(int xpos, int ypos);
-		int					getXPosition();
-		int					getYPosition();
+		int					getXPos();
+		int					getYPos();
 		int					getXDest();
 		int					getYDest();
 		void				move();

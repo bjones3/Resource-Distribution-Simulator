@@ -29,6 +29,7 @@ void PassengerDrone::loadPassenger(Individual & passenger)
 		Individual* ind = fromWhere->removeOccupant(passenger);
 	
 	passenger.setBuilding(nullptr);
+	passenger.setDrone(this);
 	
 	passengers.insert({passenger.getID(), passenger});	
 	//std::unordered_map<long long int, Resource&> temp = passenger.getIndividualPossessions();

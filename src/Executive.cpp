@@ -156,6 +156,10 @@ void Executive::run()
 				}
 			}
 		}
+		
+		//Print the individual's position for testing
+		Individual* who = peopleList.front();
+		std::cout << who->getXPos() << ", " << who->getYPos() << std::endl;
 
 		//Pause the simulation until the next time step
 		time2 = std::chrono::high_resolution_clock::now();

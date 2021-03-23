@@ -6,8 +6,6 @@
 class Individual
 {
 	private:
-		int					xPosition;
-		int					yPosition;
 		std::string			name;
 		long long int		id;
 		std::list<Resource>	possessions;
@@ -16,6 +14,7 @@ class Individual
 		//Agenda			schedule;
 		House* 				home;
 		Building*			currentBuilding;
+		Drone*				currentDrone;
 
 		std::string generateName();
 
@@ -26,11 +25,14 @@ class Individual
 		void				addPossession(Resource & possession);
 		double				getPossessionVolume();
 		double				getPossessionWeight();
-		void				movePosition(int newXPosition, int newYPosition);
 		std::list<Resource>	getIndividualPossessions();
 		long long int		getID();
+		int					getXPos();
+		int					getYPos();
 		Building*			getBuilding();
+		Drone*				getDrone();
 		void				setBuilding(Building* newBuilding);
+		void				setDrone(Drone* newDrone);
 };
 
 #endif

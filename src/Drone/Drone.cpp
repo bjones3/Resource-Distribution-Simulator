@@ -1,6 +1,6 @@
 #include "../../inc/rds.hpp"
 
-#define DEBUG true		//Controls whether or not to output drone positions
+#define DEBUG false		//Controls whether or not to output drone positions
 
 Drone::Drone(int x, int y)
 {
@@ -326,12 +326,12 @@ std::list<Drone::Movement> Drone::getMoveList()
 	return moveList;
 }
 
-int Drone::getXPosition()
+int Drone::getXPos()
 {
 	return xPos;
 }
 
-int Drone::getYPosition()
+int Drone::getYPos()
 {
 	return yPos;
 }
