@@ -51,19 +51,15 @@ bool Building::canAddOccupant(Individual & occupant)
 
 void Building::addOccupant(Individual & occupant)
 {
-	if(canAddOccupant(occupant))
-		occupants.push_front(occupant);
+    if(canAddOccupant(occupant))
+        occupants.insert({occupant.getID(), occupant});
 }
 
 //TODO: Change occupants list to a hash
 Individual* Building::removeOccupant(Individual & occupant)
 {
-	/*std::list<Individual>::iterator temp = std::find(occupants.begin(),occupants.end(),occupant);
-	Individual removedOccupant = *temp;
-	for()
-		if(*temp.getID() == occupant.getID())
-			occupants.remove(*temp);
-	return removedOccupant;*/
+    if(occupants.find(occupant.getID()) != occupants.end())
+        occupants.erase(occupant.getID());
 }
 
 bool Building::canAddResource(Resource & resource)
@@ -77,18 +73,15 @@ void Building::addResource(Resource & resource)
 {
 	if (canAddResource(resource))
 	{
-		contentVolume += resource.getVolume();
-		contents.push_front(resource);
+        contentVolume += resource.getVolume();
+        contents.insert({resource.getID(), resource});
 	}
 }
 
 Resource Building::removeResource(Resource & resource)
 {
-	/*std::list<Resource>::iterator temp = std::find(contents.begin(),contents.end(),resource);
-	Resource removedResource = *temp;
-	contents.remove(*temp);
-	contentVolume -= resource.getVolume();
-	return removedResource;*/
+    if(contents.find(resource.getID()) != contents.end())
+        contents.erase(resource.getID());
 }
 
 bool Building::canBringOccupant(Individual & occupant)
@@ -106,6 +99,8 @@ bool Building::canBringContents(Resource & resource)
 		return false;
 }
 
+/*
+=======
 std::list<Resource> Building::getContents()
 {
 	return contents;
@@ -115,6 +110,7 @@ std::list<Individual> Building::getOccupants()
 {
 	return occupants;
 }
+*/
 
 int Building::getXPos()
 {

@@ -7,6 +7,8 @@
 # include <vector>
 # include <string>
 # include <algorithm>
+# include <unordered_map>
+# include <stdlib.h>
 
 class Executive;
 class ID;

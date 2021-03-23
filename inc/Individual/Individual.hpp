@@ -8,7 +8,7 @@ class Individual
 	private:
 		std::string			name;
 		long long int		id;
-		std::list<Resource>	possessions;
+		std::unordered_map<long long int, Resource&>	possessions;
 		double				totalPossessionWeight;
 		double				totalPossessionVolume;
 		//Agenda			schedule;
@@ -21,11 +21,12 @@ class Individual
 	public:
 		Individual();
 		Individual(House* house);
-		void				doTask(std::list<Resource> & resources);
+		void				doTask(std::unordered_map<long long int, Resource>	& resources);
 		void				addPossession(Resource & possession);
+        bool                canAddPossession(Resource & possession);
 		double				getPossessionVolume();
 		double				getPossessionWeight();
-		std::list<Resource>	getIndividualPossessions();
+		std::unordered_map<long long int, Resource&>	getIndividualPossessions();
 		long long int		getID();
 		int					getXPos();
 		int					getYPos();
