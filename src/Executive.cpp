@@ -112,9 +112,12 @@ void Executive::run()
 	
 	//Initialize drone path (this will eventually be handled in the main loop when drones are given new paths)
 	std::list<Drone*>::iterator droneIter = droneList.begin();
-	Building* start = peopleList.front()->getBuilding();
+	Individual* firstDude = peopleList.front();
+	Building* start = firstDude->getBuilding();
 	(*droneIter)->createMoveList(start->getXRoad(),start->getYRoad(),theMap.getRoadConc());
+	//(*droneIter)->createMoveList(6,10,theMap.getRoadConc());
 	bool movedDrone = false;
+	
 
 	//Begin simulation loop
 	int currentTime = 0;
@@ -138,12 +141,11 @@ void Executive::run()
 			if(!(*droneIter)->isMoving())
 			{
 				//Pick up the passenger and move to the passenger's destination
-				if(!movedDrone)
+				if(!movedDrone && (*droneIter)->isAdjacent(firstDude->getBuilding()))
 				{
 					movedDrone = true;
-					Individual* who = peopleList.front();
 					Building* where = houses.back();	//For testing, the destination is the last house
-					(*droneIter)->loadPassenger(*who);
+					(*droneIter)->loadPassenger(*firstDude);
 					(*droneIter)->createMoveList(where->getXRoad(),where->getYRoad(),theMap.getRoadConc());
 					
 					std::cout << "Picked up passenger\n";
@@ -158,8 +160,7 @@ void Executive::run()
 		}
 		
 		//Print the individual's position for testing
-		Individual* who = peopleList.front();
-		std::cout << who->getXPos() << ", " << who->getYPos() << std::endl;
+		//std::cout << firstDude->getXPos() << ", " << firstDude->getYPos() << std::endl;
 
 		//Pause the simulation until the next time step
 		time2 = std::chrono::high_resolution_clock::now();

@@ -26,54 +26,59 @@ void Drone::createMoveList(int destX, int destY, int roadConc)
 	xDest = destX;
 	yDest = destY;
 	int direction;
+	bool pathFinished = false;
 	
 	//First intersection
 	Movement firstMove = createMovement(xPos, yPos, xDest, yDest, roadConc);
+	pathFinished = checkForPos(xPos, yPos, xDest, yDest, firstMove);
 	moveList.push_back(firstMove);
 	
 	//Last intersection (needs to be created to calculate the second and third intersections)
 	Movement lastMove = createMovement(xDest, yDest, firstMove.x, firstMove.y, roadConc);//xPos, yPos, roadConc);
 	
 	//Second intersection
-	if(firstMove.x < lastMove.x)
-	{
-		direction = RIGHT;
-		//moveList.push_back(RIGHT);
-		//moveList.push_back(interX2);
-	}
-	else
+	Movement secondMove( firstMove.x, firstMove.y, firstMove.dir );
+	if(lastMove.x != firstMove.x && !pathFinished)
 	{
 		direction = LEFT;
-		//moveList.push_back(LEFT);
-		//moveList.push_back(interX2);
+		if(firstMove.x < lastMove.x)
+			direction *= -1;
+			
+		secondMove.x = lastMove.x;
+		secondMove.y = lastMove.y;
+		secondMove.dir = direction;
+		
+		pathFinished = checkForPos(firstMove.x, firstMove.y, xDest, yDest, secondMove);
+		moveList.push_back(secondMove);
 	}
-	Movement secondMove( lastMove.x, lastMove.y, direction );
-	moveList.push_back(secondMove);
 	
 	//Third intersection
-	if(firstMove.y < lastMove.y)
-	{
-		direction = DOWN;
-		//moveList.push_back(DOWN);
-		//moveList.push_back(interY2);
-	}
-	else
+	Movement thirdMove( secondMove.x, secondMove.y, secondMove.dir );
+	if(lastMove.y != firstMove.y && !pathFinished)
 	{
 		direction = UP;
-		//moveList.push_back(UP);
-		//moveList.push_back(interY2);
+		if(firstMove.y < lastMove.y)
+			direction *= -1;
+
+		thirdMove.x = lastMove.x;
+		thirdMove.y = lastMove.y;
+		thirdMove.dir = direction;
+		
+		pathFinished = checkForPos(secondMove.x, secondMove.y, xDest, yDest, thirdMove);
+		moveList.push_back(thirdMove);
 	}
-	Movement thirdMove( lastMove.x, lastMove.y, direction );
-	moveList.push_back(thirdMove);
 	
 	//Last intersection (needs to be placed last in the list)
-	lastMove.dir *= -1;			//moveList.push_back(-direction);
-	if(lastMove.dir == RIGHT || lastMove.dir == LEFT)
-		lastMove.x = xDest;		//moveList.push_back(xDest);
-	else
-		lastMove.y = yDest;		//moveList.push_back(yDest);
-	
-	moveList.push_back(lastMove);
+	if(!pathFinished)
+	{
+		lastMove.dir *= -1;
+		if(lastMove.dir == RIGHT || lastMove.dir == LEFT)
+			lastMove.x = xDest;
+		else
+			lastMove.y = yDest;
+
+		moveList.push_back(lastMove);
+	}
 	
 	if(DEBUG)
 	{
@@ -86,93 +91,29 @@ void Drone::createMoveList(int destX, int destY, int roadConc)
 	}
 }
 
-/*void Drone::getFirstIntersection(int & interX, int & interY, int roadConc)
+bool Drone::checkForPos(int startx, int starty, int targetx, int targety, Movement& move)
 {
-	//On a horizontal road
-	if(yPos % roadConc == 0)
+	//Check to see if the target is even on the same axis that we're moving on
+	if(startx == targetx && abs(move.dir) == DOWN)
 	{
-		interY = yPos;
-		int diff = xDest - xPos;
-		if(diff > 0)
+		if((move.dir == DOWN && targety >= starty) || (move.dir == UP && targety <= starty))
 		{
-			 interX = xPos + roadConc - (xPos % roadConc);
-			 moveList.push_back(RIGHT);
-			 if(DEBUG)
-			 	std::cout << "Intersection X: " << interX << std::endl;
+			move.y = targety;
+			return true;
 		}
-		else
-		{
-		 	interX = xPos - (xPos % roadConc);
-		 	moveList.push_back(LEFT);
-		 	if(DEBUG)
-				std::cout << "Intersection X: " << interX << std::endl;
-		}
-		moveList.push_back(interX);
 	}
-	else	//Vertical road
+	else if(starty == targety && abs(move.dir) == RIGHT)
 	{
-		interX = xPos;
-		int diff = yDest - yPos;
-		if(diff > 0)
+		if((move.dir == RIGHT && targetx >= startx) || (move.dir == LEFT && targetx <= startx))
 		{
-			 interY = yPos + roadConc - (yPos % roadConc);
-			 moveList.push_back(DOWN);
-			 if(DEBUG)
-			 	std::cout << "Intersection Y: " << interY << std::endl;
+			move.x = targetx;
+			return true;
 		}
-		else
-		{
-		 	interY = yPos - (yPos % roadConc);
-		 	moveList.push_back(UP);
-		 	if(DEBUG)
-				std::cout << "Intersection Y: " << interY << std::endl;
-		}
-		moveList.push_back(interY);
 	}
+	
+	//This movement won't intersect the target
+	return false;
 }
-
-void Drone::getSecondIntersection(int & interX, int & interY, int & direction, int roadConc)
-{
-	//On a horizontal road
-	if(yPos % roadConc == 0)
-	{
-		interY = yDest;
-		int diff = xDest - xPos;
-		if(diff < 0)
-		{
-			 interX = xDest + roadConc - (xDest % roadConc);
-			 direction = RIGHT;
-			 if(DEBUG)
-			 	std::cout << "Intersection2 X: " << interX << std::endl;
-		}
-		else
-		{
-		 	interX = xDest - (xDest % roadConc);
-		 	direction = LEFT;
-		 	if(DEBUG)
-				std::cout << "Intersection2 X: " << interX << std::endl;
-		}
-	}
-	else	//Vertical road
-	{
-		interX = xDest;
-		int diff = yDest - yPos;
-		if(diff < 0)
-		{
-			 interY = yDest + roadConc - (yDest % roadConc);
-			 direction = DOWN;
-			 if(DEBUG)
-			 	std::cout << "Intersection2 Y: " << interY << std::endl;
-		}
-		else
-		{
-		 	interY = yDest - (yDest % roadConc);
-		 	direction = UP;
-			if(DEBUG)
-				std::cout << "Intersection2 Y: " << interY << std::endl;
-		}
-	}
-}*/
 
 Drone::Movement Drone::createMovement(int x1, int y1, int x2, int y2, int roadConc)
 {
@@ -324,6 +265,11 @@ bool Drone::isMoving()
 std::list<Drone::Movement> Drone::getMoveList()
 {
 	return moveList;
+}
+
+bool Drone::isAdjacent(Building* where)
+{
+	return(where->getXPos() == xPos && abs(where->getYPos() - yPos) <= 1) || (where->getYPos() == yPos && abs(where->getXPos() - xPos) <= 1);
 }
 
 int Drone::getXPos()

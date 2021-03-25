@@ -21,10 +21,13 @@ class Drone
 		
 		struct Movement
 		{
-			int dir = -1;	//What direction the drone will be moving when reaching this point
-			int x = 0, y = 0;	//The point the drone is moving towards
-			Movement(int xpos, int ypos, int direction): x(xpos), y(ypos), dir(direction)
-			  {}			
+			int dir;	//What direction the drone will be moving when reaching this point (UP, DOWN, LEFT, RIGHT)
+			int x, y;	//The point the drone is moving towards
+
+			Movement(int xpos, int ypos, int direction)
+			{
+				x = xpos; y = ypos; dir = direction;
+			}			
 		};
 		
 		std::list<Resource>	payload;
@@ -34,9 +37,8 @@ class Drone
 		void 				moveDown(int destY);
 		void 				moveLeft(int destX);
 		void 				moveRight(int destX);
-		//void 				getFirstIntersection(int & interX, int & interY, int roadConc);
-		//void 				getSecondIntersection(int & interX, int & interY, int & direction, int roadConc);
 		Movement			createMovement(int x1, int y1, int x2, int y2, int roadConc);
+		bool				checkForPos(int startx, int starty, int targetx, int targety, Movement& move);
 		
 
 	public:
@@ -49,10 +51,9 @@ class Drone
 		int					getYDest();
 		void				move();
 		void				createMoveList(int destX, int destY, int roadConc);
-		bool				isMoving();
 		std::list<Movement>	getMoveList();
-		int					getMoveDirection();
-		int					getNextPosition();
+		bool				isMoving();
+		bool				isAdjacent(Building* where);
 };
 
 #endif

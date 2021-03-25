@@ -47,10 +47,12 @@ bool Individual::canAddPossession(Resource & possession){
 void Individual::addPossession(Resource & possession)
 {
     if(canAddPossession(possession))
+    {
         possessions.insert({possession.getID(), possession});
 
-	totalPossessionWeight += possession.getWeight();
-	totalPossessionVolume += possession.getVolume();
+		totalPossessionWeight += possession.getWeight();
+		totalPossessionVolume += possession.getVolume();
+	}
 }
 
 double Individual::getPossessionVolume()
