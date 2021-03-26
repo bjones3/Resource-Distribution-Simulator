@@ -12,7 +12,7 @@ class Building
 		int						xRoad;
 		int						yRoad;
 		long long int			id;
-    std::unordered_map<long long int, Individual&> occupants;
+    std::unordered_map<long long int, Individual*> occupants;
     std::unordered_map<long long int, Resource&> contents;
 		int						occupantCapacity;
 		double					contentVolumeCapacity;
@@ -24,9 +24,9 @@ class Building
 		int				getOccupantAmount();
 		int				getOccupantCapacity();
 		bool			canAddOccupant(Individual & occupant);
-		void			addOccupant(Individual & occupant);
-		//TODO: Change occupants list to a hash
-		Individual*		removeOccupant(Individual & occupant);
+		void			addOccupant(Individual * occupant);
+		bool 			occupantExists(long long int occupant);
+		Individual*		removeOccupant(long long int occupant);
 		bool			canAddResource(Resource & resource);
 		void			addResource(Resource & resource);
 		Resource		removeResource(Resource & resource);
@@ -38,6 +38,7 @@ class Building
 		int				getXRoad();
 		int				getYRoad();
 		long long int	getID();
+		void			setID(long long int theID);
 };
 
 #endif

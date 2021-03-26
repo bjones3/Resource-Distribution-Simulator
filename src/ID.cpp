@@ -4,12 +4,12 @@
 
 ID::ID()
 {
-    id = -1;
+    //ID::id = -1;
 }
 
-long long int ID::generateID()
+/*long long int ID::generateID()
 {
-	id++;
+	ID::id++;
 	//std::cout << id << std::endl;
-	return id;
-}
+	return ID::id;
+}*/

@@ -271,7 +271,7 @@ class Resource
 		struct range	wearFactorRange;
         
     public:
-    	Resource( int theType, ResourceTable & table );
+    	Resource( int theType, long long int theID, ResourceTable & table );
 		double			genWeight(struct range inWeight);
 		double			genVolume(struct range inVolume);
 		double			genWearFactor(struct range inWearFactor);

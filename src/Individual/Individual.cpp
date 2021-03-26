@@ -15,10 +15,10 @@ Individual::Individual()
 	currentDrone = nullptr;
 
 	name = generateName();
-	//id = ID::generateID();
+	id = -1;
 }
 
-Individual::Individual(House* house)
+Individual::Individual(House* house, long long int theID)
 {
 	totalPossessionWeight = 0;
 	totalPossessionVolume = 0;
@@ -28,7 +28,7 @@ Individual::Individual(House* house)
 	currentDrone = nullptr;
 
 	name = generateName();
-	//id = ID::generateID();
+	id = theID;
 }
 
 void Individual::doTask(std::unordered_map<long long int, Resource> & resources)

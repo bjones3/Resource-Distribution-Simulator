@@ -20,7 +20,7 @@ class Individual
 
 	public:
 		Individual();
-		Individual(House* house);
+		Individual(House* house, long long int theID);
 		void				doTask(std::unordered_map<long long int, Resource>	& resources);
 		void				addPossession(Resource & possession);
         bool                canAddPossession(Resource & possession);

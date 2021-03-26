@@ -1,10 +1,10 @@
 #include "../../inc/rds.hpp"
 
-PassengerDrone::PassengerDrone(int x, int y) : Drone::Drone(x, y)
+PassengerDrone::PassengerDrone(int x, int y, long long int theID) : Drone::Drone(x, y, theID)
 {
 	xPos = x;
 	yPos = y;
-	//id = newId;//ID::generateID();
+	id = theID;
 	passengerCapacity = 12;
 	maxVolume = 48;
 	maxWeight = 1000;
@@ -21,17 +21,16 @@ bool PassengerDrone::canLoadPassenger(Individual & passenger)
     return true;
 }
 
-void PassengerDrone::loadPassenger(Individual & passenger)
+void PassengerDrone::loadPassenger(Individual * passenger)
 {
-	Building* fromWhere = passenger.getBuilding();
+	Building* fromWhere = passenger->getBuilding();
 	if(fromWhere != nullptr)
-		Individual* ind = fromWhere->removeOccupant(passenger);
+		Individual* ind = fromWhere->removeOccupant(passenger->getID());
 	
-	passenger.setBuilding(nullptr);
-	passenger.setDrone(this);
+	passenger->setDrone(this);
 	
-    passengers.insert({passenger.getID(), passenger});
-    std::unordered_map<long long int, Resource&> temp = passenger.getIndividualPossessions();
+    passengers.insert({passenger->getID(), passenger});
+    std::unordered_map<long long int, Resource&> temp = passenger->getIndividualPossessions();
     std::unordered_map<long long int, Resource&>::iterator iter = temp.begin();
     /*for (iter; iter!= temp.end(); iter++)
       {
@@ -39,9 +38,19 @@ void PassengerDrone::loadPassenger(Individual & passenger)
       }*/
 }
 
-//NEEDS WORK
-Individual PassengerDrone::unloadPassenger(Individual & passenger)
+bool PassengerDrone::passengerExists(long long int passenger)
 {
+	return passengers.find(passenger) != passengers.end();
+}
+
+Individual* PassengerDrone::unloadPassenger(long long int passenger)
+{
+	Individual * who = passengers.find(passenger)->second;
+	passengers.erase(passenger);
+	
+	who->setDrone(nullptr);
+	
+	return who;
 	/*std::list<Individual>::iterator temp1 = passengers.begin();
 
 	Individual ind = passenger;
@@ -61,3 +70,9 @@ Individual PassengerDrone::unloadPassenger(Individual & passenger)
 
 	return ind;*/
 }
+
+std::unordered_map<long long int, Individual*> PassengerDrone::getPassengers()
+{
+	return passengers;
+}
+

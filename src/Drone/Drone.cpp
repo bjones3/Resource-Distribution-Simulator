@@ -2,13 +2,13 @@
 
 #define DEBUG false		//Controls whether or not to output drone positions
 
-Drone::Drone(int x, int y)
+Drone::Drone(int x, int y, long long int theID)
 {
 	xPos = x;
 	yPos = y;
 	xDest = x;
 	yDest = y;
-	id = -1; //id = ID::generateID();
+	id = theID;
 	contentVolume = 0;
 	contentWeight = 0;
 	maxVolume = 0;
@@ -19,6 +19,35 @@ void Drone::setDest(int xpos, int ypos)
 {
 	xDest = xpos;
 	yDest = ypos;
+}
+
+void Drone::createRoute(Building* where, Individual* who, int roadConc)
+{
+	Route theRoute(where,who);
+	routeList.push_back(theRoute);
+	
+	Building* start = who->getBuilding();
+	
+	//Create path to individual
+	createMoveList(start->getXRoad(),start->getYRoad(),roadConc);
+	
+	//Create path to where the individual wants to go
+	createMoveList(where->getXRoad(),where->getYRoad(),roadConc);
+}
+
+void Drone::removeRoute()
+{
+	routeList.pop_front();
+}
+
+Drone::Route Drone::getRoute()
+{
+	return routeList.front();
+}
+
+std::list<Drone::Route> Drone::getRouteList()
+{
+	return routeList;
 }
 
 void Drone::createMoveList(int destX, int destY, int roadConc)
