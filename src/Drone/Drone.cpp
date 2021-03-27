@@ -21,10 +21,10 @@ void Drone::setDest(int xpos, int ypos)
 	yDest = ypos;
 }
 
-void Drone::createRoute(Building* where, Individual* who, int roadConc)
+void Drone::createDelivery(Building* where, Individual* who, int roadConc)
 {
-	Route theRoute(where,who);
-	routeList.push_back(theRoute);
+	Delivery theDelivery(where,who);
+	deliveries.push_back(theDelivery);
 	
 	Building* start = who->getBuilding();
 	
@@ -35,31 +35,45 @@ void Drone::createRoute(Building* where, Individual* who, int roadConc)
 	createMoveList(where->getXRoad(),where->getYRoad(),roadConc);
 }
 
-void Drone::removeRoute()
+void Drone::removeDelivery(long long int theID)
 {
-	routeList.pop_front();
+	for(std::list<Delivery>::iterator it = deliveries.begin(); it != deliveries.end(); it++)
+	{
+		if((*it).who->getID() == theID)
+		{
+			deliveries.erase(it);
+			return;
+		}
+	}
 }
 
-Drone::Route Drone::getRoute()
+std::list<Drone::Delivery> Drone::getDeliveries()
 {
-	return routeList.front();
+	return deliveries;
 }
 
-std::list<Drone::Route> Drone::getRouteList()
+bool Drone::deliveryCheck()
 {
-	return routeList;
+	return canDeliveryCheck;
 }
 
 void Drone::createMoveList(int destX, int destY, int roadConc)
 {
 	xDest = destX;
 	yDest = destY;
-	int direction;
 	bool pathFinished = false;
+	int direction;
+	int startX = xPos;
+	int startY = yPos;
+	if(!moveList.empty())
+	{
+		startX = moveList.back().x;
+		startY = moveList.back().y;
+	}
 	
 	//First intersection
-	Movement firstMove = createMovement(xPos, yPos, xDest, yDest, roadConc);
-	pathFinished = checkForPos(xPos, yPos, xDest, yDest, firstMove);
+	Movement firstMove = createMovement(startX, startY, xDest, yDest, roadConc);
+	pathFinished = checkForPos(startX, startY, xDest, yDest, firstMove);
 	moveList.push_back(firstMove);
 	
 	//Last intersection (needs to be created to calculate the second and third intersections)
@@ -149,7 +163,7 @@ Drone::Movement Drone::createMovement(int x1, int y1, int x2, int y2, int roadCo
 	int direction, interX, interY;
 	
 	//On a horizontal road
-	if(yPos % roadConc == 0)
+	if(y1 % roadConc == 0)
 	{
 		interY = y1;
 		int diff = x2 - x1;
@@ -186,36 +200,46 @@ Drone::Movement Drone::createMovement(int x1, int y1, int x2, int y2, int roadCo
 void Drone::move()
 {
 	//Stop moving if the destination has been reached
-	if(xPos == xDest && yPos == yDest)
+	/*if(xPos == xDest && yPos == yDest)
 	{
 		if(!moveList.empty() && DEBUG)
 			std::cout << "Destination reached\n";
 		
 		while(!moveList.empty())
 			moveList.pop_front();
-	}
+	}*/
 	
 	//Otherwise, attempt to move in a direction according to the movement list
 	if(!moveList.empty())
-	{	
+	{
+		int theSize = moveList.size();
 		switch(moveList.front().dir)
 		{
 			case -1://UP
-				moveUp(moveList.front().y);//*(++moveList.begin()));
+				moveUp(moveList.front().y);
 			break;
 			case 1://DOWN
-				moveDown(moveList.front().y);//*(++moveList.begin()));
+				moveDown(moveList.front().y);
 			break;
 			case -2://LEFT:
-				moveLeft(moveList.front().x);//*(++moveList.begin()));
+				moveLeft(moveList.front().x);
 			break;
 			case 2://RIGHT:
-				moveRight(moveList.front().x);//*(++moveList.begin()));
+				moveRight(moveList.front().x);
 			break;
 		}
+			
+		//If a movement was completed, it will be popped off the list
+		if(theSize != moveList.size())
+			canDeliveryCheck = true;	//Check for passengers between movements
+		else
+			canDeliveryCheck = false;
+			
 		if(DEBUG)
 			std::cout << xPos << ", " << yPos << std::endl;
 	}
+	else
+		canDeliveryCheck = false;
 }
 
 void Drone::moveUp(int destY)
@@ -231,7 +255,7 @@ void Drone::moveUp(int destY)
 		if(DEBUG)
 			std::cout << "Done moving up\n";
 			
-		move();
+		//move();
 	}
 }
 
@@ -248,7 +272,7 @@ void Drone::moveDown(int destY)
 		if(DEBUG)
 			std::cout << "Done moving down\n";
 			
-		move();
+		//move();
 	}
 }
 
@@ -265,7 +289,7 @@ void Drone::moveLeft(int destX)
 		if(DEBUG)
 			std::cout << "Done moving left\n";
 			
-		move();
+		//move();
 	}
 }
 
@@ -282,7 +306,7 @@ void Drone::moveRight(int destX)
 		if(DEBUG)
 			std::cout << "Done moving right\n";
 		
-		move();
+		//move();
 	}
 }
 

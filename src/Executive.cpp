@@ -94,7 +94,7 @@ void Executive::run()
 	//Create initial drones
 	for(int i = 0; i < 2; i++)
 	{
-		PassengerDrone* myDrone = new PassengerDrone(2+i,i*3+10,generateID());
+		PassengerDrone* myDrone = new PassengerDrone(0,16,generateID());
 		pDroneList.push_back(myDrone);
 		droneList.push_back(myDrone);
 	}
@@ -117,16 +117,19 @@ void Executive::run()
 	std::list<Drone*>::iterator droneIter = droneList.begin();
 	std::list<Individual*>::iterator peopleIter = peopleList.begin();
 
-	for(int i = 0; i < 2; i++)
+	for(int i = 0; i < 1; i++)
 	{
 		Drone* theDrone = (*droneIter);
 		Individual* theDude = (*peopleIter);
+		Building* theBuilding = houses.back();
+		if(i == 1)
+			theBuilding = (*(++(++houses.begin())));
 	
-		theDrone->createRoute(houses.back(),theDude,theMap.getRoadConc());
+		theDrone->createDelivery(theBuilding,theDude,theMap.getRoadConc());
 		
-		std::cout << "Person " << theDude->getID() << " needs Drone " << theDrone->getID() << ";\n(" << theDude->getXPos() << ", " << theDude->getYPos() << ") -> (" << theDrone->getXPos() << ", " << theDrone->getYPos() << ")\n";
+		std::cout << "Person " << theDude->getID() << " needs Drone " << theDrone->getID() << ";\n(" << theDude->getXPos() << ", " << theDude->getYPos() << ") -> (" << theBuilding->getXPos() << ", " << theBuilding->getYPos() << ")\n";
 		
-		droneIter++;
+		//droneIter++;
 		peopleIter++;
 	}
 	
@@ -152,45 +155,53 @@ void Executive::run()
 		for(std::list<PassengerDrone*>::iterator droneIter = pDroneList.begin(); droneIter != pDroneList.end(); droneIter++)
 		{
 			PassengerDrone* theDrone = (*droneIter);
-			if(theDrone->isMoving() && !theDrone->getRouteList().empty())
+			if(theDrone->deliveryCheck())
 			{
-				//Pick up the passenger and move to the passenger's destination
-				if(theDrone->getPassengers().empty())
+				//Check all deliveries to see if any are adjacent
+				std::list<Drone::Delivery> deliveries = theDrone->getDeliveries();
+				for(std::list<Drone::Delivery>::iterator deliveryIter = deliveries.begin(); deliveryIter != deliveries.end(); deliveryIter++)
 				{
-					Individual* who = theDrone->getRoute().who;
-					if(who->getBuilding()->occupantExists(who->getID())
-					&& theDrone->isAdjacent(who->getBuilding()) 
-					&& theDrone->canLoadPassenger(*who))
+					Drone::Delivery theDelivery = (*deliveryIter);
+					
+					//If they're not onboard
+					if(!theDrone->passengerExists(theDelivery.who->getID()))
 					{
-						theDrone->loadPassenger(who);
-						
-						std::cout << "(" << theDrone->getID() << ") Picked up passenger "<< who->getID() << std::endl;
+						Individual* who = theDelivery.who;
+						Building* where = who->getBuilding();
+						if(where->occupantExists(who->getID())
+						&& theDrone->isAdjacent(where)
+						&& theDrone->canLoadPassenger(*who))
+						{
+							theDrone->loadPassenger(who);
+							
+							std::cout << "(" << theDrone->getID() << ") Picked up passenger "<< who->getID() << std::endl;
+						}
 					}
-				}
-				else
-				{
-					Individual* who = theDrone->getRoute().who;
-					Building* where = theDrone->getRoute().where;
-					if(theDrone->passengerExists(who->getID())
-					&& theDrone->isAdjacent(where)
-					&& where->canAddOccupant(*who))
+					else	//They're onboard
 					{
-						theDrone->unloadPassenger(who->getID());
-						where->addOccupant(who);
-						std::cout << "(" << theDrone->getID() << ") Dropped off passenger " << who->getID() << std::endl;
-						
-						theDrone->removeRoute();
-						
-						theDrone->createMoveList(6,10,theMap.getRoadConc());
+						Individual* who = theDelivery.who;
+						Building* where = theDelivery.where;
+						if(theDrone->isAdjacent(where)
+						&& where->canAddOccupant(*who))
+						{
+							theDrone->unloadPassenger(who->getID());
+							where->addOccupant(who);
+							std::cout << "(" << theDrone->getID() << ") Dropped off passenger " << who->getID() << std::endl;
+							
+							theDrone->removeDelivery(who->getID());
+							
+							if(deliveries.empty())
+								theDrone->createMoveList(6,10,theMap.getRoadConc());
+						}
 					}
 				}
 			}
-			else if(!theDrone->isMoving())
-				return;
+			//else if(!theDrone->isMoving())
+				//return;
 		}
 		
 		//Print the individual's position for testing
-		//std::cout << firstDude->getXPos() << ", " << firstDude->getYPos() << std::endl;
+		//std::cout << (*peopleIter)->getXPos() << ", " << (*peopleIter)->getYPos() << std::endl;
 
 		//Pause the simulation until the next time step
 		time2 = std::chrono::high_resolution_clock::now();

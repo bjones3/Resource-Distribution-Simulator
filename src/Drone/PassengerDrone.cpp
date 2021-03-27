@@ -30,8 +30,8 @@ void PassengerDrone::loadPassenger(Individual * passenger)
 	passenger->setDrone(this);
 	
     passengers.insert({passenger->getID(), passenger});
-    std::unordered_map<long long int, Resource&> temp = passenger->getIndividualPossessions();
-    std::unordered_map<long long int, Resource&>::iterator iter = temp.begin();
+    //std::unordered_map<long long int, Resource&> temp = passenger->getIndividualPossessions();
+    //std::unordered_map<long long int, Resource&>::iterator iter = temp.begin();
     /*for (iter; iter!= temp.end(); iter++)
       {
       payload.push_back(iter*);
