@@ -58,8 +58,12 @@ void Executive::run()
 		(*buildIter)->setID(generateID());
 
 	//Spawn individuals in the houses and generate their agendas
+	int houseCounter = -1;	//Testing
 	for(std::list<House*>::iterator houseIter = houses.begin(); houseIter != houses.end(); houseIter++)
 	{
+		houseCounter++;
+		if(houseCounter != 0 && houseCounter != 7)	//This was for testing passenger pickup
+			continue;
 		for(int i = 0; i < INDIVIDUALS_SPAWNED_PER_HOUSE; i++)
 		{
 			Individual * janeDoe = new Individual(*houseIter,generateID());
@@ -86,9 +90,9 @@ void Executive::run()
 			}
 
 			agendas.push_back(agenda);
-			//break;	//Remove this to spawn more individuals
+			break;	//Remove this to spawn more individuals in a house
 		}
-		break;	//Remove this to spawn individuals in multiple houses
+		//break;	//Remove this to spawn individuals in multiple houses
 	}
 
 	//Create initial drones
@@ -117,15 +121,24 @@ void Executive::run()
 	std::list<Drone*>::iterator droneIter = droneList.begin();
 	std::list<Individual*>::iterator peopleIter = peopleList.begin();
 
-	for(int i = 0; i < 1; i++)
+	for(int i = 0; i < 2; i++)
 	{
 		Drone* theDrone = (*droneIter);
 		Individual* theDude = (*peopleIter);
 		Building* theBuilding = houses.back();
 		if(i == 1)
-			theBuilding = (*(++(++houses.begin())));
-	
-		theDrone->createDelivery(theBuilding,theDude,theMap.getRoadConc());
+			theBuilding = (*(houses.begin()));
+
+		//Determine if this person's locations are along this drone's path
+		int index1 = -1; int index2 = -1;		
+		index1 = theDrone->posInPath(theDude->getBuilding()->getXRoad(),theDude->getBuilding()->getYRoad());
+		if(index1 != -1)
+			index2 = theDrone->posInPath(theBuilding->getXRoad(),theBuilding->getYRoad());
+		
+		std::cout << "Person " << theDude->getID() << "'s move indices: "<< index1 << ", " << index2 << std::endl;
+		
+		//Add this person to the drone's delivery list and create the needed movements
+		theDrone->createDelivery(theBuilding,theDude,index1,index2,theMap.getRoadConc());
 		
 		std::cout << "Person " << theDude->getID() << " needs Drone " << theDrone->getID() << ";\n(" << theDude->getXPos() << ", " << theDude->getYPos() << ") -> (" << theBuilding->getXPos() << ", " << theBuilding->getYPos() << ")\n";
 		
@@ -168,36 +181,57 @@ void Executive::run()
 					{
 						Individual* who = theDelivery.who;
 						Building* where = who->getBuilding();
-						if(where->occupantExists(who->getID())
-						&& theDrone->isAdjacent(where)
-						&& theDrone->canLoadPassenger(*who))
+						if(theDrone->isAdjacent(where))
 						{
-							theDrone->loadPassenger(who);
-							
-							std::cout << "(" << theDrone->getID() << ") Picked up passenger "<< who->getID() << std::endl;
+							if(!where->occupantExists(who->getID()))
+							{
+								//This should only occur if the individual thinks it's somewhere it's not, which should never occur
+								std::cout << "ERROR: Individual/Building pairing is one-way.\n";
+							}
+							else if(!theDrone->canLoadPassenger(*who))
+							{
+								//Passenger cannot be loaded; add a new path to pick them up later
+								theDrone->createMoveList(where->getXRoad(),where->getYRoad(),theMap.getRoadConc());
+								
+								//We'll also need to drop them off
+								theDrone->createMoveList(theDelivery.where->getXRoad(),theDelivery.where->getYRoad(),theMap.getRoadConc());
+							}
+							else
+							{
+								theDrone->loadPassenger(who);
+								where->removeOccupant(who->getID());
+								
+								std::cout << "(" << theDrone->getID() << ") Picked up passenger "<< who->getID() << std::endl;
+							}
 						}
 					}
 					else	//They're onboard
 					{
 						Individual* who = theDelivery.who;
-						Building* where = theDelivery.where;
-						if(theDrone->isAdjacent(where)
-						&& where->canAddOccupant(*who))
+						Building* where = theDelivery.where;					
+						
+						if(theDrone->isAdjacent(where))
 						{
-							theDrone->unloadPassenger(who->getID());
-							where->addOccupant(who);
-							std::cout << "(" << theDrone->getID() << ") Dropped off passenger " << who->getID() << std::endl;
-							
-							theDrone->removeDelivery(who->getID());
-							
-							if(deliveries.empty())
-								theDrone->createMoveList(6,10,theMap.getRoadConc());
+							if(!where->canAddOccupant(*who))
+							{
+								//Passenger cannot be unloaded, so drop them off later
+								theDrone->createMoveList(where->getXRoad(),where->getYRoad(),theMap.getRoadConc());
+							}
+							else
+							{
+								theDrone->unloadPassenger(who->getID());
+								where->addOccupant(who);
+								std::cout << "(" << theDrone->getID() << ") Dropped off passenger " << who->getID() << std::endl;
+								
+								theDrone->removeDelivery(who->getID());
+								
+								//if(theDrone->getDeliveries().empty())
+									//theDrone->createMoveList(6,10,theMap.getRoadConc());
+							}
 						}
 					}
 				}
 			}
-			//else if(!theDrone->isMoving())
-				//return;
 		}
 		
 		//Print the individual's position for testing

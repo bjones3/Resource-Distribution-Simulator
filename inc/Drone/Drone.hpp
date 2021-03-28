@@ -30,7 +30,12 @@ class Drone
 			Movement(int xpos, int ypos, int direction)
 			{
 				x = xpos; y = ypos; dir = direction;
-			}			
+			}
+			
+			Movement(const Movement& m)
+			{
+				x = m.x; y = m.y; dir = m.dir;
+			}
 		};
 		
 		Drone(int x, int y, long long int theID);
@@ -45,10 +50,11 @@ class Drone
 		std::list<Movement>	getMoveList();
 		bool				isMoving();
 		bool				isAdjacent(Building* where);
-		void				createDelivery(Building* where, Individual* who, int roadConc);
+		void				createDelivery(Building* where, Individual* who, int moveIndex1, int moveIndex2, int roadConc);
 		void 				removeDelivery(long long int theID);
 		std::list<Delivery> getDeliveries();
 		bool				deliveryCheck();
+		int					posInPath(int x, int y);
 
 	protected:	
 		const int			UP = -1;

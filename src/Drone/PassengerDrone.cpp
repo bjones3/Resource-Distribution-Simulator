@@ -23,13 +23,9 @@ bool PassengerDrone::canLoadPassenger(Individual & passenger)
 
 void PassengerDrone::loadPassenger(Individual * passenger)
 {
-	Building* fromWhere = passenger->getBuilding();
-	if(fromWhere != nullptr)
-		Individual* ind = fromWhere->removeOccupant(passenger->getID());
-	
-	passenger->setDrone(this);
-	
     passengers.insert({passenger->getID(), passenger});
+ 	passenger->setDrone(this);
+    
     //std::unordered_map<long long int, Resource&> temp = passenger->getIndividualPossessions();
     //std::unordered_map<long long int, Resource&>::iterator iter = temp.begin();
     /*for (iter; iter!= temp.end(); iter++)

@@ -21,18 +21,56 @@ void Drone::setDest(int xpos, int ypos)
 	yDest = ypos;
 }
 
-void Drone::createDelivery(Building* where, Individual* who, int roadConc)
+void Drone::createDelivery(Building* where, Individual* who, int moveIndex1, int moveIndex2, int roadConc)
 {
 	Delivery theDelivery(where,who);
 	deliveries.push_back(theDelivery);
 	
 	Building* start = who->getBuilding();
+	int originalSize = moveList.size();
 	
-	//Create path to individual
-	createMoveList(start->getXRoad(),start->getYRoad(),roadConc);
+	//Create path to individual, if necessary
+	if(moveIndex1 > -1 && moveIndex1 < moveList.size())
+	{
+		std::list<Movement>::iterator it = moveList.begin();
+		int ind = 0;
+		while(ind < moveIndex1)
+		{
+			it++;
+			ind++;
+		}
+		Movement newMove(*it);
+		if(newMove.x != start->getXRoad() || newMove.y != start->getYRoad())
+		{
+			newMove.x = start->getXRoad();
+			newMove.y = start->getYRoad();
+			moveList.insert(it, newMove);
+		}
+	}
+	else	//By default, just add a new path to the end of the movement list
+		createMoveList(start->getXRoad(),start->getYRoad(),roadConc);
 	
-	//Create path to where the individual wants to go
-	createMoveList(where->getXRoad(),where->getYRoad(),roadConc);
+	//Create path to where the individual wants to go, if necessary
+	if(moveIndex1 > -1 && moveIndex2 < originalSize && moveIndex2 > moveIndex1)
+	{
+		moveIndex2 += moveList.size()-originalSize;	//Adjust for the movement that was added at moveIndex1
+		std::list<Movement>::iterator it = moveList.begin();
+		int ind = 0;
+		while(ind < moveIndex2)
+		{
+			it++;
+			ind++;
+		}
+		Movement newMove(*it);
+		if(newMove.x != where->getXRoad() || newMove.y != where->getYRoad())
+		{
+			newMove.x = where->getXRoad();
+			newMove.y = where->getYRoad();
+			moveList.insert(it, newMove);
+		}
+	}
+	else
+		createMoveList(where->getXRoad(),where->getYRoad(),roadConc);
 }
 
 void Drone::removeDelivery(long long int theID)
@@ -65,6 +103,7 @@ void Drone::createMoveList(int destX, int destY, int roadConc)
 	int direction;
 	int startX = xPos;
 	int startY = yPos;
+	//The starting position should be where the movement list currently ends
 	if(!moveList.empty())
 	{
 		startX = moveList.back().x;
@@ -139,7 +178,8 @@ bool Drone::checkForPos(int startx, int starty, int targetx, int targety, Moveme
 	//Check to see if the target is even on the same axis that we're moving on
 	if(startx == targetx && abs(move.dir) == DOWN)
 	{
-		if((move.dir == DOWN && targety >= starty) || (move.dir == UP && targety <= starty))
+		if((move.dir == DOWN && targety >= starty && targety <= move.y)
+		|| (move.dir == UP && targety <= starty && targety >= move.y))
 		{
 			move.y = targety;
 			return true;
@@ -147,7 +187,8 @@ bool Drone::checkForPos(int startx, int starty, int targetx, int targety, Moveme
 	}
 	else if(starty == targety && abs(move.dir) == RIGHT)
 	{
-		if((move.dir == RIGHT && targetx >= startx) || (move.dir == LEFT && targetx <= startx))
+		if((move.dir == RIGHT && targetx >= startx && targetx <= move.x)
+		|| (move.dir == LEFT && targetx <= startx && targetx >= move.x))
 		{
 			move.x = targetx;
 			return true;
@@ -156,6 +197,32 @@ bool Drone::checkForPos(int startx, int starty, int targetx, int targety, Moveme
 	
 	//This movement won't intersect the target
 	return false;
+}
+
+/*
+ * Determines if the given position will be passed with the current movement list.
+ * If this path does cross the point, the index of the movement where the collision occurs is returned.
+ */
+int Drone::posInPath(int x, int y)
+{
+	int position = 0;
+	int startx = xPos;
+	int starty = yPos;
+	//std::cout << "Copied List:\n";
+	for(std::list<Movement>::iterator it = moveList.begin(); it != moveList.end(); it++)
+	{
+		Movement theMove(*it);
+		//std::cout << theMove.x << " " << theMove.y << " " << theMove.dir << std::endl;
+		if(checkForPos(startx,starty,x,y,theMove))
+			return position;
+		
+		startx = theMove.x;
+		starty = theMove.y;
+		
+		position++;
+	}
+
+	return -1;	//Can't default to 0, since 0 is a valid list position
 }
 
 Drone::Movement Drone::createMovement(int x1, int y1, int x2, int y2, int roadConc)
