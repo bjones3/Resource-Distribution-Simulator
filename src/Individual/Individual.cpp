@@ -31,13 +31,12 @@ Individual::Individual(House* house, long long int theID)
 	id = theID;
 }
 
-void Individual::doTask(std::unordered_map<long long int, Resource> & resources)
+void Individual::doTask(std::list<Resource*> resources)
 {
-     std::unordered_map<long long int, Resource>::iterator temp = resources.begin();
+     std::list<Resource*>::iterator temp;
 
-
-    for(temp; temp!=resources.end(); temp++)
-        temp->second.use();
+    for(temp = resources.begin(); temp != resources.end(); temp++)
+        (*temp)->use();
 }
 
 bool Individual::canAddPossession(Resource & possession){
@@ -114,3 +113,14 @@ void Individual::setDrone(Drone* newDrone)
 {
 	currentDrone = newDrone;
 }
+
+Agenda* Individual::getAgenda()
+{
+	return schedule;
+}
+
+void Individual::setAgenda(Agenda* theAgenda)
+{
+	schedule = theAgenda;
+}
+

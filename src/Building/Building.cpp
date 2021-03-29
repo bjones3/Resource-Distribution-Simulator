@@ -77,19 +77,26 @@ bool Building::canAddResource(Resource & resource)
 	return true;
 }
 
-void Building::addResource(Resource & resource)
+void Building::addResource(Resource * resource)
 {
-	if (canAddResource(resource))
+	if (canAddResource(*resource))
 	{
-        contentVolume += resource.getVolume();
-        contents.insert({resource.getID(), resource});
+        contentVolume += resource->getVolume();
+        contents.insert({resource->getID(), resource});
 	}
 }
 
-Resource Building::removeResource(Resource & resource)
+bool Building::resourceExists(long long int resource)
 {
-    if(contents.find(resource.getID()) != contents.end())
-        contents.erase(resource.getID());
+	return contents.find(resource) != contents.end();
+}
+
+Resource* Building::removeResource(long long int resource)
+{
+	Resource* what = contents.find(resource)->second;
+    contents.erase(what->getID());
+    
+    return what;
 }
 
 bool Building::canBringOccupant(Individual & occupant)
@@ -107,18 +114,15 @@ bool Building::canBringContents(Resource & resource)
 		return false;
 }
 
-/*
-=======
-std::list<Resource> Building::getContents()
+std::unordered_map<long long int, Resource*> Building::getContents()
 {
 	return contents;
 }
 
-std::list<Individual> Building::getOccupants()
+std::unordered_map<long long int, Individual*> Building::getOccupants()
 {
 	return occupants;
 }
-*/
 
 int Building::getXPos()
 {
