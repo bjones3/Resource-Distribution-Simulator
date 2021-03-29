@@ -22,10 +22,8 @@ Building::Building()
 	contentVolume = 0;
 }
 
-Building::Building(int x, int y)
+Building::Building(int x, int y, int roadx, int roady): xPos(x), yPos(y), xRoad(roadx), yRoad(roady)
 {
-	xPos = x;
-	yPos = y;
 	id = -1;//id = ID::generateID();
 	occupantCapacity = 0;
 	contentVolumeCapacity = 0;
@@ -51,17 +49,25 @@ bool Building::canAddOccupant(Individual & occupant)
 	return true;
 }
 
-void Building::addOccupant(Individual & occupant)
+void Building::addOccupant(Individual * occupant)
 {
-    if(canAddOccupant(occupant))
-        occupants.insert({occupant.getID(), occupant});
+	occupants.insert({occupant->getID(), occupant});
+	occupant->setBuilding(this);
 }
 
-//TODO: Change occupants list to a hash
-Individual Building::removeOccupant(Individual & occupant)
+bool Building::occupantExists(long long int occupant)
 {
-    if(occupants.find(occupant.getID()) != occupants.end())
-        occupants.erase(occupant.getID());
+	return occupants.find(occupant) != occupants.end();
+}
+
+Individual* Building::removeOccupant(long long int occupant)
+{
+	Individual * who = occupants.find(occupant)->second;
+	occupants.erase(occupant);
+	
+	who->setBuilding(nullptr);
+
+	return who;
 }
 
 bool Building::canAddResource(Resource & resource)
@@ -124,8 +130,23 @@ int Building::getYPos()
 	return yPos;
 }
 
+int Building::getXRoad()
+{
+	return xRoad;
+}
+
+int Building::getYRoad()
+{
+	return yRoad;
+}
+
 long long int Building::getID()
 {
 	return id;
+}
+
+void Building::setID(long long int theID)
+{
+	id = theID;
 }
 

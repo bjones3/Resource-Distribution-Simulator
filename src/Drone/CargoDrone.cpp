@@ -1,10 +1,10 @@
 #include "../../inc/rds.hpp"
 
-CargoDrone::CargoDrone(int x, int y, long long int newId) : Drone::Drone(x, y)
+CargoDrone::CargoDrone(int x, int y, long long int theID) : Drone::Drone(x, y, theID)
 {
 	xPos = x;
 	yPos = y;
-	id = newId;//ID::generateID();
+	id = theID;
 	maxVolume = 1000;
 	maxWeight = 6000;
 }
