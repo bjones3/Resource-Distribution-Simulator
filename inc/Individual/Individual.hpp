@@ -11,7 +11,7 @@ class Individual
 		std::unordered_map<long long int, Resource&>	possessions;
 		double				totalPossessionWeight;
 		double				totalPossessionVolume;
-		//Agenda			schedule;
+		Agenda*				schedule;
 		House* 				home;
 		Building*			currentBuilding;
 		Drone*				currentDrone;
@@ -21,7 +21,7 @@ class Individual
 	public:
 		Individual();
 		Individual(House* house, long long int theID);
-		void				doTask(std::unordered_map<long long int, Resource>	& resources);
+		void				doTask(std::list<Resource*> resources);
 		void				addPossession(Resource & possession);
         bool                canAddPossession(Resource & possession);
 		double				getPossessionVolume();
@@ -34,6 +34,8 @@ class Individual
 		Drone*				getDrone();
 		void				setBuilding(Building* newBuilding);
 		void				setDrone(Drone* newDrone);
+		Agenda*				getAgenda();
+		void				setAgenda(Agenda* theAgenda);
 };
 
 #endif

@@ -283,8 +283,8 @@ class Resource
 		Building		getNextBuilding();
 		Building		getBuilding();
 		long long int	getID();
-		int getType();
-		std::string getName();
+		int 			getType();
+		std::string 	getName();
 };
 
 #endif

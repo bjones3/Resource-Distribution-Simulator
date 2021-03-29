@@ -1,53 +1,59 @@
 #include "../../inc/rds.hpp"
 
-Agenda::Agenda(Individual individual)
+Agenda::Agenda(Individual* individual)
 {
-
-  m_individual = individual;
-
+	m_individual = individual;
+	m_individual->setAgenda(this);
 }
 
-Agenda::Agenda(std::list<Event> events, Individual individual)
+Agenda::Agenda(std::list<Event> events, Individual* individual)
 {
     m_events = events;
     m_individual = individual;
 }
 
-void Agenda::executeEvent()
+void Agenda::executeEvent(std::list<Resource*> resources)
 {
-
-  m_events.front().execute();
-
-  m_events.pop_front();
-
+	m_events.front().execute(resources);
+	m_events.pop_front();
 }
 
-bool Agenda::canExecuteEvent()
+bool Agenda::canExecuteEvent(std::list<Resource*> & foundResources, std::list<int> & typesNeeded)
 {
+	return m_events.front().canExecuteEvent(foundResources, typesNeeded);
+}
 
-  return m_events.front().canExecuteEvent();
-
+bool Agenda::inBuilding()
+{
+	Event theEvent = m_events.front();
+	return theEvent.getBuilding()->occupantExists(theEvent.getIndividual()->getID());
 }
 
 void Agenda::addEvent(Event event)
 {
-  m_events.push_back(event);
+	m_events.push_back(event);
 }
 void Agenda::addEvents(std::list<Event> events)
 {
-  for(int i = 0; i < events.size(); i++)
-  {
-
-    m_events.push_back(events.front());
-    events.pop_front();
-
-  }
+	for(int i = 0; i < events.size(); i++)
+	{
+    	m_events.push_back(events.front());
+    	events.pop_front();
+	}
 }
 
 void Agenda::removeEvent(Event event)
 {
-
-  //std::list<Event>::iterator findEvent = std::find(list.begin(), list.end(), event);
-  //m_events.remove(findEvent);
-
+	m_events.pop_front();
 }
+
+std::list<Event> Agenda::getEvents()
+{
+	return m_events;
+}
+
+Individual* Agenda::getIndividual()
+{
+	return m_individual;
+}
+

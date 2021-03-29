@@ -32,6 +32,10 @@ void Executive::run()
 	theMap.printMap();	//Show the map for debug purposes
 	
 	
+	//Create resource table
+	ResourceTable rTable;
+	
+	
 	//Create pointer lists for just about everything
 	std::list<Drone*> 				droneList;
 	std::list<PassengerDrone*> 		pDroneList;
@@ -70,29 +74,29 @@ void Executive::run()
 			peopleList.push_back(janeDoe);
 			(*houseIter)->addOccupant(janeDoe);
 			
-			Agenda * agenda = new Agenda(*janeDoe);
+			Agenda * agenda = new Agenda(janeDoe);
 			
 			//Create a random list of events for this individual's agenda
-			for(int j = 0; j < EVENTS_PER_DAY * 30 * months; j++)
-			{
+			//for(int j = 0; j < EVENTS_PER_DAY * 30 * months; j++)
+			//{
 				int buildingNumber = rand() % eventBuildings.size();
-				Building* building = eventBuildings[buildingNumber];
+				Building* building = *houseIter;//eventBuildings[buildingNumber];
 
-				int resourceAmount = rand() % 6 + 1;
+				int resourceAmount = 1;//rand() % 6 + 1;
 				std::list<int> resourceTypes;
 				for(int k = 0; k < resourceAmount; k++)
 				{
-					int resourceType = rand() % TOTAL_RESOURCE_TYPES;
+					int resourceType = 1;//rand() % TOTAL_RESOURCE_TYPES;
 					resourceTypes.push_back(resourceType);
 				}
-				Event* event = new Event(*building,*janeDoe,resourceTypes);
+				Event* event = new Event(building,janeDoe,resourceTypes);
 				agenda->addEvent(*event);
-			}
+			//}
 
 			agendas.push_back(agenda);
 			break;	//Remove this to spawn more individuals in a house
 		}
-		//break;	//Remove this to spawn individuals in multiple houses
+		break;	//Remove this to spawn individuals in multiple houses
 	}
 
 	//Create initial drones
@@ -104,24 +108,24 @@ void Executive::run()
 	}
 	
 	//Create the AI itself
-	MainAI theAI( droneList, mapFFC );
+	/*MainAI theAI( droneList, mapFFC );
 
 	//Determine plan for the first week
 	for(int i = 0; i < EVENTS_TO_LOOKAHEAD; i++)
 	{
 	
 	}
-
+	*/
 	//Activate graphics
 	//
 
 	
 	
-	//Initialize drone path (this will eventually be handled in the main loop when drones are given new paths)
+	//Initialize drone path (this will eventually be handled in the main loop when requests are implemented)
 	std::list<Drone*>::iterator droneIter = droneList.begin();
 	std::list<Individual*>::iterator peopleIter = peopleList.begin();
 
-	for(int i = 0; i < 2; i++)
+	for(int i = 0; i < 1; i++)
 	{
 		Drone* theDrone = (*droneIter);
 		Individual* theDude = (*peopleIter);
@@ -144,9 +148,16 @@ void Executive::run()
 		
 		//droneIter++;
 		peopleIter++;
-	}
-	
+	}	
 	//(*droneIter)->createMoveList(6,10,theMap.getRoadConc());
+
+	//Initialize resources in buildings for testing purposes
+	Building* firstHouse = peopleList.front()->getBuilding();
+	Resource* testResource = new Resource(0,generateID(),rTable);
+	Resource* testResource2 = new Resource(1,generateID(),rTable);
+	firstHouse->addResource(testResource);
+	firstHouse->addResource(testResource2);
+
 
 	//Begin simulation loop
 	int currentTime = 0;
@@ -162,6 +173,40 @@ void Executive::run()
 		for(std::list<Drone*>::iterator droneIter = droneList.begin(); droneIter != droneList.end(); droneIter++)
 		{
 			(*droneIter)->move();
+		}
+
+		//Attempt to execute events
+		for(std::list<Individual*>::iterator indIter = peopleList.begin(); indIter != peopleList.end(); indIter++)
+		{
+			Individual* person = *indIter;
+			Agenda* theAgenda = person->getAgenda();
+			if(!theAgenda->getEvents().empty())
+			{
+				Event theEvent = theAgenda->getEvents().front();
+				//Make sure the individual is in the building
+				if(theAgenda->inBuilding())
+				{
+					//Determine if the needed resources are available
+					std::list<Resource*> foundResources;
+					std::list<int> neededTypes;
+					if(theAgenda->canExecuteEvent(foundResources,neededTypes))
+					{
+						//Event successfully executed
+						//std::cout << "Execute success\n";
+						theAgenda->executeEvent(foundResources);
+					}
+					else
+					{
+						//Resources not in building, need a cargo drone
+						//std::cout << "Execute failure, request cDrone\n";
+					}
+				}
+				else
+				{
+					//Not in the building, need a passenger drone
+					//std::cout << "Execute failure, request pDrone\n";
+				}
+			}
 		}
 
 		//Load/unload a passenger when the drone stops
