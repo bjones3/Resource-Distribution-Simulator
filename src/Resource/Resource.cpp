@@ -1,7 +1,7 @@
 
 #include "../../inc/rds.hpp"
 
-Resource::Resource( int theType, ResourceTable & table )
+Resource::Resource( int theType, long long int theID, ResourceTable & table )
 {
 	type = theType;
 	name = table.getName( theType );
@@ -19,7 +19,7 @@ Resource::Resource( int theType, ResourceTable & table )
   	volume  = genVolume(volumeRange);
   	wearFactor  = genWearFactor(wearFactorRange);
   	
-  	//id = ID::generateID();
+  	id = theID;
 }
 
 double Resource::genWeight(struct range inWeight)

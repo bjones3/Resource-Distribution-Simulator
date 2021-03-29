@@ -6,12 +6,12 @@
 class ID
 {
 	private:
-		long long int id;
+		//long long int id;
 		//static long long int id;
 
 	public:
 		ID();
-		long long int generateID();
+		//static long long int generateID();
 };
 
 #endif

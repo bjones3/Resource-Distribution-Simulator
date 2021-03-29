@@ -9,8 +9,12 @@
 
 class Executive
 {
+	private:
+		long long int generateID();
+
 	public:
 		void run();
+
 };
 
 #endif

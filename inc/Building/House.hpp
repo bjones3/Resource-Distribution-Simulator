@@ -6,7 +6,7 @@
 class House : public Building
 {
 	public:
-		House(int x, int y);
+		House(int x, int y, int roadx, int roady);
 };
 
 #endif
