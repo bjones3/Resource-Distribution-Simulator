@@ -18,22 +18,15 @@ bool CargoDrone::canLoadCargo(Resource & resource)
 	return true;
 }
 
-void CargoDrone::loadCargo(Resource & resource)
+void CargoDrone::loadCargo(Resource * resource)
 {
-	if (canLoadCargo(resource))
-		payload.push_back(resource);
+    payload.insert({resource->getID(), resource});
 }
 
-//NEEDS WORK
-Resource CargoDrone::unloadCargo(Resource & resource)
-{
-	/*std::list<Resource>::iterator temp = payload.begin();
-	for (temp; temp != payload.end(); temp++)
-	{
-		if(*temp.getID() == resource.getID())
-		{
-			payload.erase(temp);
-			return resource;
-		}
-	}*/
+Resource* CargoDrone::unloadCargo(long long int resource){
+    Resource * what = payload.find(resource)->second;
+	payload.erase(resource);
+	return what;
+
+
 }

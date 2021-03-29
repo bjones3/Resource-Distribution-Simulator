@@ -72,7 +72,7 @@ class Drone
 		bool				canDeliveryCheck;
 		
 		std::list<Delivery> deliveries;		
-		std::list<Resource>	payload;
+		std::unordered_map<long long int, Resource*> payload;
 		std::list<Movement>	moveList;
 		
 		void 				moveUp(int destY);
