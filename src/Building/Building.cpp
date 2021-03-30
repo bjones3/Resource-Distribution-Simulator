@@ -79,11 +79,9 @@ bool Building::canAddResource(Resource & resource)
 
 void Building::addResource(Resource * resource)
 {
-	if (canAddResource(*resource))
-	{
-        contentVolume += resource->getVolume();
-        contents.insert({resource->getID(), resource});
-	}
+	contentVolume += resource->getVolume();
+	contents.insert({resource->getID(), resource});
+	resource->setBuilding(this);
 }
 
 bool Building::resourceExists(long long int resource)
@@ -95,6 +93,8 @@ Resource* Building::removeResource(long long int resource)
 {
 	Resource* what = contents.find(resource)->second;
     contents.erase(what->getID());
+    
+    what->setBuilding(nullptr);
     
     return what;
 }

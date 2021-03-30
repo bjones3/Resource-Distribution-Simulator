@@ -1,6 +1,6 @@
 #include "../../inc/rds.hpp"
 
-#define DEBUG false		//Controls whether or not to output drone positions
+#define DEBUG true		//Controls whether or not to output drone positions
 
 Drone::Drone(int x, int y, long long int theID)
 {
