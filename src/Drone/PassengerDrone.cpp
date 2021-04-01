@@ -72,3 +72,8 @@ std::unordered_map<long long int, Individual*> PassengerDrone::getPassengers()
 	return passengers;
 }
 
+int PassengerDrone::getCapacity()
+{
+	return passengerCapacity;
+}
+

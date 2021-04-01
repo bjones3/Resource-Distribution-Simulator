@@ -60,12 +60,12 @@ class ResourceTable
 		ResourceTable()
 		{
 			names[GENERIC_ITEM] = "Generic Item";
-			values[WEAR_FACTOR_MIN + TOTAL_OFFSETS*GENERIC_ITEM] = 0.01;
-			values[WEAR_FACTOR_MAX + TOTAL_OFFSETS*GENERIC_ITEM] = 6000;	//Max load of a 20ft Uhaul
+			values[WEAR_FACTOR_MIN + TOTAL_OFFSETS*GENERIC_ITEM] = 0;
+			values[WEAR_FACTOR_MAX + TOTAL_OFFSETS*GENERIC_ITEM] = 1;
 			values[WEIGHT_MIN + TOTAL_OFFSETS*GENERIC_ITEM] = 0.01;
-			values[WEIGHT_MAX + TOTAL_OFFSETS*GENERIC_ITEM] = 1000;	//Max volume of 2nd largest Uhaul
-			values[VOLUME_MIN + TOTAL_OFFSETS*GENERIC_ITEM] = 0;
-			values[VOLUME_MAX + TOTAL_OFFSETS*GENERIC_ITEM] = 1;
+			values[WEIGHT_MAX + TOTAL_OFFSETS*GENERIC_ITEM] = 6000;	//Max load of a 20ft Uhaul
+			values[VOLUME_MIN + TOTAL_OFFSETS*GENERIC_ITEM] = 0.01;
+			values[VOLUME_MAX + TOTAL_OFFSETS*GENERIC_ITEM] = 1000;	//Max volume of 2nd largest Uhaul
 			values[WEAR + TOTAL_OFFSETS*GENERIC_ITEM] = 1;
 			values[WEAR_MIN + TOTAL_OFFSETS*GENERIC_ITEM] = 0.001;
 
@@ -256,10 +256,9 @@ class ResourceTable
 class Resource
 {
     private:
-        int type;
-        std::string name;
-		Building		building;
-		Building		newBuilding;
+        int 			type;
+        std::string 	name;
+		Building*		currentBuilding;
 		double			weight; //pounds
 		double			volume; //cubic feet
 		double			wearFactor; //between 0 and 1
@@ -280,8 +279,8 @@ class Resource
 		double			getWearFactor();
 		double			getWear();
 		bool			use();
-		Building		getNextBuilding();
-		Building		getBuilding();
+		void			setBuilding(Building* newBuilding);
+		Building*		getBuilding();
 		long long int	getID();
 		int 			getType();
 		std::string 	getName();

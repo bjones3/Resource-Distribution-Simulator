@@ -75,14 +75,17 @@ bool Resource::use()
 	wear = wear*wearFactor;
     return (wear>=minWear);
 }
-/*
-Building Resource::getNextBuilding()
-	return nextBuilding;
 
-Building Resource::getBuilding()
-	return building;
+void Resource::setBuilding(Building* newBuilding)
+{
+	currentBuilding = newBuilding;
+}
 
-*/
+Building* Resource::getBuilding()
+{
+	return currentBuilding;
+}
+
 long long int Resource::getID()
 {
 

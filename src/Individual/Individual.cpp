@@ -33,10 +33,15 @@ Individual::Individual(House* house, long long int theID)
 
 void Individual::doTask(std::list<Resource*> resources)
 {
-     std::list<Resource*>::iterator temp;
-
-    for(temp = resources.begin(); temp != resources.end(); temp++)
-        (*temp)->use();
+	std::list<Resource*>::iterator temp;
+	for(temp = resources.begin(); temp != resources.end(); temp++)
+	{
+		Resource* what = *temp;
+		if(!what->use())	//Returns false if the resource is worn out
+		{
+    		what->getBuilding()->removeResource(what->getID());
+		}
+	}
 }
 
 bool Individual::canAddPossession(Resource & possession){
@@ -123,4 +128,15 @@ void Individual::setAgenda(Agenda* theAgenda)
 {
 	schedule = theAgenda;
 }
+
+Drone* Individual::getPassengerRequest()
+{
+	return passengerRequest;
+}
+
+void Individual::setPassengerRequest(Drone* theDrone)
+{
+	passengerRequest = theDrone;
+}
+
 
