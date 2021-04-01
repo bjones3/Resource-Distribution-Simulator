@@ -17,6 +17,7 @@ class PassengerDrone : public Drone
 		bool 		passengerExists(long long int passenger);
 		Individual*	unloadPassenger(long long int passenger);
 		std::unordered_map<long long int, Individual*> getPassengers();
+		int			getCapacity();
 };
 
 #endif
