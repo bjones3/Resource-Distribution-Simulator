@@ -64,7 +64,7 @@ Individual* Building::removeOccupant(long long int occupant)
 {
 	Individual * who = occupants.find(occupant)->second;
 	occupants.erase(occupant);
-	
+
 	who->setBuilding(nullptr);
 
 	return who;
@@ -93,9 +93,9 @@ Resource* Building::removeResource(long long int resource)
 {
 	Resource* what = contents.find(resource)->second;
     contents.erase(what->getID());
-    
+
     what->setBuilding(nullptr);
-    
+
     return what;
 }
 
@@ -154,3 +154,12 @@ void Building::setID(long long int theID)
 	id = theID;
 }
 
+std::list<Resource*> Building::removeResources(std::list<Resource*> resources)
+{
+	std::list<Resource*>::iterator iter = resources.begin();
+
+	for(iter; iter!=resources.end();iter++)
+	{
+		removeResource(*iter)
+	}
+}

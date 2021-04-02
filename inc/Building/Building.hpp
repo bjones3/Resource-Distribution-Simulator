@@ -41,6 +41,7 @@ class Building
 		int				getYRoad();
 		long long int	getID();
 		void			setID(long long int theID);
+		std::list<Resource*> removeResources(std::list<Resource*> resources);
 };
 
 #endif
