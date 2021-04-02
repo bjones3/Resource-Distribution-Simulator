@@ -27,6 +27,9 @@ Resource* CargoDrone::unloadCargo(long long int resource){
     Resource * what = payload.find(resource)->second;
 	payload.erase(resource);
 	return what;
+}
 
+void CargoDrone::deliveryCheck(int roadConc)
+{
 
 }

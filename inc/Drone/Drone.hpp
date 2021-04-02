@@ -53,7 +53,7 @@ class Drone
 		void				createDelivery(Building* where, Individual* who, int moveIndex1, int moveIndex2, int roadConc);
 		void 				removeDelivery(long long int theID);
 		std::list<Delivery> getDeliveries();
-		bool				deliveryCheck();
+		void				deliveryCheck(int roadConc);
 		int					posInPath(int x, int y);
 
 	protected:	

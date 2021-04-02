@@ -10,6 +10,7 @@ class CargoDrone : public Drone
 		bool		canLoadCargo(Resource & resource);
 		void		loadCargo(Resource * resource);
 		Resource*	unloadCargo(long long int resource);
+		void		deliveryCheck(int roadConc);
 };
 
 #endif

@@ -90,9 +90,10 @@ std::list<Drone::Delivery> Drone::getDeliveries()
 	return deliveries;
 }
 
-bool Drone::deliveryCheck()
+void Drone::deliveryCheck(int roadConc)
 {
-	return canDeliveryCheck;
+	std::cout << "Drone delivery check\n";
+	//return canDeliveryCheck;
 }
 
 void Drone::createMoveList(int destX, int destY, int roadConc)
