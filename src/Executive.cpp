@@ -220,7 +220,7 @@ void Executive::executeEvents(int roadConc)
 				std::cout << "Event failure, request pDrone\n";
 				
 				Building* theBuilding = theAgenda->getEvents().front().getBuilding();
-				Drone* bestDrone = nullptr;
+				PassengerDrone* bestDrone = nullptr;
 				int bestIndex1 = -1; int bestIndex2 = -1;
 				for(std::list<PassengerDrone*>::iterator it = pDroneList.begin(); it != pDroneList.end(); it++)
 				{	

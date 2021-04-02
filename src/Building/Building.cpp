@@ -77,6 +77,20 @@ bool Building::canAddResource(Resource & resource)
 	return true;
 }
 
+bool Building::canAddResources(std::list<Resource*> resources)
+{
+	bool allValid = !resources.empty();
+	for(std::list<Resource*>::iterator it = resources.begin(); it != resources.end(); it++)
+	{
+		if(!canAddResource(*(*it)))
+		{
+			allValid = false;
+			break;
+		}
+	}	
+	return allValid;
+}
+
 void Building::addResource(Resource * resource)
 {
 	contentVolume += resource->getVolume();
@@ -84,9 +98,29 @@ void Building::addResource(Resource * resource)
 	resource->setBuilding(this);
 }
 
+void Building::addResources(std::list<Resource*> resources)
+{
+	for(std::list<Resource*>::iterator it = resources.begin(); it != resources.end(); it++)
+		addResource(*it);
+}
+
 bool Building::resourceExists(long long int resource)
 {
 	return contents.find(resource) != contents.end();
+}
+
+bool Building::resourcesExist(std::list<Resource*> resources)
+{
+	bool allFound = !resources.empty();
+	for(std::list<Resource*>::iterator it = resources.begin(); it != resources.end(); it++)
+	{
+		if(!resourceExists((*it)->getID()))
+		{
+			allFound = false;
+			break;
+		}
+	}
+	return allFound;
 }
 
 Resource* Building::removeResource(long long int resource)
@@ -97,6 +131,19 @@ Resource* Building::removeResource(long long int resource)
     what->setBuilding(nullptr);
 
     return what;
+}
+
+
+std::list<Resource*> Building::removeResources(std::list<Resource*> resources)
+{
+	std::list<Resource*> rList;
+	std::list<Resource*>::iterator iter = resources.begin();
+	for(iter; iter!=resources.end(); iter++)
+	{
+		rList.push_back(removeResource((*iter)->getID()));
+	}
+
+	return rList;
 }
 
 bool Building::canBringOccupant(Individual & occupant)
@@ -154,12 +201,3 @@ void Building::setID(long long int theID)
 	id = theID;
 }
 
-std::list<Resource*> Building::removeResources(std::list<Resource*> resources)
-{
-	std::list<Resource*>::iterator iter = resources.begin();
-
-	for(iter; iter!=resources.end();iter++)
-	{
-		removeResource(*iter)
-	}
-}

@@ -15,12 +15,12 @@ class Drone
 			{
 				where = wherem; who = whom;
 			}
-			Delivery(Building wherem, Individual * whom, std::list<Resource*> whatm)
+			
+			Delivery(Building* wherem, Individual * whom, std::list<Resource*> whatm)
 			{
-
 				where = wherem; who = whom; what = whatm;
-
 			}
+			
 			Delivery(const Delivery& d)
 			{
 				where = d.where; who = d.who; what = d.what;

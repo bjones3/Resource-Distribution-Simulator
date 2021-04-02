@@ -24,18 +24,18 @@ bool CargoDrone::canLoadCargo(std::list <Resource*> & resources)
 	double volume = contentVolume;
 	double weight = contentWeight;
 
-	std::list<Resource*>::iterator iter = resouces.begin();
+	std::list<Resource*>::iterator iter = resources.begin();
 
 	for(iter;iter!=resources.end();iter++)
 	{
 
 		volume += (*iter)->getVolume();
-		weight += (*iter)->getWeight()
+		weight += (*iter)->getWeight();
 
 		if(volume > maxVolume)
 			return false;
 
-		if(weight > max)
+		if(weight > maxWeight)
 			return false;
 	}
 
@@ -50,17 +50,10 @@ void CargoDrone::loadCargo(Resource * resource)
 
 void CargoDrone::loadCargo(std::list<Resource*> & resources)
 {
-
 	std::list<Resource*>::iterator iter = resources.begin();
 	for(iter; iter!=resources.end();iter++)
-	{
-
 		loadCargo(*iter);
-
-	}
-
 }
-
 
 Resource* CargoDrone::unloadCargo(long long int resource){
     Resource * what = payload.find(resource)->second;
@@ -68,33 +61,43 @@ Resource* CargoDrone::unloadCargo(long long int resource){
 	return what;
 }
 
-void PassengerDrone::deliveryCheck(int roadConc)
+std::list<Resource*> CargoDrone::unloadCargo(std::list<Resource*> resources)
+{
+	std::list<Resource*> rList;
+	std::list<Resource*>::iterator iter = resources.begin();
+	for(iter; iter!=resources.end(); iter++)
+		rList.push_back(unloadCargo((*iter)->getID()));
+
+	return rList;
+}
+
+void CargoDrone::deliveryCheck(int roadConc)
 {
 	if(canDeliveryCheck)
 	{
-		PassengerDrone* theDrone = this;
+		CargoDrone* theDrone = this;
 		//Check all deliveries to see if any are adjacent
 		std::list<Drone::Delivery> deliveries = theDrone->getDeliveries();
 		for(std::list<Drone::Delivery>::iterator deliveryIter = deliveries.begin(); deliveryIter != deliveries.end(); deliveryIter++)
 		{
 			Drone::Delivery theDelivery = (*deliveryIter);
 
-			//If they're not onboard
+			//If the resources are not onboard
 			if(!theDrone->payloadExists(theDelivery.what.front()->getID()))
 			{
 				std::list<Resource*> what = theDelivery.what;
-				Building* where = what->getBuilding();
+				Building* where = what.front()->getBuilding();
 				if(theDrone->isAdjacent(where))
 				{
-					if(!where->payloadExists(what.front()->getID())
+					if(!where->resourcesExist(what))
 					{
-						//This should only occur if the individual thinks it's somewhere it's not, which should never occur
-						std::cout << "ERROR: Individual/Building pairing is one-way.\n";
+						//This should only occur if the resource thinks it's somewhere it's not, which should never occur
+						std::cout << "ERROR: Resource/Building pairing is one-way.\n";
 					}
 					else if(!theDrone->canLoadCargo(what))
 					{
 						//This should never occur if we implement requests correctly
-						//Passenger cannot be loaded; add a new path to pick them up later
+						//Resources cannot be loaded; add a new path to pick them up later
 						theDrone->createMoveList(where->getXRoad(),where->getYRoad(),roadConc);
 
 						//We'll also need to drop them off
@@ -103,34 +106,33 @@ void PassengerDrone::deliveryCheck(int roadConc)
 					else
 					{
 						theDrone->loadCargo(what);
-						where->removeResource(what);
+						where->removeResources(what);
 
-						std::cout << "(" << theDrone->getID() << ") Picked up passenger "<< who->getID() << std::endl;
+						std::cout << "(" << theDrone->getID() << ") Picked up resource "<< what.front()->getID() << std::endl;
 					}
 				}
 			}
-			else	//They're onboard
+			else	//The resources are onboard
 			{
-				Individual* who = theDelivery.who;
+				std::list<Resource*> what = theDelivery.what;
 				Building* where = theDelivery.where;
+				Individual* who = theDelivery.who;
 
 				if(theDrone->isAdjacent(where))
 				{
-					if(!where->canAddOccupant(*who))
+					if(!where->canAddResources(what))
 					{
-						//Passenger cannot be unloaded, so drop them off later
+						//Resources cannot be unloaded, so drop them off later
 						theDrone->createMoveList(where->getXRoad(),where->getYRoad(),roadConc);
 					}
 					else
 					{
-						theDrone->unloadPassenger(who->getID());
-						where->addOccupant(who);
-						std::cout << "(" << theDrone->getID() << ") Dropped off passenger " << who->getID() << std::endl;
+						theDrone->unloadCargo(what);
+						where->addResources(what);
+						std::cout << "(" << theDrone->getID() << ") Dropped off resource " << what.front()->getID() << std::endl;
 
 						theDrone->removeDelivery(who->getID());
-						who->setPassengerRequest(nullptr);
-						//if(theDrone->getDeliveries().empty())
-							//theDrone->createMoveList(6,10,roadConc);
+						who->setCargoRequest(nullptr);
 					}
 				}
 			}
