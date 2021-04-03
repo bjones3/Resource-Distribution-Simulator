@@ -6,7 +6,7 @@ FulfillmentCenter::FulfillmentCenter(int x, int y, int roadx, int roady) : Build
 	droneCapacity = 100;
 }
 
-CargoDrone FulfillmentCenter::createResourceDrone()
+/*CargoDrone FulfillmentCenter::createResourceDrone()
 {
 	//return new CargoDrone(xPos, yPos, 0);
 }
@@ -19,4 +19,4 @@ PassengerDrone FulfillmentCenter::createPassengerDrone()
 Resource FulfillmentCenter::createResource(Resource & resource)
 {
 	return resource;
-}
+}*/

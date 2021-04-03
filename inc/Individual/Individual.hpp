@@ -15,7 +15,8 @@ class Individual
 		House* 				home;
 		Building*			currentBuilding;
 		Drone*				currentDrone;
-		Drone*				passengerRequest;
+		PassengerDrone*		passengerRequest;
+		CargoDrone*			cargoRequest;
 
 		std::string generateName();
 
@@ -37,8 +38,10 @@ class Individual
 		void				setDrone(Drone* newDrone);
 		Agenda*				getAgenda();
 		void				setAgenda(Agenda* theAgenda);
-		Drone*				getPassengerRequest();
-		void				setPassengerRequest(Drone* theDrone);
+		PassengerDrone*		getPassengerRequest();
+		void				setPassengerRequest(PassengerDrone* theDrone);
+		CargoDrone*			getCargoRequest();
+		void				setCargoRequest(CargoDrone* theDrone);
 };
 
 #endif

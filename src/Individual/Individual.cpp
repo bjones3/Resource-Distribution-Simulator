@@ -129,14 +129,25 @@ void Individual::setAgenda(Agenda* theAgenda)
 	schedule = theAgenda;
 }
 
-Drone* Individual::getPassengerRequest()
+PassengerDrone* Individual::getPassengerRequest()
 {
 	return passengerRequest;
 }
 
-void Individual::setPassengerRequest(Drone* theDrone)
+void Individual::setPassengerRequest(PassengerDrone* theDrone)
 {
 	passengerRequest = theDrone;
 }
+
+CargoDrone* Individual::getCargoRequest()
+{
+	return cargoRequest;
+}
+
+void Individual::setCargoRequest(CargoDrone* theDrone)
+{
+	cargoRequest = theDrone;
+}
+
 
 

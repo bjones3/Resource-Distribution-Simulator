@@ -11,9 +11,9 @@ class FulfillmentCenter : public Building
 
 	public:
 		FulfillmentCenter(int x, int y, int roadx, int roady);
-		CargoDrone createResourceDrone();
+		/*CargoDrone createResourceDrone();
 		PassengerDrone createPassengerDrone();
-		Resource createResource(Resource & resource);
+		Resource createResource(Resource & resource);*/
 };
 
 #endif

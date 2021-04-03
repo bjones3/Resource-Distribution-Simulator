@@ -64,10 +64,10 @@ bool Event::canExecuteEvent(std::list<Resource*> & foundResources, std::list<int
   	//If not all resources were found
 	if(!typesNeeded.empty())
 	{
-		std::cout << "Types needed: \n";
+		/*std::cout << "Types needed: \n";
 		for(std::list<int>::iterator it = typesNeeded.begin(); it != typesNeeded.end(); it++)
 			std::cout << " " << *it << std::endl;
-	  	return false;
+	  	*/return false;
 	}
   	return true;
 }
