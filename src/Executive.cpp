@@ -32,10 +32,6 @@ void Executive::run()
 	theMap.printMap();	//Show the map for debug purposes
 	
 	
-	//Create resource table
-	ResourceTable rTable;
-	
-	
 	//Populate building lists using the map
 	FFCs 			= theMap.getFFC();
 	offices 		= theMap.getOffices();
@@ -74,13 +70,13 @@ void Executive::run()
 			//for(int j = 0; j < EVENTS_PER_DAY * 30 * months; j++)
 			//{
 				int buildingNumber = rand() % eventBuildings.size();
-				Building* building = *houseIter;//eventBuildings[buildingNumber];
+				Building* building = houses.back();//*houseIter;//eventBuildings[buildingNumber];
 
-				int resourceAmount = 1;//rand() % 6 + 1;
+				int resourceAmount = 2;//rand() % 6 + 1;
 				std::list<int> resourceTypes;
 				for(int k = 0; k < resourceAmount; k++)
 				{
-					int resourceType = 0;//rand() % TOTAL_RESOURCE_TYPES;
+					int resourceType = 1;//rand() % TOTAL_RESOURCE_TYPES;
 					resourceTypes.push_back(resourceType);
 				}
 				Event* event = new Event(building,janeDoe,resourceTypes);
@@ -90,7 +86,7 @@ void Executive::run()
 			agendas.push_back(agenda);
 			break;	//Remove this to spawn more individuals in a house
 		}
-		break;	//Remove this to spawn individuals in multiple houses
+		//break;	//Remove this to spawn individuals in multiple houses
 	}
 
 	//Create initial drones
@@ -146,11 +142,11 @@ void Executive::run()
 	//(*droneIter)->createMoveList(6,10,theMap.getRoadConc());
 
 	//Initialize resources in buildings for testing purposes
-	Building* firstHouse = houses.front();//peopleList.front()->getBuilding();
+	Building* firstHouse = houses.back();//peopleList.front()->getBuilding();
 	Resource* testResource = new Resource(0,generateID(),rTable);
 	Resource* testResource2 = new Resource(1,generateID(),rTable);
 	//firstHouse->addResource(testResource);
-	//firstHouse->addResource(testResource2);
+	firstHouse->addResource(testResource2);
 
 
 	//Begin simulation loop
@@ -171,6 +167,9 @@ void Executive::run()
 
 		//Load/unload a passenger when the drone stops
 		checkDrones(theMap.getRoadConc());		
+
+		//if(!resourceList.empty())
+			//std::cout << resourceList.front()->getXPos() << ", " << resourceList.front()->getYPos() << std::endl;
 
 		//Pause the simulation until the next time step
 		time2 = std::chrono::high_resolution_clock::now();
@@ -198,6 +197,11 @@ void Executive::checkDrones(int roadConc)
 		PassengerDrone* theDrone = (*droneIter);
 		theDrone->deliveryCheck(roadConc);
 	}
+	for(std::list<CargoDrone*>::iterator droneIter = cDroneList.begin(); droneIter != cDroneList.end(); droneIter++)
+	{
+		CargoDrone* theDrone = (*droneIter);
+		theDrone->deliveryCheck(roadConc);
+	}
 }
 
 void Executive::executeEvents(int roadConc)
@@ -217,66 +221,17 @@ void Executive::executeEvents(int roadConc)
 			if(!personInBuilding && person->getPassengerRequest() == nullptr)
 			{
 				//Not in the building, need a passenger drone
-				std::cout << "Event failure, request pDrone\n";
+				std::cout << "(" << person->getID() << ") Event failure, request pDrone\n";
 				
-				Building* theBuilding = theAgenda->getEvents().front().getBuilding();
-				PassengerDrone* bestDrone = nullptr;
 				int bestIndex1 = -1; int bestIndex2 = -1;
-				for(std::list<PassengerDrone*>::iterator it = pDroneList.begin(); it != pDroneList.end(); it++)
-				{	
-					PassengerDrone* theDrone = *it;
-					//If this drone cannot be full when it comes to pickup
-					if(theDrone->getCapacity() > theDrone->getDeliveries().size())
-					{
-						//Determine if this person's locations are along this drone's path
-						int index1 = -1; int index2 = -1;
-						index1 = theDrone->posInPath(person->getBuilding()->getXRoad(),person->getBuilding()->getYRoad());
-						if(index1 != -1)
-							index2 = theDrone->posInPath(theBuilding->getXRoad(),theBuilding->getYRoad());
-		
-						std::cout << "Person " << person->getID() << "'s move indices: "<< index1 << ", " << index2 << std::endl;
-						
-						//Determine if this drone is the best match
-						if(index2 != -1)	//This drone will pickup and dropoff
-						{
-							if(bestIndex2 > index2 || bestIndex2 == -1)	//This drone is going to drop off sooner
-							{
-								bestIndex1 = index1;
-								bestIndex2 = index2;
-								bestDrone = theDrone;
-							}
-						}
-						else if(index1 != -1)	//This drone will only pickup
-						{
-							if((bestIndex1 > index1 || bestIndex1 == -1)
-							&& bestIndex2 == -1)	//This drone is going to pick up sooner
-							{
-								bestIndex1 = index1;
-								bestDrone = theDrone;
-							}
-						}
-						else	//A whole new set of movements would need to be created
-						{
-							//So this is more of a last resort than anything
-							if(bestIndex1 == -1 && bestIndex2 == -1)
-								bestDrone = theDrone;
-						}
-						
-						//Drones that are idle (no deliveries) should take priority
-						if(!theDrone->isMoving())
-						{
-							bestDrone = theDrone;
-							break;
-						}
-					}
-				}
+				Building* theBuilding = theAgenda->getEvents().front().getBuilding();
+				PassengerDrone* bestDrone = findPassengerDrone(theBuilding, person, bestIndex1, bestIndex2);
 				
 				//A passenger drone was not found, create one
 				if(bestDrone == nullptr)
 				{
 					FulfillmentCenter* theFFC = FFCs.front();
 					PassengerDrone* myDrone = new PassengerDrone(theFFC->getXRoad(), theFFC->getYRoad(), generateID());
-					std::cout << "test\n";
 					pDroneList.push_back(myDrone);
 					droneList.push_back(myDrone);
 					bestDrone = myDrone;
@@ -291,18 +246,183 @@ void Executive::executeEvents(int roadConc)
 			}
 			
 			//Make sure the needed resources are in the building
-			if(!resourcesInBuilding)
+			if(!resourcesInBuilding && person->getCargoRequest() == nullptr)
 			{
 				//Resources not in building, need a cargo drone
-				std::cout << "Event failure, request cDrone\n";
+				std::cout << "(" << person->getID() << ") Event failure, request cDrone\n";
+				
+				//Spawn some resources at a fulfillment center
+				std::list<Resource*> newResources;
+				for(std::list<int>::iterator iter = neededTypes.begin(); iter != neededTypes.end(); iter++)
+				{
+					Resource* r = new Resource(*iter,generateID(),rTable);
+					newResources.push_back(r);
+					resourceList.push_back(r);
+				}
+				FFCs.front()->addResources(newResources);
+				
+				int bestIndex1 = -1; int bestIndex2 = -1;
+				Building* theBuilding = theAgenda->getEvents().front().getBuilding();
+				CargoDrone* bestDrone = findCargoDrone(theBuilding, newResources, bestIndex1, bestIndex2);
+				
+				//A cargo drone was not found, create one
+				if(bestDrone == nullptr)
+				{
+					FulfillmentCenter* theFFC = FFCs.front();
+					CargoDrone* myDrone = new CargoDrone(theFFC->getXRoad(), theFFC->getYRoad(), generateID());
+					cDroneList.push_back(myDrone);
+					droneList.push_back(myDrone);
+					bestDrone = myDrone;
+				}
+				
+				//Add this resource list to the drone's delivery list and create the needed movements
+				bestDrone->createDelivery(theBuilding, person, newResources, bestIndex1, bestIndex2, roadConc);
+			
+				Resource* whatF = newResources.front();
+				std::cout << "Resource " << whatF->getID() << " needs Drone " << bestDrone->getID() << ";\n(" << whatF->getXPos() << ", " << whatF->getYPos() << ") -> (" << theBuilding->getXPos() << ", " << theBuilding->getYPos() << ")\n";
+				
+				person->setCargoRequest(bestDrone);
 			}
 			
 			//If no requests are needed, execute the event
 			if(personInBuilding && resourcesInBuilding)
 			{
 				theAgenda->executeEvent(foundResources);
-				std::cout << "Event success\n";
+				std::cout << "(" << person->getID() << ") Event success\n";
 			}
 		}
 	}
 }
+
+PassengerDrone* Executive::findPassengerDrone(Building* where, Individual* who, int & bestIndex1, int & bestIndex2)
+{
+	PassengerDrone* bestDrone = nullptr;
+	for(std::list<PassengerDrone*>::iterator it = pDroneList.begin(); it != pDroneList.end(); it++)
+	{	
+		PassengerDrone* theDrone = *it;
+		//If this drone cannot be full when it comes to pickup
+		if(theDrone->getCapacity() > theDrone->getDeliveries().size())
+		{
+			//Determine if this person's locations are along this drone's path
+			int index1 = -1; int index2 = -1;
+			index1 = theDrone->posInPath(who->getBuilding()->getXRoad(),who->getBuilding()->getYRoad());
+			if(index1 != -1)
+				index2 = theDrone->posInPath(where->getXRoad(),where->getYRoad());
+
+			std::cout << "Person " << who->getID() << "'s move indices: "<< index1 << ", " << index2 << std::endl;
+			
+			//Determine if this drone is the best match
+			if(index2 != -1)	//This drone will pickup and dropoff
+			{
+				if(bestIndex2 > index2 || bestIndex2 == -1)	//This drone is going to drop off sooner
+				{
+					bestIndex1 = index1;
+					bestIndex2 = index2;
+					bestDrone = theDrone;
+				}
+			}
+			else if(index1 != -1)	//This drone will only pickup
+			{
+				if((bestIndex1 > index1 || bestIndex1 == -1)
+				&& bestIndex2 == -1)	//This drone is going to pick up sooner
+				{
+					bestIndex1 = index1;
+					bestDrone = theDrone;
+				}
+			}
+			else	//A whole new set of movements would need to be created
+			{
+				//So this is more of a last resort than anything
+				if(bestIndex1 == -1 && bestIndex2 == -1)
+					bestDrone = theDrone;
+			}
+			
+			//Drones that are idle (no deliveries) should take priority
+			if(!theDrone->isMoving())
+			{
+				bestDrone = theDrone;
+				break;
+			}
+		}
+	}
+	return bestDrone;
+}
+
+CargoDrone* Executive::findCargoDrone(Building* where, std::list<Resource*> what, int & bestIndex1, int & bestIndex2)
+{
+	CargoDrone* bestDrone = nullptr;
+	for(std::list<CargoDrone*>::iterator it = cDroneList.begin(); it != cDroneList.end(); it++)
+	{	
+		CargoDrone* theDrone = *it;
+		
+		double volume = 0;
+		double weight = 0;
+		//Determine how much weight and volume will be occupied by this delivery
+		std::list<Resource*>::iterator iter;
+		for(iter = what.begin(); iter != what.end(); iter++)
+		{
+			volume += (*iter)->getVolume();
+			weight += (*iter)->getWeight();
+		}
+		
+		//Determine how much weight and volume could be taken by the current deliveries
+		std::list<Drone::Delivery> deliveries = theDrone->getDeliveries();
+		for(std::list<Drone::Delivery>::iterator delivery = deliveries.begin(); delivery != deliveries.end(); delivery++)
+		{
+			std::list<Resource*> dWhat = (*delivery).what;
+			for(iter = dWhat.begin(); iter != dWhat.end(); iter++)
+			{
+				volume += (*iter)->getVolume();
+				weight += (*iter)->getWeight();
+			}
+		}
+		
+		//If this drone cannot be full when it comes to pickup
+		if(theDrone->getMaxVolume() > volume && theDrone->getMaxWeight() > weight)
+		{
+			//Determine if the locations are along this drone's path
+			int index1 = -1; int index2 = -1;
+			index1 = theDrone->posInPath(what.front()->getBuilding()->getXRoad(),what.front()->getBuilding()->getYRoad());
+			if(index1 != -1)
+				index2 = theDrone->posInPath(where->getXRoad(),where->getYRoad());
+
+			std::cout << "Resource " << what.front()->getID() << "'s move indices: "<< index1 << ", " << index2 << std::endl;
+			
+			//Determine if this drone is the best match
+			if(index2 != -1)	//This drone will pickup and dropoff
+			{
+				if(bestIndex2 > index2 || bestIndex2 == -1)	//This drone is going to drop off sooner
+				{
+					bestIndex1 = index1;
+					bestIndex2 = index2;
+					bestDrone = theDrone;
+				}
+			}
+			else if(index1 != -1)	//This drone will only pickup
+			{
+				if((bestIndex1 > index1 || bestIndex1 == -1)
+				&& bestIndex2 == -1)	//This drone is going to pick up sooner
+				{
+					bestIndex1 = index1;
+					bestDrone = theDrone;
+				}
+			}
+			else	//A whole new set of movements would need to be created
+			{
+				//So this is more of a last resort than anything
+				if(bestIndex1 == -1 && bestIndex2 == -1)
+					bestDrone = theDrone;
+			}
+			
+			//Drones that are idle (no deliveries) should take priority
+			if(!theDrone->isMoving())
+			{
+				bestDrone = theDrone;
+				break;
+			}
+		}
+	}
+	return bestDrone;
+}
+
+

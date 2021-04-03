@@ -56,6 +56,7 @@ class Drone
 		bool				isMoving();
 		bool				isAdjacent(Building* where);
 		void				createDelivery(Building* where, Individual* who, int moveIndex1, int moveIndex2, int roadConc);
+		void				createDelivery(Building* where, Individual* who, std::list<Resource*> what, int moveIndex1, int moveIndex2, int roadConc);
 		void 				removeDelivery(long long int theID);
 		std::list<Delivery> getDeliveries();
 		void				deliveryCheck(int roadConc);
@@ -86,6 +87,7 @@ class Drone
 		void 				moveRight(int destX);
 		Movement			createMovement(int x1, int y1, int x2, int y2, int roadConc);
 		bool				checkForPos(int startx, int starty, int targetx, int targety, Movement& move);
+		void				createDeliveryPath(Building* start, Building* finish, int moveIndex1, int moveIndex2, int roadConc);
 
 };
 

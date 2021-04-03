@@ -259,6 +259,7 @@ class Resource
         int 			type;
         std::string 	name;
 		Building*		currentBuilding;
+		Drone*			currentDrone;
 		double			weight; //pounds
 		double			volume; //cubic feet
 		double			wearFactor; //between 0 and 1
@@ -281,9 +282,13 @@ class Resource
 		bool			use();
 		void			setBuilding(Building* newBuilding);
 		Building*		getBuilding();
+		void			setDrone(Drone* newDrone);
+		Drone*			getDrone();
 		long long int	getID();
 		int 			getType();
 		std::string 	getName();
+		int				getXPos();
+		int				getYPos();
 };
 
 #endif

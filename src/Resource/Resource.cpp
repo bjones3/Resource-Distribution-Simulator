@@ -16,8 +16,8 @@ Resource::Resource( int theType, long long int theID, ResourceTable & table )
 	minWear = table.getValue(theType,WEAR_MIN);
 	
   	weight = genWeight(weightRange);
-  	volume  = genVolume(volumeRange);
-  	wearFactor  = genWearFactor(wearFactorRange);
+  	volume = genVolume(volumeRange);
+  	wearFactor = 0;//genWearFactor(wearFactorRange);	//0 = one-time use
   	
   	id = theID;
 }
@@ -86,8 +86,38 @@ Building* Resource::getBuilding()
 	return currentBuilding;
 }
 
+void Resource::setDrone(Drone* newDrone)
+{
+	currentDrone = newDrone;
+}
+
+Drone* Resource::getDrone()
+{
+	return currentDrone;
+}
+
 long long int Resource::getID()
 {
-
 	return id;
 }
+
+int Resource::getXPos()
+{
+	if(currentBuilding != nullptr)
+		return currentBuilding->getXPos();
+	else if(currentDrone != nullptr)
+		return currentDrone->getXPos();
+	else	//This should never occur, unless we allow free-roaming resources
+		return 0;
+}
+
+int Resource::getYPos()
+{
+	if(currentBuilding != nullptr)
+		return currentBuilding->getYPos();
+	else if(currentDrone != nullptr)
+		return currentDrone->getYPos();
+	else	//This should never occur, unless we allow free-roaming resources
+		return 0;
+}
+

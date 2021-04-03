@@ -4,6 +4,8 @@ PassengerDrone::PassengerDrone(int x, int y, long long int theID) : Drone::Drone
 {
 	xPos = x;
 	yPos = y;
+	xDest = x;
+	yDest = y;
 	id = theID;
 	passengerCapacity = 12;
 	maxVolume = 48;

@@ -1,6 +1,6 @@
 #include "../../inc/rds.hpp"
 
-#define DEBUG true		//Controls whether or not to output drone positions
+#define DEBUG false		//Controls whether or not to output drone positions
 
 Drone::Drone(int x, int y, long long int theID)
 {
@@ -27,9 +27,22 @@ void Drone::createDelivery(Building* where, Individual* who, int moveIndex1, int
 	deliveries.push_back(theDelivery);
 	
 	Building* start = who->getBuilding();
-	int originalSize = moveList.size();
+	createDeliveryPath(start, where, moveIndex1, moveIndex2, roadConc);
+}
+
+void Drone::createDelivery(Building* where, Individual* who, std::list<Resource*> what, int moveIndex1, int moveIndex2, int roadConc)
+{
+	Delivery theDelivery(where,who,what);
+	deliveries.push_back(theDelivery);
 	
-	//Create path to individual, if necessary
+	Building* start = what.front()->getBuilding();
+	createDeliveryPath(start, where, moveIndex1, moveIndex2, roadConc);
+}
+
+void Drone::createDeliveryPath(Building* start, Building* finish, int moveIndex1, int moveIndex2, int roadConc)
+{
+	int originalSize = moveList.size();
+	//Create path to individual/resource, if necessary
 	if(moveIndex1 > -1 && moveIndex1 < moveList.size())
 	{
 		std::list<Movement>::iterator it = moveList.begin();
@@ -50,7 +63,7 @@ void Drone::createDelivery(Building* where, Individual* who, int moveIndex1, int
 	else	//By default, just add a new path to the end of the movement list
 		createMoveList(start->getXRoad(),start->getYRoad(),roadConc);
 	
-	//Create path to where the individual wants to go, if necessary
+	//Create path to where the individual/resource wants to go, if necessary
 	if(moveIndex1 > -1 && moveIndex2 < originalSize && moveIndex2 > moveIndex1)
 	{
 		moveIndex2 += moveList.size()-originalSize;	//Adjust for the movement that was added at moveIndex1
@@ -62,15 +75,15 @@ void Drone::createDelivery(Building* where, Individual* who, int moveIndex1, int
 			ind++;
 		}
 		Movement newMove(*it);
-		if(newMove.x != where->getXRoad() || newMove.y != where->getYRoad())
+		if(newMove.x != finish->getXRoad() || newMove.y != finish->getYRoad())
 		{
-			newMove.x = where->getXRoad();
-			newMove.y = where->getYRoad();
+			newMove.x = finish->getXRoad();
+			newMove.y = finish->getYRoad();
 			moveList.insert(it, newMove);
 		}
 	}
 	else
-		createMoveList(where->getXRoad(),where->getYRoad(),roadConc);
+		createMoveList(finish->getXRoad(),finish->getYRoad(),roadConc);
 }
 
 void Drone::removeDelivery(long long int theID)

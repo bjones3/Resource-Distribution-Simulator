@@ -21,12 +21,16 @@ class Executive
 		std::list<Office*> 				offices;
 		std::list<House*> 				houses;
 		std::list<Building*>			allBuildings;
+		std::list<Resource*>			resourceList;
+		ResourceTable					rTable;
 
 	public:
 		void 							run();
 		void							moveDrones();
 		void							checkDrones(int roadConc);
 		void 							executeEvents(int roadConc);
+		PassengerDrone*					findPassengerDrone(Building* where, Individual* who, int & bestIndex1, int & bestIndex2);
+		CargoDrone*						findCargoDrone(Building* where, std::list<Resource*> what, int & bestIndex1, int & bestIndex2);
 };
 
 #endif

@@ -4,6 +4,8 @@ CargoDrone::CargoDrone(int x, int y, long long int theID) : Drone::Drone(x, y, t
 {
 	xPos = x;
 	yPos = y;
+	xDest = x;
+	yDest = y;
 	id = theID;
 	maxVolume = 1000;
 	maxWeight = 6000;
@@ -11,24 +13,22 @@ CargoDrone::CargoDrone(int x, int y, long long int theID) : Drone::Drone(x, y, t
 
 bool CargoDrone::canLoadCargo(Resource & resource)
 {
-	if (resource.getVolume() + contentVolume > maxVolume)
+	if(resource.getVolume() + contentVolume > maxVolume)
 		return false;
-	if (resource.getWeight() + contentWeight > maxWeight)
+	if(resource.getWeight() + contentWeight > maxWeight)
 		return false;
 	return true;
 }
 
-bool CargoDrone::canLoadCargo(std::list <Resource*> & resources)
+bool CargoDrone::canLoadCargo(std::list<Resource*> & resources)
 {
-
 	double volume = contentVolume;
 	double weight = contentWeight;
 
-	std::list<Resource*>::iterator iter = resources.begin();
+	std::list<Resource*>::iterator iter;
 
-	for(iter;iter!=resources.end();iter++)
+	for(iter = resources.begin(); iter != resources.end(); iter++)
 	{
-
 		volume += (*iter)->getVolume();
 		weight += (*iter)->getWeight();
 
@@ -39,25 +39,27 @@ bool CargoDrone::canLoadCargo(std::list <Resource*> & resources)
 			return false;
 	}
 
-	return true;
-
+	return !resources.empty();
 }
 
 void CargoDrone::loadCargo(Resource * resource)
 {
     payload.insert({resource->getID(), resource});
+    resource->setDrone(this);
 }
 
 void CargoDrone::loadCargo(std::list<Resource*> & resources)
 {
-	std::list<Resource*>::iterator iter = resources.begin();
-	for(iter; iter!=resources.end();iter++)
+	std::list<Resource*>::iterator iter;
+	for(iter = resources.begin(); iter != resources.end(); iter++)
 		loadCargo(*iter);
 }
 
-Resource* CargoDrone::unloadCargo(long long int resource){
+Resource* CargoDrone::unloadCargo(long long int resource)
+{
     Resource * what = payload.find(resource)->second;
 	payload.erase(resource);
+	what->setDrone(nullptr);
 	return what;
 }
 
@@ -98,10 +100,12 @@ void CargoDrone::deliveryCheck(int roadConc)
 					{
 						//This should never occur if we implement requests correctly
 						//Resources cannot be loaded; add a new path to pick them up later
-						theDrone->createMoveList(where->getXRoad(),where->getYRoad(),roadConc);
+						theDrone->createMoveList(where->getXRoad(), where->getYRoad(), roadConc);
 
 						//We'll also need to drop them off
-						theDrone->createMoveList(theDelivery.where->getXRoad(),theDelivery.where->getYRoad(),roadConc);
+						theDrone->createMoveList(theDelivery.where->getXRoad(), theDelivery.where->getYRoad(), roadConc);
+						
+						std::cout << "(" << theDrone->getID() << ") Can't load resource "<< what.front()->getID() << std::endl;
 					}
 					else
 					{
@@ -123,7 +127,9 @@ void CargoDrone::deliveryCheck(int roadConc)
 					if(!where->canAddResources(what))
 					{
 						//Resources cannot be unloaded, so drop them off later
-						theDrone->createMoveList(where->getXRoad(),where->getYRoad(),roadConc);
+						theDrone->createMoveList(where->getXRoad(), where->getYRoad(), roadConc);
+						
+						std::cout << "(" << theDrone->getID() << ") Can't unload resource "<< what.front()->getID() << std::endl;
 					}
 					else
 					{
@@ -152,14 +158,10 @@ std::unordered_map <long long int, Resource*> CargoDrone::getPayload()
 
 double CargoDrone::getMaxVolume()
 {
-
 	return maxVolume;
-
 }
 
 double CargoDrone::getMaxWeight()
 {
-
 	return maxWeight;
-
 }
