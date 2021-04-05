@@ -23,6 +23,8 @@ class Executive
 		std::list<Building*>			allBuildings;
 		std::list<Resource*>			resourceList;
 		ResourceTable					rTable;
+		int								eventsCreated = 0;
+		int								eventsCompleted = 0;
 
 	public:
 		void 							run();
@@ -31,6 +33,8 @@ class Executive
 		void 							executeEvents(int roadConc);
 		PassengerDrone*					findPassengerDrone(Building* where, Individual* who, int & bestIndex1, int & bestIndex2);
 		CargoDrone*						findCargoDrone(Building* where, std::list<Resource*> what, int & bestIndex1, int & bestIndex2);
+		void							requestPassengerDrone(Building* where, Individual* who, int roadConc);
+		void							requestCargoDrone(Building* where, Individual* who, std::list<Resource*> & what, int roadConc);
 };
 
 #endif

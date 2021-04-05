@@ -42,6 +42,12 @@ void Individual::doTask(std::list<Resource*> resources)
     		what->getBuilding()->removeResource(what->getID());
 		}
 	}
+	
+	/*if(resources.size() != schedule->getEvents().front().getTypesNeeded().size())
+	{
+		std::cout << "MISMATCH LENGTHS\n";
+		exit(0);
+	}*/
 }
 
 bool Individual::canAddPossession(Resource & possession){
@@ -97,6 +103,11 @@ int Individual::getYPos()
 		return currentDrone->getYPos();
 	else	//This should never occur, unless we allow free-roaming citizens
 		return 0;
+}
+
+Building* Individual::getHome()
+{
+	return home;
 }
 
 Building* Individual::getBuilding()

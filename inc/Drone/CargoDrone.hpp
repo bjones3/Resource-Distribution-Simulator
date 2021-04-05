@@ -16,8 +16,8 @@ class CargoDrone : public Drone
 		void		deliveryCheck(int roadConc);
 		bool 		payloadExists(long long int pId);
 		std::unordered_map<long long int, Resource*> getPayload();
-		double 	getMaxVolume();
-		double	getMaxWeight();
+		double 		getMaxVolume();
+		double		getMaxWeight();
 
 };
 

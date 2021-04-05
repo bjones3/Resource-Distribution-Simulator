@@ -32,6 +32,7 @@ class Individual
 		long long int		getID();
 		int					getXPos();
 		int					getYPos();
+		Building*			getHome();
 		Building*			getBuilding();
 		Drone*				getDrone();
 		void				setBuilding(Building* newBuilding);

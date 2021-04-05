@@ -14,7 +14,7 @@ PassengerDrone::PassengerDrone(int x, int y, long long int theID) : Drone::Drone
 
 bool PassengerDrone::canLoadPassenger(Individual & passenger)
 {
-    if (passengers.size() == passengerCapacity)
+    if (passengers.size() >= passengerCapacity)
         return false;
     if (passenger.getPossessionVolume() + contentVolume > maxVolume)
         return false;
@@ -110,6 +110,8 @@ void PassengerDrone::deliveryCheck(int roadConc)
 						
 						//We'll also need to drop them off
 						theDrone->createMoveList(theDelivery.where->getXRoad(),theDelivery.where->getYRoad(),roadConc);
+						
+						std::cout << "(" << theDrone->getID() << ") Can't load passenger "<< who->getID() << std::endl;
 					}
 					else
 					{
@@ -131,6 +133,7 @@ void PassengerDrone::deliveryCheck(int roadConc)
 					{
 						//Passenger cannot be unloaded, so drop them off later
 						theDrone->createMoveList(where->getXRoad(),where->getYRoad(),roadConc);
+						std::cout << "(" << theDrone->getID() << ") Can't unload passenger "<< who->getID() << std::endl;
 					}
 					else
 					{

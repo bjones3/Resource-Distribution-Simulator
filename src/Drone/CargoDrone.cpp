@@ -129,7 +129,12 @@ void CargoDrone::deliveryCheck(int roadConc)
 						//Resources cannot be unloaded, so drop them off later
 						theDrone->createMoveList(where->getXRoad(), where->getYRoad(), roadConc);
 						
-						std::cout << "(" << theDrone->getID() << ") Can't unload resource "<< what.front()->getID() << std::endl;
+						double volume = 0;
+						std::list<Resource*>::iterator it;
+						for(it = what.begin(); it != what.end(); it++)
+							volume += (*it)->getVolume();
+						
+						std::cout << "(" << theDrone->getID() << ") Can't unload resource "<< what.front()->getID() << "; " << where->getMaxContentVolume() << ", " << where->getContentVolume() + volume << std::endl;
 					}
 					else
 					{
