@@ -73,7 +73,7 @@ std::string Resource::getName()
 bool Resource::use()
 {
 	wear = wear*wearFactor;
-    return (wear>=minWear);
+    return (wear >= minWear);
 }
 
 void Resource::setBuilding(Building* newBuilding)

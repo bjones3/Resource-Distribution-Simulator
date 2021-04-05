@@ -11,6 +11,7 @@ class Event
 
   		void 					execute(std::list<Resource*> resources);
   		bool 					canExecuteEvent(std::list<Resource*> & foundResources, std::list<int> & typesNeeded);
+  		std::list<int>			getTypesNeeded();
   		Building*				getBuilding();
   		Individual*				getIndividual();
   

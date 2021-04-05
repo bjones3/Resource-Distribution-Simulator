@@ -79,16 +79,18 @@ bool Building::canAddResource(Resource & resource)
 
 bool Building::canAddResources(std::list<Resource*> resources)
 {
-	bool allValid = !resources.empty();
-	for(std::list<Resource*>::iterator it = resources.begin(); it != resources.end(); it++)
+	double volume = contentVolume;
+
+	std::list<Resource*>::iterator iter;
+
+	for(iter = resources.begin(); iter != resources.end(); iter++)
 	{
-		if(!canAddResource(*(*it)))
-		{
-			allValid = false;
-			break;
-		}
-	}	
-	return allValid;
+		volume += (*iter)->getVolume();
+		if(volume > contentVolumeCapacity)
+			return false;
+	}
+
+	return !resources.empty();
 }
 
 void Building::addResource(Resource * resource)
@@ -127,12 +129,11 @@ Resource* Building::removeResource(long long int resource)
 {
 	Resource* what = contents.find(resource)->second;
     contents.erase(what->getID());
-
+	contentVolume -= what->getVolume();
     what->setBuilding(nullptr);
 
     return what;
 }
-
 
 std::list<Resource*> Building::removeResources(std::list<Resource*> resources)
 {
@@ -201,3 +202,12 @@ void Building::setID(long long int theID)
 	id = theID;
 }
 
+double Building::getContentVolume()
+{
+	return contentVolume;
+}
+
+double Building::getMaxContentVolume()
+{
+	return contentVolumeCapacity;
+}

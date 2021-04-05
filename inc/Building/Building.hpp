@@ -45,6 +45,8 @@ class Building
 		int				getYRoad();
 		long long int	getID();
 		void			setID(long long int theID);
+		double			getContentVolume();
+		double			getMaxContentVolume();
 };
 
 #endif

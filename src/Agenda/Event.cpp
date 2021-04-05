@@ -72,6 +72,11 @@ bool Event::canExecuteEvent(std::list<Resource*> & foundResources, std::list<int
   	return true;
 }
 
+std::list<int> Event::getTypesNeeded()
+{
+	return m_resources;
+}
+
 Building* Event::getBuilding()
 {
 	return m_building;

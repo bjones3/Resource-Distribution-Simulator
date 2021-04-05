@@ -33,6 +33,7 @@ void Agenda::addEvent(Event event)
 {
 	m_events.push_back(event);
 }
+
 void Agenda::addEvents(std::list<Event> events)
 {
 	for(int i = 0; i < events.size(); i++)
