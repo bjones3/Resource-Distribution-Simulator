@@ -3,6 +3,7 @@
 #define INDIVIDUALS_SPAWNED_PER_HOUSE 	2
 #define EVENTS_PER_DAY					6
 #define EVENTS_TO_LOOKAHEAD				6
+#define ADD_OFFICE_PROB					7
 
 long long int Executive::generateID()
 {
@@ -51,6 +52,9 @@ void Executive::run()
 	for(std::list<Building*>::iterator buildIter = allBuildings.begin(); buildIter != allBuildings.end(); buildIter++)
 		(*buildIter)->setID(generateID());
 
+	int officeCount = 0;
+	int houseCount = 0;
+
 	//Spawn individuals in the houses and generate their agendas
 	for(std::list<House*>::iterator houseIter = houses.begin(); houseIter != houses.end(); houseIter++)
 	{
@@ -65,7 +69,19 @@ void Executive::run()
 			//Create a random list of events for this individual's agenda
 			for(int j = 0; j < EVENTS_PER_DAY * 30 * months; j++)
 			{
-				int buildingNumber = rand() % eventBuildings.size();
+				//int inOffice = rand() % 4; irandom_range(0,3);
+				int buildingNumber = rand() % ((ADD_OFFICE_PROB*offices.size())+ eventBuildings.size());
+				if(buildingNumber >= eventBuildings.size())
+				{
+					int difference = buildingNumber - eventBuildings.size();
+					buildingNumber = buildingNumber % offices.size();//(difference - 1)/ADD_OFFICE_PROB;
+				}
+				
+				if(buildingNumber < offices.size())
+					officeCount++;
+				else
+					houseCount++;
+				
 				Building* building = eventBuildings[buildingNumber];
 
 				int resourceAmount = rand() % 6 + 1;
@@ -99,6 +115,12 @@ void Executive::run()
 		//break;	//Remove this to spawn individuals in multiple houses
 	}
 	
+	std::cout << "Houses, Offices: " << houseCount << ", " << officeCount << std::endl;
+	
+	std::cout << static_cast<double>(houseCount/houses.size()) << ", " << static_cast<double>(officeCount/offices.size()) << std::endl;
+	
+	std::cout << offices.size() << ", " << eventBuildings.size() << std::endl;
+	
 	//Create the AI itself
 	/*MainAI theAI( droneList, FFCs );
 
@@ -108,8 +130,6 @@ void Executive::run()
 	
 	}
 	*/
-	//Activate graphics
-	//
 
 	//Begin simulation loop
 	int currentTime = 0;
@@ -132,6 +152,9 @@ void Executive::run()
 
 		//if(!resourceList.empty())
 			//std::cout << resourceList.front()->getXPos() << ", " << resourceList.front()->getYPos() << std::endl;
+
+		//Update graphics
+		//droneInformation();
 
 		//Pause the simulation until the next time step
 		time2 = std::chrono::high_resolution_clock::now();
