@@ -1,5 +1,7 @@
 #include "../../inc/rds.hpp"
 
+#define DEBUG	false
+
 CargoDrone::CargoDrone(int x, int y, long long int theID) : Drone::Drone(x, y, theID)
 {
 	xPos = x;
@@ -105,14 +107,20 @@ void CargoDrone::deliveryCheck(int roadConc)
 						//We'll also need to drop them off
 						theDrone->createMoveList(theDelivery.where->getXRoad(), theDelivery.where->getYRoad(), roadConc);
 						
-						std::cout << "(" << theDrone->getID() << ") Can't load resource "<< what.front()->getID() << std::endl;
+						if(DEBUG)
+						{
+							std::cout << "(" << theDrone->getID() << ") Can't load resource "<< what.front()->getID() << std::endl;
+						}
 					}
 					else
 					{
 						theDrone->loadCargo(what);
 						where->removeResources(what);
 
-						std::cout << "(" << theDrone->getID() << ") Picked up resource "<< what.front()->getID() << std::endl;
+						if(DEBUG)
+						{
+							std::cout << "(" << theDrone->getID() << ") Picked up resource "<< what.front()->getID() << std::endl;
+						}
 					}
 				}
 			}
@@ -134,14 +142,20 @@ void CargoDrone::deliveryCheck(int roadConc)
 						for(it = what.begin(); it != what.end(); it++)
 							volume += (*it)->getVolume();
 						
-						std::cout << "(" << theDrone->getID() << ") Can't unload resource "<< what.front()->getID() << "; " << where->getMaxContentVolume() << ", " << where->getContentVolume() + volume << std::endl;
+						if(DEBUG)
+						{
+							std::cout << "(" << theDrone->getID() << ") Can't unload resource "<< what.front()->getID() << "; " << where->getMaxContentVolume() << ", " << where->getContentVolume() + volume << std::endl;
+						}
 					}
 					else
 					{
 						theDrone->unloadCargo(what);
 						where->addResources(what);
-						std::cout << "(" << theDrone->getID() << ") Dropped off resource " << what.front()->getID() << std::endl;
-
+						if(DEBUG)
+						{
+							std::cout << "(" << theDrone->getID() << ") Dropped off resource " << what.front()->getID() << std::endl;
+						}
+						
 						theDrone->removeDelivery(who->getID());
 						who->setCargoRequest(nullptr);
 					}
@@ -170,3 +184,6 @@ double CargoDrone::getMaxWeight()
 {
 	return maxWeight;
 }
+
+#undef DEBUG
+

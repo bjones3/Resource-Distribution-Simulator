@@ -27,7 +27,7 @@ class Executive
 		int								eventsCompleted = 0;
 
 	public:
-		void 							run();
+		void 							run(cityMap & theMap, int months);
 		void							moveDrones();
 		void							checkDrones(int roadConc);
 		void 							executeEvents(int roadConc);

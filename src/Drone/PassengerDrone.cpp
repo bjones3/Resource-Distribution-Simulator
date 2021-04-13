@@ -1,5 +1,7 @@
 #include "../../inc/rds.hpp"
 
+#define DEBUG	false
+
 PassengerDrone::PassengerDrone(int x, int y, long long int theID) : Drone::Drone(x, y, theID)
 {
 	xPos = x;
@@ -111,14 +113,20 @@ void PassengerDrone::deliveryCheck(int roadConc)
 						//We'll also need to drop them off
 						theDrone->createMoveList(theDelivery.where->getXRoad(),theDelivery.where->getYRoad(),roadConc);
 						
-						std::cout << "(" << theDrone->getID() << ") Can't load passenger "<< who->getID() << std::endl;
+						if(DEBUG)
+						{
+							std::cout << "(" << theDrone->getID() << ") Can't load passenger "<< who->getID() << std::endl;
+						}
 					}
 					else
 					{
 						theDrone->loadPassenger(who);
 						where->removeOccupant(who->getID());
 						
-						std::cout << "(" << theDrone->getID() << ") Picked up passenger "<< who->getID() << std::endl;
+						if(DEBUG)
+						{
+							std::cout << "(" << theDrone->getID() << ") Picked up passenger "<< who->getID() << std::endl;
+						}
 					}
 				}
 			}
@@ -133,13 +141,20 @@ void PassengerDrone::deliveryCheck(int roadConc)
 					{
 						//Passenger cannot be unloaded, so drop them off later
 						theDrone->createMoveList(where->getXRoad(),where->getYRoad(),roadConc);
-						std::cout << "(" << theDrone->getID() << ") Can't unload passenger "<< who->getID() << std::endl;
+						
+						if(DEBUG)
+						{
+							std::cout << "(" << theDrone->getID() << ") Can't unload passenger "<< who->getID() << std::endl;
+						}
 					}
 					else
 					{
 						theDrone->unloadPassenger(who->getID());
 						where->addOccupant(who);
-						std::cout << "(" << theDrone->getID() << ") Dropped off passenger " << who->getID() << std::endl;
+						if(DEBUG)
+						{
+							std::cout << "(" << theDrone->getID() << ") Dropped off passenger " << who->getID() << std::endl;
+						}
 						
 						theDrone->removeDelivery(who->getID());
 						who->setPassengerRequest(nullptr);
@@ -151,3 +166,6 @@ void PassengerDrone::deliveryCheck(int roadConc)
 		}
 	}
 }
+
+#undef DEBUG
+

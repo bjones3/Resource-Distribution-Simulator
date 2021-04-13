@@ -4,6 +4,7 @@
 #define EVENTS_PER_DAY					6
 #define EVENTS_TO_LOOKAHEAD				6
 #define ADD_OFFICE_PROB					7
+#define DEBUG							false	//debug messages, like request attempts and event completions
 
 long long int Executive::generateID()
 {
@@ -11,27 +12,8 @@ long long int Executive::generateID()
 	return ++id;
 }
 
-void Executive::run()
-{
-	//Prompt user for...
-	//Simluation duration
-	int months;
-	std::cout << "How many months should the simulation run for?\n";
-	std::cin >> months;
-
-	//Map dimensions
-	int mapWidth, mapHeight, blockSize;
-	std::cout << "Enter the width (in blocks) of the world followed by the height (ex: 4 5).\n";
-	std::cin >> mapWidth >> mapHeight;
-	
-	//Size of each block
-	std::cout << "How wide should each block be?\n";
-	std::cin >> blockSize;
-	
-	//Create the map itself
-	cityMap theMap( mapWidth*blockSize+1, mapHeight*blockSize+1, blockSize, 5, 3 );
-	theMap.printMap();	//Show the map for debug purposes
-	
+void Executive::run(cityMap & theMap, int months)
+{	
 	
 	//Populate building lists using the map
 	FFCs 			= theMap.getFFC();
@@ -69,7 +51,6 @@ void Executive::run()
 			//Create a random list of events for this individual's agenda
 			for(int j = 0; j < EVENTS_PER_DAY * 30 * months; j++)
 			{
-				//int inOffice = rand() % 4; irandom_range(0,3);
 				int buildingNumber = rand() % ((ADD_OFFICE_PROB*offices.size())+ eventBuildings.size());
 				if(buildingNumber >= eventBuildings.size())
 				{
@@ -115,21 +96,6 @@ void Executive::run()
 		//break;	//Remove this to spawn individuals in multiple houses
 	}
 	
-	std::cout << "Houses, Offices: " << houseCount << ", " << officeCount << std::endl;
-	
-	std::cout << static_cast<double>(houseCount/houses.size()) << ", " << static_cast<double>(officeCount/offices.size()) << std::endl;
-	
-	std::cout << offices.size() << ", " << eventBuildings.size() << std::endl;
-	
-	//Create the AI itself
-	/*MainAI theAI( droneList, FFCs );
-
-	//Determine plan for the first week
-	for(int i = 0; i < EVENTS_TO_LOOKAHEAD; i++)
-	{
-	
-	}
-	*/
 
 	//Begin simulation loop
 	int currentTime = 0;
@@ -150,8 +116,6 @@ void Executive::run()
 		//Load/unload a passenger when the drone stops
 		checkDrones(theMap.getRoadConc());
 
-		//if(!resourceList.empty())
-			//std::cout << resourceList.front()->getXPos() << ", " << resourceList.front()->getYPos() << std::endl;
 
 		//Update graphics
 		//droneInformation();
@@ -207,7 +171,8 @@ void Executive::executeEvents(int roadConc)
 			if(!personInBuilding && person->getPassengerRequest() == nullptr)
 			{
 				//Not in the building, need a passenger drone
-				std::cout << "(" << person->getID() << ") Event failure, request pDrone\n";
+				if(DEBUG)
+					std::cout << "(" << person->getID() << ") Event failure, request pDrone\n";
 				
 				Building* theBuilding = theAgenda->getEvents().front().getBuilding();
 				
@@ -219,7 +184,8 @@ void Executive::executeEvents(int roadConc)
 			if(personInBuilding && !resourcesInBuilding && person->getCargoRequest() == nullptr)
 			{
 				//Resources not in building, need a cargo drone
-				std::cout << "(" << person->getID() << ") Event failure, request cDrone\n";
+				if(DEBUG)
+					std::cout << "(" << person->getID() << ") Event failure, request cDrone\n";
 				
 				//Spawn some resources at a fulfillment center
 				std::list<Resource*> newResources;
@@ -242,7 +208,8 @@ void Executive::executeEvents(int roadConc)
 			{
 				theAgenda->executeEvent(foundResources);
 				eventsCompleted++;
-				std::cout << "(" << person->getID() << ") Event success; " << eventsCompleted << "/" << eventsCreated << std::endl;	
+				if(DEBUG)
+					std::cout << "(" << person->getID() << ") Event success; " << eventsCompleted << "/" << eventsCreated << std::endl;	
 			}
 		}
 		else //No more events left to execute
@@ -406,8 +373,11 @@ void Executive::requestPassengerDrone(Building* where, Individual* who, int road
 	//Add this person to the drone's delivery list and create the needed movements
 	bestDrone->createDelivery(where, who, bestIndex1, bestIndex2, roadConc);
 
-	std::cout << "Person " << who->getID() << " needs Drone " << bestDrone->getID() << ";\n(" << who->getXPos() << ", " << who->getYPos() << ") -> (" << where->getXPos() << ", " << where->getYPos() << ")\n";
-		
+	if(DEBUG)
+	{
+		std::cout << "Person " << who->getID() << " needs Drone " << bestDrone->getID() << ";\n(" << who->getXPos() << ", " << who->getYPos() << ") -> (" << where->getXPos() << ", " << where->getYPos() << ")\n";
+	}
+	
 	who->setPassengerRequest(bestDrone);
 }
 
@@ -429,8 +399,13 @@ void Executive::requestCargoDrone(Building* where, Individual* who, std::list<Re
 	//Add this resource list to the drone's delivery list and create the needed movements
 	bestDrone->createDelivery(where, who, what, bestIndex1, bestIndex2, roadConc);
 
-	Resource* whatF = what.front();
-	std::cout << "Resource " << whatF->getID() << " needs Drone " << bestDrone->getID() << ";\n(" << whatF->getXPos() << ", " << whatF->getYPos() << ") -> (" << where->getXPos() << ", " << where->getYPos() << ")\n";
+	if(DEBUG)
+	{
+		Resource* whatF = what.front();
+		std::cout << "Resource " << whatF->getID() << " needs Drone " << bestDrone->getID() << ";\n(" << whatF->getXPos() << ", " << whatF->getYPos() << ") -> (" << where->getXPos() << ", " << where->getYPos() << ")\n";
+	}
 	
 	who->setCargoRequest(bestDrone);
 }
+
+#undef DEBUG

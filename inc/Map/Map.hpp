@@ -399,7 +399,7 @@ class cityMap
 								}
 								
 								//DEBUG: See where buildings are located
-								map[p.x][p.y] = 8;
+								//map[p.x][p.y] = 8;
 
 								if(type == FACT)
 								{
