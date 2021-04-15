@@ -1,4 +1,4 @@
-#include "../../inc/rds.hpp"
+#include "rds.hpp"
 
 CargoDrone::CargoDrone(int x, int y, long long int theID) : Drone::Drone(x, y, theID)
 {

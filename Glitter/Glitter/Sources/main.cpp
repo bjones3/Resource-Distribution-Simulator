@@ -1,5 +1,6 @@
 // Local Headers
 #include "glitter.hpp"
+#include "rds.hpp"
 
 // System Headers
 #include <glad/glad.h>
@@ -349,6 +350,8 @@ GLfloat vertices[] = {
 };
 
 int main(int argc, char * argv[]) {
+    Executive ex;
+	ex.run();
     // Load GLFW and Create a Window
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);

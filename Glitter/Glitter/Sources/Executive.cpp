@@ -1,4 +1,4 @@
-#include "../inc/rds.hpp"
+#include "rds.hpp"
 
 #define INDIVIDUALS_SPAWNED_PER_HOUSE 	2
 #define EVENTS_PER_DAY					6

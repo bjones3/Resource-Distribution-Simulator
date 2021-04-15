@@ -1,5 +1,5 @@
 
-#include "../../inc/rds.hpp"
+#include "rds.hpp"
 
 Resource::Resource( int theType, long long int theID, ResourceTable & table )
 {

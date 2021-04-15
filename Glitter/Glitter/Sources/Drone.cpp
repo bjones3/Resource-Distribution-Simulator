@@ -1,4 +1,4 @@
-#include "../../inc/rds.hpp"
+#include "rds.hpp"
 
 #define DEBUG false		//Controls whether or not to output drone positions
 

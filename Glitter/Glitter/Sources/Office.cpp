@@ -1,4 +1,4 @@
-#include "../../inc/rds.hpp"
+#include "rds.hpp"
 
 Office::Office(int x, int y, int roadx, int roady) : Building::Building(x, y, roadx, roady)
 {

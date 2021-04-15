@@ -1,4 +1,4 @@
-#include "../inc/rds.hpp"
+#include "rds.hpp"
 
 MainAI::MainAI( std::list<Drone*> droneList, std::list<FulfillmentCenter*> ffcList )
 {

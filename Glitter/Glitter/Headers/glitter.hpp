@@ -21,4 +21,6 @@
 const int mWidth = 1280;
 const int mHeight = 800;
 
+#include "rds.hpp"
+
 #endif //~ Glitter Header

@@ -1,4 +1,4 @@
-#include "../../inc/rds.hpp"
+#include "rds.hpp"
 
 Event::Event(Building* building, Individual* individual)
 {

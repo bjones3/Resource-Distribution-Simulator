@@ -1,4 +1,4 @@
-#include "../inc/rds.hpp"
+#include "rds.hpp"
 
 Location::Location(int xpos, int ypos)//: xpos(xPos), ypos(yPos)
   {
