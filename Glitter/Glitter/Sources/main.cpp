@@ -278,7 +278,7 @@ int map[][51] = {
     {1, 2, 2, 2, 2, 0, 0, 0, 0, 4, 1, 4, 0, 0, 0, 0, 0, 0, 0, 4, 1, 4, 0, 0, 0, 2, 2, 2, 2, 4, 1, 3, 3, 3, 0, 0, 0, 0, 0, 4, 1, 4, 0, 0, 0, 0, 0, 0, 0, 0, 1},
     {1, 2, 2, 2, 2, 0, 0, 0, 0, 4, 1, 4, 0, 0, 0, 0, 0, 0, 0, 4, 1, 4, 0, 0, 0, 0, 0, 0, 0, 4, 1, 3, 3, 3, 0, 0, 0, 0, 0, 4, 1, 4, 0, 0, 0, 0, 0, 0, 0, 0, 1},
     {1, 2, 2, 2, 2, 0, 0, 0, 0, 4, 1, 4, 0, 0, 0, 0, 0, 0, 0, 4, 1, 4, 0, 0, 0, 0, 0, 0, 0, 4, 1, 3, 3, 3, 0, 0, 0, 0, 0, 4, 1, 4, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-    {1, 2, 2, 2, 2, 0, 0, 0, 0, 4, 1, 4, 0, 0, 0, 0, 0, 0, 0, 4, 1, 3, 3, 3, 0, 0, 0, 0, 0, 4, 1, 4, 0, 0, 0, 0, 0, 0, 0, 4, 1, 4, 0, 0, 0, 0, 0, 0, 0, 0, 1}, 
+    {1, 2, 2, 2, 2, 0, 0, 0, 0, 4, 1, 4, 0, 0, 0, 0, 0, 0, 0, 4, 1, 3, 3, 3, 0, 0, 0, 0, 0, 4, 1, 4, 0, 0, 0, 0, 0, 0, 0, 4, 1, 4, 0, 0, 0, 0, 0, 0, 0, 0, 1},
     {1, 2, 2, 2, 2, 0, 0, 0, 0, 4, 1, 4, 0, 0, 0, 0, 0, 0, 0, 4, 1, 3, 3, 3, 0, 0, 0, 0, 0, 4, 1, 4, 0, 0, 0, 0, 0, 0, 0, 4, 1, 4, 0, 0, 0, 0, 0, 0, 0, 0, 1},
     {1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1, 3, 3, 3, 4, 4, 4, 4, 4, 4, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1},
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -405,8 +405,8 @@ int main(int argc, char * argv[]) {
     glAttachShader(shaderProgram, vertexShader);
     glAttachShader(shaderProgram, fragmentShader);
     glBindFragDataLocation(shaderProgram, 0, "outColor"); // Needed with more than one fragment shader?
-    glLinkProgram(shaderProgram); // Changes to shaders within a linked 
-                                  // program will not change the actual result 
+    glLinkProgram(shaderProgram); // Changes to shaders within a linked
+                                  // program will not change the actual result
                                   // until the program has been linked again
     glUseProgram(shaderProgram); // Only one program can be active at a time
 
@@ -422,7 +422,7 @@ int main(int argc, char * argv[]) {
     GLint colAttrib = glGetAttribLocation(shaderProgram, "color");
     glEnableVertexAttribArray(colAttrib);
     glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE,
-        8*sizeof(GLfloat), (void*)(3*sizeof(GLfloat)));  
+        8*sizeof(GLfloat), (void*)(3*sizeof(GLfloat)));
     GLint texAttrib = glGetAttribLocation(shaderProgram, "texcoord");
     glEnableVertexAttribArray(texAttrib);
     glVertexAttribPointer(texAttrib, 2, GL_FLOAT, GL_FALSE,
@@ -470,7 +470,7 @@ int main(int argc, char * argv[]) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);    
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, tex[2]);
@@ -640,7 +640,7 @@ int main(int argc, char * argv[]) {
                     glDrawArrays(GL_TRIANGLES, 0, 6);
                 }
             }
-            
+
         }
 
         glUniform1i(glGetUniformLocation(shaderProgram, "texTex"), 5);
@@ -654,7 +654,7 @@ int main(int argc, char * argv[]) {
         // Flip Buffers and Draw
         glfwSwapBuffers(mWindow);
         glfwPollEvents();
-    }   
+    }
 
     //glDeleteTextures(1, &tex);
     glDeleteTextures(2, tex);

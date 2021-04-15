@@ -1,7 +1,5 @@
 #ifndef BUILDING_HPP
 # define BUILDING_HPP
-
-# include "../rds.hpp"
 # include <unordered_map>
 
 class Building
