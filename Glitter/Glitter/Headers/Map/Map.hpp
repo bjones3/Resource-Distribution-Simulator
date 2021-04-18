@@ -24,6 +24,14 @@
 class cityMap
 {
 	public:
+		int** getMap(){
+			return map;
+		}
+
+		int getXSize(){
+			return xSize;
+		}
+
 		struct Pos
 		{
 			int x;
@@ -399,7 +407,7 @@ class cityMap
 								}
 								
 								//DEBUG: See where buildings are located
-								map[p.x][p.y] = 8;
+								//map[p.x][p.y] = 8;
 
 								if(type == FACT)
 								{

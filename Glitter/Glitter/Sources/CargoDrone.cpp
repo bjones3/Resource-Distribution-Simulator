@@ -7,8 +7,8 @@ CargoDrone::CargoDrone(int x, int y, long long int theID) : Drone::Drone(x, y, t
 	xDest = x;
 	yDest = y;
 	id = theID;
-	maxVolume = 1000;
-	maxWeight = 6000;
+	maxVolume = 200;
+	maxWeight = 1000;
 }
 
 bool CargoDrone::canLoadCargo(Resource & resource)
@@ -112,7 +112,7 @@ void CargoDrone::deliveryCheck(int roadConc)
 						theDrone->loadCargo(what);
 						where->removeResources(what);
 
-						std::cout << "(" << theDrone->getID() << ") Picked up resource "<< what.front()->getID() << std::endl;
+						//std::cout << "(" << theDrone->getID() << ") Picked up resource "<< what.front()->getID() << std::endl;
 					}
 				}
 			}
@@ -140,7 +140,7 @@ void CargoDrone::deliveryCheck(int roadConc)
 					{
 						theDrone->unloadCargo(what);
 						where->addResources(what);
-						std::cout << "(" << theDrone->getID() << ") Dropped off resource " << what.front()->getID() << std::endl;
+						//std::cout << "(" << theDrone->getID() << ") Dropped off resource " << what.front()->getID() << std::endl;
 
 						theDrone->removeDelivery(who->getID());
 						who->setCargoRequest(nullptr);

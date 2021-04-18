@@ -118,7 +118,7 @@ void PassengerDrone::deliveryCheck(int roadConc)
 						theDrone->loadPassenger(who);
 						where->removeOccupant(who->getID());
 						
-						std::cout << "(" << theDrone->getID() << ") Picked up passenger "<< who->getID() << std::endl;
+						//std::cout << "(" << theDrone->getID() << ") Picked up passenger "<< who->getID() << std::endl;
 					}
 				}
 			}
@@ -133,13 +133,13 @@ void PassengerDrone::deliveryCheck(int roadConc)
 					{
 						//Passenger cannot be unloaded, so drop them off later
 						theDrone->createMoveList(where->getXRoad(),where->getYRoad(),roadConc);
-						std::cout << "(" << theDrone->getID() << ") Can't unload passenger "<< who->getID() << std::endl;
+						//std::cout << "(" << theDrone->getID() << ") Can't unload passenger "<< who->getID() << std::endl;
 					}
 					else
 					{
 						theDrone->unloadPassenger(who->getID());
 						where->addOccupant(who);
-						std::cout << "(" << theDrone->getID() << ") Dropped off passenger " << who->getID() << std::endl;
+						//std::cout << "(" << theDrone->getID() << ") Dropped off passenger " << who->getID() << std::endl;
 						
 						theDrone->removeDelivery(who->getID());
 						who->setPassengerRequest(nullptr);
